@@ -195,17 +195,16 @@ footer span{font-size:12px;color:var(--text3)}
 <section id="skills">
   <p class="label reveal">Skills & tools</p>
   <div class="skills-wrap">
-    <span class="skill reveal d1">Unity</span>
-    <span class="skill reveal d1">Unreal Engine 5</span>
-    <span class="skill reveal d1">C#</span>
-    <span class="skill reveal d2">C++</span>
-    <span class="skill reveal d2">Blueprints</span>
-    <span class="skill reveal d2">HLSL / Shaders</span>
-    <span class="skill reveal d3">Blender</span>
-    <span class="skill reveal d3">Git / GitHub</span>
-    <span class="skill reveal d3">Game AI</span>
-    <span class="skill reveal d3">Multiplayer / Netcode</span>
-    <span class="skill reveal d3">Mobile optimisation</span>
+      <span class="skill reveal d1">Unity</span>
+      <span class="skill reveal d1">Unreal Engine 5</span>
+      <span class="skill reveal d1">C#</span>
+      <span class="skill reveal d2">C++</span>
+      <span class="skill reveal d2">Blueprints</span>
+      <span class="skill reveal d3">Git / GitHub</span>
+      <span class="skill reveal d3">Game AI</span>
+      <span class="skill reveal d3">Multiplayer / Netcode</span>
+      <span class="skill reveal d3">Games For Mobile</span>
+      <span class="skill reveal d3">Games For Pc</span>
   </div>
 </section>
 
@@ -225,157 +224,157 @@ footer span{font-size:12px;color:var(--text3)}
 <section id="contact">
   <p class="label reveal">Contact</p>
   <div class="contact-row reveal d1">
-    <a href="mailto:your@email.com">your@email.com</a>
-    <span class="sep">·</span>
-    <a href="https://github.com/yourname" target="_blank">GitHub</a>
-    <span class="sep">·</span>
-    <a href="https://linkedin.com/in/yourname" target="_blank">LinkedIn</a>
-    <span class="sep">·</span>
-    <a href="https://yourname.itch.io" target="_blank">itch.io</a>
-  </div>
-</section>
+      <a href="mailto:your@email.com">your@email.com</a>
+      <span class="sep">·</span>
+      <!-- <a href="https://github.com/yourname" target="_blank">GitHub</a>
+      <span class="sep">·</span> -->
+      <a href="https://linkedin.com/in/yourname" target="_blank">LinkedIn</a>
+      <span class="sep">·</span>
+      <!-- <a href="https://yourname.itch.io" target="_blank">itch.io</a> -->
+      </div>
+    </section>
 
-<footer>
-  <span>© 2026 Derrick Yu </span>
-  <span>GitHub Pages</span>
-</footer>
+    <footer>
+      <span>© 2026 Derrick Yu </span>
+      <span>GitHub Pages</span>
+    </footer>
 
-</div>
+    </div>
 
-<script>
-/* ── Scroll reveal ── */
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') })
-}, {threshold: 0.1})
-document.querySelectorAll('.reveal').forEach(el => {
-  obs.observe(el)
-  if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
-})
-
-/* ── Typewriter ── */
-const lines = [
-  "My Name Is\nDerrick Yu",
-  "I build games people\ncan't put down.",
-  "I turn ideas into\nplayable worlds."
-]
-let li = 0, ci = 0, deleting = false
-const tw = document.getElementById('tw')
-function type() {
-  const line = lines[li]
-  if (!deleting) {
-    ci++
-    tw.innerHTML = line.slice(0, ci).replace('\n', '<br>')
-    if (ci === line.length) { setTimeout(() => { deleting = true; type() }, 2400); return }
-    setTimeout(type, 50 + Math.random() * 30)
-  } else {
-    ci--
-    tw.innerHTML = line.slice(0, ci).replace('\n', '<br>')
-    if (ci === 0) { deleting = false; li = (li + 1) % lines.length; setTimeout(type, 300); return }
-    setTimeout(type, 26)
-  }
-}
-type()
-
-/* ── Hero floating pixels ── */
-const hc = document.getElementById('hero-canvas')
-const hx = hc.getContext('2d')
-let pts = []
-function rsz() {
-  const h = document.querySelector('.hero')
-  hc.width = h.offsetWidth
-  hc.height = h.offsetHeight
-}
-function initPts() {
-  pts = []
-  const n = Math.max(20, Math.floor(hc.width / 24))
-  const cols = ['#AFA9EC','#9FE1CB','#F0997B','#F4C0D1','#CECBF6','#5DCAA5']
-  for (let i = 0; i < n; i++) {
-    pts.push({
-      x: Math.random() * hc.width,
-      y: Math.random() * hc.height,
-      s: Math.random() * 3 + 1,
-      vy: -(Math.random() * 0.35 + 0.1),
-      vx: (Math.random() - 0.5) * 0.18,
-      a: Math.random() * 0.45 + 0.12,
-      c: cols[Math.floor(Math.random() * cols.length)]
+    <script>
+    /* ── Scroll reveal ── */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') })
+    }, {threshold: 0.1})
+    document.querySelectorAll('.reveal').forEach(el => {
+      obs.observe(el)
+      if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
     })
-  }
-}
-function animPts() {
-  hx.clearRect(0, 0, hc.width, hc.height)
-  pts.forEach(p => {
-    hx.globalAlpha = p.a
-    hx.fillStyle = p.c
-    hx.fillRect(p.x, p.y, p.s, p.s)
-    p.y += p.vy; p.x += p.vx
-    if (p.y < -8) p.y = hc.height + 4
-    if (p.x < 0) p.x = hc.width
-    if (p.x > hc.width) p.x = 0
-  })
-  hx.globalAlpha = 1
-  requestAnimationFrame(animPts)
-}
-new ResizeObserver(() => { rsz(); initPts() }).observe(document.querySelector('.hero'))
-rsz(); initPts(); animPts()
 
-/* ── Card tilt ── */
-document.querySelectorAll('[data-tilt]').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect()
-    const x = (e.clientX - r.left) / r.width - 0.5
-    const y = (e.clientY - r.top) / r.height - 0.5
-    card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.03)`
-    card.style.transition = 'transform .05s'
-  })
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = 'perspective(600px) rotateX(0) rotateY(0) scale(1)'
-    card.style.transition = 'transform .35s cubic-bezier(.22,1,.36,1)'
-  })
-})
+    /* ── Typewriter ── */
+    const lines = [
+      "My Name Is\nDerrick Yu",
+      "I build games people\ncan't put down.",
+      "I turn ideas into\nplayable worlds."
+    ]
+    let li = 0, ci = 0, deleting = false
+    const tw = document.getElementById('tw')
+    function type() {
+      const line = lines[li]
+      if (!deleting) {
+        ci++
+        tw.innerHTML = line.slice(0, ci).replace('\n', '<br>')
+        if (ci === line.length) { setTimeout(() => { deleting = true; type() }, 2400); return }
+        setTimeout(type, 50 + Math.random() * 30)
+      } else {
+        ci--
+        tw.innerHTML = line.slice(0, ci).replace('\n', '<br>')
+        if (ci === 0) { deleting = false; li = (li + 1) % lines.length; setTimeout(type, 300); return }
+        setTimeout(type, 26)
+      }
+    }
+    type()
 
-/* ── Cursor sparkle ── */
-const sc = document.getElementById('sparkle-canvas')
-const sx = sc.getContext('2d')
-let sparks = []
-function rszSpark() { sc.width = window.innerWidth; sc.height = window.innerHeight }
-rszSpark()
-window.addEventListener('resize', rszSpark)
-const COLS = ['#AFA9EC','#7F77DD','#9FE1CB','#5DCAA5','#F5C4B3','#D85A30','#F4C0D1','#ED93B1']
-let lastMouse = 0
-window.addEventListener('mousemove', e => {
-  const now = Date.now()
-  if (now - lastMouse < 20) return
-  lastMouse = now
-  for (let i = 0; i < 4; i++) {
-    const angle = Math.random() * Math.PI * 2
-    const speed = Math.random() * 1.8 + 0.4
-    sparks.push({
-      x: e.clientX, y: e.clientY,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed - 1.2,
-      size: Math.random() * 4 + 2,
-      alpha: 1,
-      color: COLS[Math.floor(Math.random() * COLS.length)]
+    /* ── Hero floating pixels ── */
+    const hc = document.getElementById('hero-canvas')
+    const hx = hc.getContext('2d')
+    let pts = []
+    function rsz() {
+      const h = document.querySelector('.hero')
+      hc.width = h.offsetWidth
+      hc.height = h.offsetHeight
+    }
+    function initPts() {
+      pts = []
+      const n = Math.max(20, Math.floor(hc.width / 24))
+      const cols = ['#AFA9EC','#9FE1CB','#F0997B','#F4C0D1','#CECBF6','#5DCAA5']
+      for (let i = 0; i < n; i++) {
+        pts.push({
+          x: Math.random() * hc.width,
+          y: Math.random() * hc.height,
+          s: Math.random() * 3 + 1,
+          vy: -(Math.random() * 0.35 + 0.1),
+          vx: (Math.random() - 0.5) * 0.18,
+          a: Math.random() * 0.45 + 0.12,
+          c: cols[Math.floor(Math.random() * cols.length)]
+        })
+      }
+    }
+    function animPts() {
+      hx.clearRect(0, 0, hc.width, hc.height)
+      pts.forEach(p => {
+        hx.globalAlpha = p.a
+        hx.fillStyle = p.c
+        hx.fillRect(p.x, p.y, p.s, p.s)
+        p.y += p.vy; p.x += p.vx
+        if (p.y < -8) p.y = hc.height + 4
+        if (p.x < 0) p.x = hc.width
+        if (p.x > hc.width) p.x = 0
+      })
+      hx.globalAlpha = 1
+      requestAnimationFrame(animPts)
+    }
+    new ResizeObserver(() => { rsz(); initPts() }).observe(document.querySelector('.hero'))
+    rsz(); initPts(); animPts()
+
+    /* ── Card tilt ── */
+    document.querySelectorAll('[data-tilt]').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect()
+        const x = (e.clientX - r.left) / r.width - 0.5
+        const y = (e.clientY - r.top) / r.height - 0.5
+        card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.03)`
+        card.style.transition = 'transform .05s'
+      })
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(600px) rotateX(0) rotateY(0) scale(1)'
+        card.style.transition = 'transform .35s cubic-bezier(.22,1,.36,1)'
+      })
     })
-  }
-})
-function animSparks() {
-  sx.clearRect(0, 0, sc.width, sc.height)
-  sparks = sparks.filter(s => s.alpha > 0.03)
-  sparks.forEach(s => {
-    sx.globalAlpha = s.alpha
-    sx.fillStyle = s.color
-    const half = s.size / 2
-    sx.fillRect(s.x - half, s.y - half, s.size, s.size)
-    s.x += s.vx; s.y += s.vy
-    s.vy += 0.07
-    s.alpha -= 0.032
-    s.size *= 0.97
-  })
-  sx.globalAlpha = 1
-  requestAnimationFrame(animSparks)
-}
-animSparks()
-</script>
-</body>
-</html>
+
+    /* ── Cursor sparkle ── */
+    const sc = document.getElementById('sparkle-canvas')
+    const sx = sc.getContext('2d')
+    let sparks = []
+    function rszSpark() { sc.width = window.innerWidth; sc.height = window.innerHeight }
+    rszSpark()
+    window.addEventListener('resize', rszSpark)
+    const COLS = ['#AFA9EC','#7F77DD','#9FE1CB','#5DCAA5','#F5C4B3','#D85A30','#F4C0D1','#ED93B1']
+    let lastMouse = 0
+    window.addEventListener('mousemove', e => {
+      const now = Date.now()
+      if (now - lastMouse < 20) return
+      lastMouse = now
+      for (let i = 0; i < 4; i++) {
+        const angle = Math.random() * Math.PI * 2
+        const speed = Math.random() * 1.8 + 0.4
+        sparks.push({
+          x: e.clientX, y: e.clientY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.2,
+          size: Math.random() * 4 + 2,
+          alpha: 1,
+          color: COLS[Math.floor(Math.random() * COLS.length)]
+        })
+      }
+    })
+    function animSparks() {
+      sx.clearRect(0, 0, sc.width, sc.height)
+      sparks = sparks.filter(s => s.alpha > 0.03)
+      sparks.forEach(s => {
+        sx.globalAlpha = s.alpha
+        sx.fillStyle = s.color
+        const half = s.size / 2
+        sx.fillRect(s.x - half, s.y - half, s.size, s.size)
+        s.x += s.vx; s.y += s.vy
+        s.vy += 0.07
+        s.alpha -= 0.032
+        s.size *= 0.97
+      })
+      sx.globalAlpha = 1
+      requestAnimationFrame(animSparks)
+    }
+    animSparks()
+    </script>
+    </body>
+    </html>
