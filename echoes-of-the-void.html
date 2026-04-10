@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Echoes of the Void — Derrick Yu</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fafaf8;--bg2:#f2f2ee;--bg3:#eeecea;
+  --text:#1c1c1a;--text2:#6b6b68;--text3:#ababab;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.15);
+  --purple:#7F77DD;--purple-bg:#EEEDFE;--purple-text:#3C3489;
+  --teal:#1D9E75;--teal-bg:#E1F5EE;--teal-text:#085041;
+  --code-bg:#1e1e2e;--code-text:#cdd6f4;
+  --r:12px;--r-sm:8px;--r-pill:99px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#121210;--bg2:#1a1a18;--bg3:#222220;
+  --text:#f0f0ec;--text2:#8a8a85;--text3:#444440;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.14);
+  --purple:#9D97E8;--purple-bg:#26215C;--purple-text:#CECBF6;
+  --teal:#5DCAA5;--teal-bg:#04342C;--teal-text:#9FE1CB;
+}}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+#sparkle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}
+.wrap{max-width:820px;margin:0 auto;padding:0 1.5rem}
+
+/* ── Nav ── */
+nav{padding:1.4rem 0;border-bottom:.5px solid var(--border)}
+.nav-inner{display:flex;justify-content:space-between;align-items:center}
+.nav-logo{font-size:15px;font-weight:500;text-decoration:none;color:var(--text)}
+.back-btn{font-size:13px;color:var(--text2);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:color .15s}
+.back-btn:hover{color:var(--text)}
+
+/* ── Banner ── */
+.game-banner{width:100%;height:340px;background:var(--purple-bg);border-radius:var(--r);overflow:hidden;margin:2.5rem 0;display:flex;align-items:center;justify-content:center}
+.game-banner img{width:100%;height:100%;object-fit:cover;display:block}
+.banner-placeholder{display:flex;flex-direction:column;align-items:center;gap:10px;opacity:.5}
+.banner-placeholder span{font-size:13px;color:var(--purple-text)}
+
+/* ── Game header ── */
+.game-header{margin-bottom:2rem}
+.game-header-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem}
+.game-title{font-size:32px;font-weight:500;letter-spacing:-.02em;line-height:1.1}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font-size:13px;font-weight:500;padding:8px 18px;border-radius:var(--r-sm);cursor:pointer;border:.5px solid var(--border2);transition:transform .15s,opacity .15s;text-decoration:none;display:inline-block}
+.btn:active{transform:scale(.97)}
+.btn-dark{background:var(--text);color:var(--bg);border-color:transparent}
+.btn-dark:hover{opacity:.8}
+.btn-outline{background:transparent;color:var(--text)}
+.btn-outline:hover{background:var(--bg2)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;color:var(--purple-text);background:var(--purple-bg);padding:3px 10px;border-radius:var(--r-pill);border:.5px solid var(--border)}
+.tag-plain{font-size:12px;color:var(--text3);background:var(--bg2);padding:3px 10px;border-radius:var(--r-pill);border:.5px solid var(--border)}
+
+/* ── Divider / label ── */
+hr{border:none;border-top:.5px solid var(--border);margin:2.5rem 0}
+.label{font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:1.1rem}
+
+/* ── About text ── */
+.about-text{font-size:15px;color:var(--text2);line-height:1.8;max-width:660px}
+.about-text p{margin-bottom:1rem}
+.about-text p:last-child{margin-bottom:0}
+
+/* ── Stats ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
+.stat{background:var(--bg2);border-radius:var(--r-sm);padding:1rem;text-align:center;border:.5px solid var(--border)}
+.stat-num{font-size:22px;font-weight:500;color:var(--text);margin-bottom:3px}
+.stat-label{font-size:12px;color:var(--text3)}
+
+/* ── What I did ── */
+.did-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+.did-list li{display:flex;gap:12px;align-items:flex-start}
+.did-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);margin-top:9px;flex-shrink:0}
+.did-text{font-size:15px;color:var(--text2);line-height:1.65}
+
+/* ── Mechanics ── */
+.mechanics-grid{display:flex;flex-direction:column;gap:14px}
+.mechanic-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--r);padding:1.1rem 1.25rem;transition:border-color .2s}
+.mechanic-card:hover{border-color:var(--border2)}
+.mechanic-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.mechanic-icon{width:28px;height:28px;border-radius:var(--r-sm);background:var(--purple-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mechanic-icon svg{width:14px;height:14px}
+.mechanic-title{font-size:14px;font-weight:500;color:var(--text)}
+.mechanic-desc{font-size:13px;color:var(--text2);line-height:1.6;padding-left:38px}
+
+/* ── GIF gallery ── */
+.gif-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.gif-item{border-radius:var(--r);overflow:hidden;border:.5px solid var(--border);background:var(--bg2)}
+.gif-item img{width:100%;display:block}
+.gif-placeholder{width:100%;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--bg2)}
+.gif-placeholder span{font-size:12px;color:var(--text3)}
+.gif-caption{font-size:12px;color:var(--text3);padding:8px 12px;border-top:.5px solid var(--border)}
+
+/* ── Screenshots ── */
+.screenshots{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.shot{width:100%;aspect-ratio:16/9;background:var(--bg2);border:.5px solid var(--border);border-radius:var(--r);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text3)}
+.shot img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ── Code block ── */
+.code-section{display:flex;flex-direction:column;gap:2rem}
+.code-block-wrap{border-radius:var(--r);overflow:hidden;border:.5px solid var(--border)}
+.code-header{background:var(--bg2);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:.5px solid var(--border)}
+.code-filename{font-size:12px;font-weight:500;color:var(--text2);font-family:monospace}
+.code-lang{font-size:11px;color:var(--text3);background:var(--bg3);padding:2px 8px;border-radius:var(--r-pill);border:.5px solid var(--border)}
+pre{background:var(--code-bg);padding:1.25rem 1.5rem;overflow-x:auto;font-size:13px;line-height:1.7;font-family:'SF Mono','Fira Code','Consolas',monospace}
+code{color:var(--code-text)}
+.kw{color:#cba6f7}   /* keywords — purple */
+.fn{color:#89b4fa}   /* functions — blue */
+.str{color:#a6e3a1}  /* strings — green */
+.cm{color:#6c7086;font-style:italic} /* comments — gray */
+.num{color:#fab387}  /* numbers — peach */
+.tp{color:#f38ba8}   /* types — red */
+
+/* explanation box */
+.code-explain{background:var(--teal-bg);border:.5px solid var(--border);border-radius:var(--r);padding:1.1rem 1.25rem;margin-top:-1px}
+.explain-label{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-text);margin-bottom:8px;opacity:.7}
+.explain-text{font-size:14px;color:var(--text2);line-height:1.7}
+.explain-text p{margin-bottom:.6rem}
+.explain-text p:last-child{margin-bottom:0}
+.inline-code{font-family:'SF Mono','Fira Code','Consolas',monospace;font-size:12px;background:var(--bg2);padding:1px 5px;border-radius:4px;border:.5px solid var(--border)}
+
+/* ── Footer ── */
+footer{padding:2rem 0;border-top:.5px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:3rem}
+footer span{font-size:12px;color:var(--text3)}
+footer a{font-size:12px;color:var(--purple);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+@media(max-width:560px){.game-title{font-size:24px}.game-banner{height:200px}.game-header-top{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<canvas id="sparkle-canvas"></canvas>
+
+<div class="wrap">
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Derrick Yu</a>
+      <a href="index.html" class="back-btn">← Back to portfolio</a>
+    </div>
+  </nav>
+
+  <!-- ── Banner ── -->
+  <div class="game-banner reveal">
+    <!-- Replace with: <img src="Images/echoes-banner.jpg" alt="Echoes of the Void banner"> -->
+    <div class="banner-placeholder">
+      <svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="10" y="20" width="40" height="26" rx="5" fill="#AFA9EC"/><rect x="22" y="12" width="16" height="13" rx="3" fill="#CECBF6"/><circle cx="30" cy="33" r="6" fill="#EEEDFE"/></svg>
+      <span>Replace with your banner image</span>
+    </div>
+  </div>
+
+  <!-- ── Title & links ── -->
+  <div class="game-header reveal d1">
+    <div class="game-header-top">
+      <h1 class="game-title">Echoes of the Void</h1>
+      <div class="btn-row">
+        <a href="#" class="btn btn-dark">Play on Steam</a>
+        <a href="#" class="btn btn-outline">View GitHub</a>
+      </div>
+    </div>
+    <div class="tags">
+      <span class="tag">Unreal Engine 5</span>
+      <span class="tag">C++</span>
+      <span class="tag-plain">PC</span>
+      <span class="tag-plain">Solo project</span>
+      <span class="tag-plain">2025</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ── About ── -->
+  <section class="reveal">
+    <p class="label">About the game</p>
+    <div class="about-text">
+      <p>
+        Echoes of the Void is a sci-fi exploration game set in a procedurally generated universe.
+        Players pilot a ship through uncharted star systems, uncovering ancient ruins and
+        piecing together a mystery spanning thousands of years.
+      </p>
+      <p>
+        The game focuses on atmosphere and discovery over combat. Every playthrough generates
+        a different set of star systems, ensuring no two players share the same journey.
+      </p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ── Stats ── -->
+  <section class="reveal">
+    <p class="label">At a glance</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">8</div><div class="stat-label">Months to build</div></div>
+      <div class="stat"><div class="stat-num">1</div><div class="stat-label">Developer</div></div>
+      <div class="stat"><div class="stat-num">UE5</div><div class="stat-label">Engine</div></div>
+      <div class="stat"><div class="stat-num">PC</div><div class="stat-label">Platform</div></div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ── Mechanics ── -->
+  <section class="reveal">
+    <p class="label">Mechanics</p>
+    <div class="mechanics-grid">
+
+      <div class="mechanic-card">
+        <div class="mechanic-top">
+          <div class="mechanic-icon">
+            <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#7F77DD" stroke-width="1.5"/><path d="M7 4v3l2 1.5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="mechanic-title">Procedural world generation</span>
+        </div>
+        <p class="mechanic-desc">Each run seeds a unique universe — star positions, planet types, ruin placements, and enemy patrol routes are all generated at runtime. No two playthroughs are the same.</p>
+      </div>
+
+      <div class="mechanic-card">
+        <div class="mechanic-top">
+          <div class="mechanic-icon">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="mechanic-title">Ship movement & physics</span>
+        </div>
+        <p class="mechanic-desc">The ship uses Unreal's Chaos physics with custom drag and thrust curves to simulate zero-gravity momentum. Holding the thruster builds speed; releasing lets inertia carry you forward.</p>
+      </div>
+
+      <div class="mechanic-card">
+        <div class="mechanic-top">
+          <div class="mechanic-icon">
+            <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="4" width="10" height="7" rx="1.5" stroke="#7F77DD" stroke-width="1.5"/><path d="M5 4V3a2 2 0 0 1 4 0v1" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="mechanic-title">Ruin discovery & lore system</span>
+        </div>
+        <p class="mechanic-desc">Ancient ruins scattered across planets hold fragments of lore. Players scan ruins with a proximity sensor — the closer you are, the more detail is revealed. Collected fragments assemble into a timeline in the journal.</p>
+      </div>
+
+      <!-- Add more mechanics by copying the block above -->
+
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ── GIF gallery ── -->
+  <section class="reveal">
+    <p class="label">In action</p>
+    <div class="gif-grid">
+
+      <div class="gif-item">
+        <!-- Replace with: <img src="Images/echoes-fly.gif" alt="Ship flying through nebula"> -->
+        <div class="gif-placeholder">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5"/><path d="M12 16l5-3v6l-5-3z" fill="#ababab"/></svg>
+          <span>echoes-fly.gif</span>
+        </div>
+        <div class="gif-caption">Ship flying through a nebula field</div>
+      </div>
+
+      <div class="gif-item">
+        <!-- Replace with: <img src="Images/echoes-scan.gif" alt="Scanning a ruin"> -->
+        <div class="gif-placeholder">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5"/><path d="M12 16l5-3v6l-5-3z" fill="#ababab"/></svg>
+          <span>echoes-scan.gif</span>
+        </div>
+        <div class="gif-caption">Scanning an ancient ruin for lore</div>
+      </div>
+
+      <div class="gif-item">
+        <!-- Replace with: <img src="Images/echoes-gen.gif" alt="World generating"> -->
+        <div class="gif-placeholder">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5"/><path d="M12 16l5-3v6l-5-3z" fill="#ababab"/></svg>
+          <span>echoes-gen.gif</span>
+        </div>
+        <div class="gif-caption">Procedural universe generating on load</div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ── Screenshots ── -->
+  <section class="reveal">
+    <p class="label">Screenshots</p>
+    <div class="screenshots">
+      <div class="shot"><!-- <img src="Images/echoes-ss1.jpg" alt="Screenshot 1"> -->Screenshot 1</div>
+      <div class="shot"><!-- <img src="Images/echoes-ss2.jpg" alt="Screenshot 2"> -->Screenshot 2</div>
+      <div class="shot"><!-- <img src="Images/echoes-ss3.jpg" alt="Screenshot 3"> -->Screenshot 3</div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ── What I did ── -->
+  <section class="reveal">
+    <p class="label">What I did</p>
+    <ul class="did-list">
+      <li><span class="did-dot"></span><span class="did-text">Built the procedural world generation system in C++ — each star system, planet layout, and ruin placement is seeded and unique per playthrough.</span></li>
+      <li><span class="did-dot"></span><span class="did-text">Designed ship movement and physics using Unreal's Chaos system, tuned for that weightless space feel with realistic inertia.</span></li>
+      <li><span class="did-dot"></span><span class="did-text">Created all shaders in HLSL — including the nebula background, engine trails, and holographic UI elements.</span></li>
+      <li><span class="did-dot"></span><span class="did-text">Implemented a save/load system using Unreal's serialisation pipeline, allowing players to resume at any discovered waypoint.</span></li>
+    </ul>
+  </section>
+
+  <hr>
+
+  <!-- ══════════════════════════════════════
+       CODE SNIPPETS + EXPLANATIONS
+       Add as many of these blocks as you want
+       ══════════════════════════════════════ -->
+  <section class="reveal">
+    <p class="label">Code deep dive</p>
+    <div class="code-section">
+
+      <!-- ── Snippet 1 ── -->
+      <div class="reveal d1">
+        <div class="code-block-wrap">
+          <div class="code-header">
+            <span class="code-filename">ProceduralWorldGen.cpp</span>
+            <span class="code-lang">C++</span>
+          </div>
+          <pre><code><cm>// Seed the random stream with the game session ID</cm>
+<kw>void</kw> <fn>AWorldGenerator</fn>::<fn>GenerateUniverse</fn>(<kw>int32</kw> Seed)
+{
+    FRandomStream Stream(Seed);
+
+    <kw>for</kw> (<kw>int32</kw> i = <num>0</num>; i &lt; StarCount; i++)
+    {
+        FVector Location = FVector(
+            Stream.<fn>FRandRange</fn>(-<num>50000.f</num>, <num>50000.f</num>),
+            Stream.<fn>FRandRange</fn>(-<num>50000.f</num>, <num>50000.f</num>),
+            Stream.<fn>FRandRange</fn>(-<num>10000.f</num>, <num>10000.f</num>)
+        );
+
+        <tp>AStarSystem</tp>* Star = <fn>GetWorld</fn>()-&gt;<fn>SpawnActor</fn>&lt;<tp>AStarSystem</tp>&gt;(
+            StarClass, Location, FRotator::ZeroRotator
+        );
+
+        Star-&gt;<fn>InitialiseStar</fn>(Stream.<fn>RandRange</fn>(<num>1</num>, <num>5</num>));
+    }
+}</code></pre>
+        </div>
+        <div class="code-explain">
+          <p class="explain-label">What this does</p>
+          <div class="explain-text">
+            <p>This function generates the entire game universe from a single integer — the <span class="inline-code">Seed</span>. By passing the same seed to <span class="inline-code">FRandomStream</span>, every star position and planet will always be identical for that seed, which is how sharable universe codes work.</p>
+            <p>The loop runs <span class="inline-code">StarCount</span> times (set in the editor), each time picking a random 3D position within the defined space boundaries. It then spawns a <span class="inline-code">AStarSystem</span> actor at that location and calls <span class="inline-code">InitialiseStar()</span> with a random size value (1–5) to vary the visual scale and number of orbiting planets.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Snippet 2 ── -->
+      <div class="reveal d2">
+        <div class="code-block-wrap">
+          <div class="code-header">
+            <span class="code-filename">ShipMovementComponent.cpp</span>
+            <span class="code-lang">C++</span>
+          </div>
+          <pre><code><cm>// Apply thrust and drag each physics tick</cm>
+<kw>void</kw> <fn>UShipMovementComponent</fn>::<fn>TickComponent</fn>(
+    <kw>float</kw> DeltaTime,
+    ELevelTick TickType,
+    FActorComponentTickFunction* ThisTickFunction)
+{
+    <kw>Super</kw>::<fn>TickComponent</fn>(DeltaTime, TickType, ThisTickFunction);
+
+    <kw>if</kw> (bThrusting)
+    {
+        Velocity += <fn>GetOwner</fn>()-&gt;<fn>GetActorForwardVector</fn>()
+                    * ThrustForce * DeltaTime;
+    }
+
+    <cm>// Apply drag — slows the ship gradually in space</cm>
+    Velocity *= FMath::<fn>Clamp</fn>(<num>1.f</num> - (DragCoefficient * DeltaTime),
+                             <num>0.f</num>, <num>1.f</num>);
+
+    <cm>// Clamp to max speed</cm>
+    <kw>if</kw> (Velocity.<fn>Size</fn>() &gt; MaxSpeed)
+        Velocity = Velocity.<fn>GetSafeNormal</fn>() * MaxSpeed;
+
+    <fn>GetOwner</fn>()-&gt;<fn>AddActorWorldOffset</fn>(Velocity, <kw>true</kw>);
+}</code></pre>
+        </div>
+        <div class="code-explain">
+          <p class="explain-label">What this does</p>
+          <div class="explain-text">
+            <p>This runs every physics frame to move the ship. When the player holds the thrust key, <span class="inline-code">bThrusting</span> is true and velocity builds up in the direction the ship is facing — the longer you hold it, the faster you go.</p>
+            <p>The drag line is the key to making space feel right. Instead of stopping instantly, multiplying velocity by a value slightly below 1 each frame means the ship slows down smoothly over time, like coasting. <span class="inline-code">DragCoefficient</span> is exposed to the editor so it can be tweaked without recompiling.</p>
+            <p>The final clamp ensures the ship never exceeds <span class="inline-code">MaxSpeed</span> regardless of how long thrust is held, preventing runaway velocity bugs.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Snippet 3 ── -->
+      <div class="reveal d3">
+        <div class="code-block-wrap">
+          <div class="code-header">
+            <span class="code-filename">RuinScanner.cpp</span>
+            <span class="code-lang">C++</span>
+          </div>
+          <pre><code><cm>// Called when player activates the scanner</cm>
+<kw>void</kw> <fn>ARuinScanner</fn>::<fn>ScanNearbyRuins</fn>()
+{
+    TArray&lt;<tp>AActor</tp>*&gt; FoundActors;
+    <tp>UGameplayStatics</tp>::<fn>GetAllActorsOfClass</fn>(
+        <fn>GetWorld</fn>(), <tp>ARuinFragment</tp>::<fn>StaticClass</fn>(), FoundActors
+    );
+
+    <kw>for</kw> (<tp>AActor</tp>* Actor : FoundActors)
+    {
+        <kw>float</kw> Distance = FVector::<fn>Dist</fn>(
+            <fn>GetOwner</fn>()-&gt;<fn>GetActorLocation</fn>(),
+            Actor-&gt;<fn>GetActorLocation</fn>()
+        );
+
+        <kw>if</kw> (Distance &lt;= ScanRadius)
+        {
+            <tp>ARuinFragment</tp>* Ruin = <fn>Cast</fn>&lt;<tp>ARuinFragment</tp>&gt;(Actor);
+            <kw>float</kw> Detail = <num>1.f</num> - (Distance / ScanRadius);
+            Ruin-&gt;<fn>RevealLore</fn>(Detail);
+        }
+    }
+}</code></pre>
+        </div>
+        <div class="code-explain">
+          <p class="explain-label">What this does</p>
+          <div class="explain-text">
+            <p>This scans all ruin fragments in the world and reveals lore based on how close the player is. <span class="inline-code">GetAllActorsOfClass</span> finds every <span class="inline-code">ARuinFragment</span> in the level, then a distance check filters only ones within <span class="inline-code">ScanRadius</span>.</p>
+            <p>The clever part is the <span class="inline-code">Detail</span> calculation — dividing distance by the scan radius gives a 0 to 1 float. At maximum distance it's near 0 (barely revealed), and right next to the ruin it approaches 1 (fully revealed). This value is passed into <span class="inline-code">RevealLore()</span> which uses it to control how much text and visual detail is shown, rewarding players for physically getting close.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copy this block to add more code snippets:
+      <div class="reveal d1">
+        <div class="code-block-wrap">
+          <div class="code-header">
+            <span class="code-filename">YourFile.cpp</span>
+            <span class="code-lang">C++</span>
+          </div>
+          <pre><code>your code here</code></pre>
+        </div>
+        <div class="code-explain">
+          <p class="explain-label">What this does</p>
+          <div class="explain-text">
+            <p>Your explanation here.</p>
+          </div>
+        </div>
+      </div>
+      -->
+
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Derrick Yu</span>
+    <a href="index.html">← Back to all games</a>
+  </footer>
+
+</div>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') })
+}, {threshold: 0.08})
+document.querySelectorAll('.reveal').forEach(el => {
+  obs.observe(el)
+  if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
+})
+
+const sc = document.getElementById('sparkle-canvas')
+const sx = sc.getContext('2d')
+let sparks = []
+function rszSpark(){ sc.width = window.innerWidth; sc.height = window.innerHeight }
+rszSpark()
+window.addEventListener('resize', rszSpark)
+const COLS = ['#AFA9EC','#7F77DD','#9FE1CB','#5DCAA5','#F5C4B3','#D85A30','#F4C0D1','#ED93B1']
+let lastMouse = 0
+window.addEventListener('mousemove', e => {
+  const now = Date.now()
+  if(now - lastMouse < 20) return
+  lastMouse = now
+  for(let i = 0; i < 4; i++){
+    const angle = Math.random() * Math.PI * 2
+    const speed = Math.random() * 1.8 + 0.4
+    sparks.push({
+      x: e.clientX, y: e.clientY,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 1.2,
+      size: Math.random() * 4 + 2,
+      alpha: 1,
+      color: COLS[Math.floor(Math.random() * COLS.length)]
+    })
+  }
+})
+function animSparks(){
+  sx.clearRect(0, 0, sc.width, sc.height)
+  sparks = sparks.filter(s => s.alpha > 0.03)
+  sparks.forEach(s => {
+    sx.globalAlpha = s.alpha
+    sx.fillStyle = s.color
+    const h = s.size / 2
+    sx.fillRect(s.x - h, s.y - h, s.size, s.size)
+    s.x += s.vx; s.y += s.vy
+    s.vy += 0.07
+    s.alpha -= 0.032
+    s.size *= 0.97
+  })
+  sx.globalAlpha = 1
+  requestAnimationFrame(animSparks)
+}
+animSparks()
+</script>
+</body>
+</html>
