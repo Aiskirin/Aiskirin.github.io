@@ -1,308 +1,720 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Derrick Yu — Game Developer</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#fafaf8;--bg2:#f2f2ee;--bg3:#eeecea;
-  --text:#1c1c1a;--text2:#6b6b68;--text3:#ababab;
-  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.15);
-  --purple:#7F77DD;--purple-bg:#EEEDFE;--purple-text:#3C3489;
-  --teal:#1D9E75;--teal-bg:#E1F5EE;--teal-text:#085041;
-  --coral:#D85A30;--coral-bg:#FAECE7;--coral-text:#712B13;
-  --r:12px;--r-sm:8px;--r-pill:99px;
-}
-@media(prefers-color-scheme:dark){:root{
-  --bg:#121210;--bg2:#1a1a18;--bg3:#222220;
-  --text:#f0f0ec;--text2:#8a8a85;--text3:#444440;
-  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.14);
-  --purple:#9D97E8;--purple-bg:#26215C;--purple-text:#CECBF6;
-  --teal:#5DCAA5;--teal-bg:#04342C;--teal-text:#9FE1CB;
-  --coral:#F0997B;--coral-bg:#4A1B0C;--coral-text:#F5C4B3;
-}}
-html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
-#sparkle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
-.reveal.visible{opacity:1;transform:none}
-.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
-.wrap{max-width:880px;margin:0 auto;padding:0 1.5rem}
-nav{padding:1.4rem 0;border-bottom:.5px solid var(--border)}
-.nav-inner{display:flex;justify-content:space-between;align-items:center}
-.nav-logo{font-size:15px;font-weight:500}
-.nav-links{display:flex;gap:22px}
-.nav-links a{font-size:13px;color:var(--text2);text-decoration:none;transition:color .15s}
-.nav-links a:hover{color:var(--text)}
-.hero{padding:5rem 0 4rem;position:relative;overflow:hidden}
-#hero-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.hero-inner{position:relative;z-index:1}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;background:var(--purple-bg);color:var(--purple-text);padding:4px 12px 4px 8px;border-radius:var(--r-pill);margin-bottom:1.2rem}
-.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
-.hero h1{font-size:clamp(28px,5vw,44px);font-weight:500;line-height:1.12;letter-spacing:-.03em;margin-bottom:1.1rem;min-height:2.6em}
-.blink{display:inline-block;width:3px;height:.85em;background:var(--purple);margin-left:2px;vertical-align:middle;animation:blink .9s step-end infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.hero p{font-size:16px;color:var(--text2);max-width:500px;margin-bottom:2rem;line-height:1.75}
-.btn-row{display:flex;gap:10px;flex-wrap:wrap}
-.btn{font-size:13px;font-weight:500;padding:9px 20px;border-radius:var(--r-sm);cursor:pointer;border:.5px solid var(--border2);transition:transform .15s,opacity .15s;text-decoration:none;display:inline-block}
-.btn:active{transform:scale(.97)}
-.btn-dark{background:var(--text);color:var(--bg);border-color:transparent}
-.btn-dark:hover{opacity:.8}
-.btn-light{background:transparent;color:var(--text)}
-.btn-light:hover{background:var(--bg2)}
-section{padding:3.5rem 0;border-top:.5px solid var(--border)}
-.label{font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:1.4rem}
-.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-.game-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .2s;transform-style:preserve-3d;will-change:transform}
-.game-card:hover{border-color:var(--border2)}
-.thumb{width:100%;height:155px;display:flex;align-items:center;justify-content:center}
-.thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.tp{background:var(--purple-bg)}.tt{background:var(--teal-bg)}.tc{background:var(--coral-bg)}
-.ginfo{padding:14px 16px 16px}
-.ginfo h3{font-size:14px;font-weight:500;margin-bottom:5px}
-.ginfo p{font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:11px}
-.glinks{display:flex;gap:8px;margin-bottom:11px}
-.glink{font-size:12px;color:var(--purple);border:.5px solid var(--border);padding:3px 10px;border-radius:var(--r-pill);text-decoration:none;transition:border-color .15s,background .15s}
-.glink:hover{border-color:var(--purple);background:var(--purple-bg)}
-.gtags{display:flex;flex-wrap:wrap;gap:5px}
-.tag{font-size:11px;color:var(--text3);background:var(--bg2);border:.5px solid var(--border);padding:2px 8px;border-radius:var(--r-pill)}
-.skills-wrap{display:flex;flex-wrap:wrap;gap:8px}
-.skill{font-size:13px;color:var(--text2);background:var(--bg2);border:.5px solid var(--border);padding:6px 14px;border-radius:var(--r-pill);transition:background .15s,border-color .15s,color .15s;cursor:default}
-.skill:hover{background:var(--purple-bg);border-color:var(--purple);color:var(--purple-text)}
-.about-grid{display:grid;grid-template-columns:160px 1fr;gap:2.5rem;align-items:start}
-.avatar{width:68px;height:68px;border-radius:50%;background:var(--purple-bg);color:var(--purple-text);font-size:20px;font-weight:500;display:flex;align-items:center;justify-content:center;margin-bottom:12px;transition:transform .3s;cursor:default}
-.avatar:hover{transform:rotate(-8deg) scale(1.1)}
-.aname{font-size:15px;font-weight:500}
-.arole{font-size:13px;color:var(--text2);margin-top:3px;line-height:1.5}
-.about-body{font-size:15px;color:var(--text2);line-height:1.78}
-.contact-row{display:flex;flex-wrap:wrap;align-items:center}
-.contact-row a{font-size:14px;color:var(--purple);text-decoration:none;transition:opacity .15s}
-.contact-row a:hover{opacity:.7;text-decoration:underline}
-.sep{font-size:14px;color:var(--border2);padding:0 12px}
-footer{padding:2rem 0;border-top:.5px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-footer span{font-size:12px;color:var(--text3)}
-@media(max-width:580px){.about-grid{grid-template-columns:1fr;gap:1.5rem}.nav-inner{flex-direction:column;align-items:flex-start;gap:10px}}
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Derrick Yu — Game Developer</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #fafaf8;
+            --bg2: #f2f2ee;
+            --bg3: #eeecea;
+            --text: #1c1c1a;
+            --text2: #6b6b68;
+            --text3: #ababab;
+            --border: rgba(0,0,0,.08);
+            --border2: rgba(0,0,0,.15);
+            --purple: #7F77DD;
+            --purple-bg: #EEEDFE;
+            --purple-text: #3C3489;
+            --teal: #1D9E75;
+            --teal-bg: #E1F5EE;
+            --teal-text: #085041;
+            --coral: #D85A30;
+            --coral-bg: #FAECE7;
+            --coral-text: #712B13;
+            --r: 12px;
+            --r-sm: 8px;
+            --r-pill: 99px;
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root {
+                --bg: #121210;
+                --bg2: #1a1a18;
+                --bg3: #222220;
+                --text: #f0f0ec;
+                --text2: #8a8a85;
+                --text3: #444440;
+                --border: rgba(255,255,255,.07);
+                --border2: rgba(255,255,255,.14);
+                --purple: #9D97E8;
+                --purple-bg: #26215C;
+                --purple-text: #CECBF6;
+                --teal: #5DCAA5;
+                --teal-bg: #04342C;
+                --teal-text: #9FE1CB;
+                --coral: #F0997B;
+                --coral-bg: #4A1B0C;
+                --coral-text: #F5C4B3;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden
+        }
+
+        #sparkle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)
+        }
+
+            .reveal.visible {
+                opacity: 1;
+                transform: none
+            }
+
+        .d1 {
+            transition-delay: .08s
+        }
+
+        .d2 {
+            transition-delay: .16s
+        }
+
+        .d3 {
+            transition-delay: .24s
+        }
+
+        .wrap {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 0 1.5rem
+        }
+
+        nav {
+            padding: 1.4rem 0;
+            border-bottom: .5px solid var(--border)
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .nav-logo {
+            font-size: 15px;
+            font-weight: 500
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px
+        }
+
+            .nav-links a {
+                font-size: 13px;
+                color: var(--text2);
+                text-decoration: none;
+                transition: color .15s
+            }
+
+                .nav-links a:hover {
+                    color: var(--text)
+                }
+
+        .hero {
+            padding: 5rem 0 4rem;
+            position: relative;
+            overflow: hidden
+        }
+
+        #hero-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            background: var(--purple-bg);
+            color: var(--purple-text);
+            padding: 4px 12px 4px 8px;
+            border-radius: var(--r-pill);
+            margin-bottom: 1.2rem
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--purple);
+            animation: pulse 2s ease-in-out infinite
+        }
+
+        @keyframes pulse {
+            0%,100% {
+                opacity: 1;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: .4;
+                transform: scale(.75)
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(28px,5vw,44px);
+            font-weight: 500;
+            line-height: 1.12;
+            letter-spacing: -.03em;
+            margin-bottom: 1.1rem;
+            min-height: 2.6em
+        }
+
+        .blink {
+            display: inline-block;
+            width: 3px;
+            height: .85em;
+            background: var(--purple);
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blink .9s step-end infinite
+        }
+
+        @keyframes blink {
+            0%,100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0
+            }
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: var(--text2);
+            max-width: 500px;
+            margin-bottom: 2rem;
+            line-height: 1.75
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .btn {
+            font-size: 13px;
+            font-weight: 500;
+            padding: 9px 20px;
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            border: .5px solid var(--border2);
+            transition: transform .15s,opacity .15s;
+            text-decoration: none;
+            display: inline-block
+        }
+
+            .btn:active {
+                transform: scale(.97)
+            }
+
+        .btn-dark {
+            background: var(--text);
+            color: var(--bg);
+            border-color: transparent
+        }
+
+            .btn-dark:hover {
+                opacity: .8
+            }
+
+        .btn-light {
+            background: transparent;
+            color: var(--text)
+        }
+
+            .btn-light:hover {
+                background: var(--bg2)
+            }
+
+        section {
+            padding: 3.5rem 0;
+            border-top: .5px solid var(--border)
+        }
+
+        .label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 1.4rem
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
+            gap: 14px
+        }
+
+        .game-card {
+            background: var(--bg);
+            border: .5px solid var(--border);
+            border-radius: var(--r);
+            overflow: hidden;
+            transition: border-color .2s;
+            transform-style: preserve-3d;
+            will-change: transform;
+            position: relative;
+        }
+
+            .game-card:hover {
+                border-color: var(--border2)
+            }
+
+        .thumb {
+            width: 100%;
+            height: 155px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+            .thumb img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block
+            }
+
+        .tp {
+            background: var(--purple-bg)
+        }
+
+        .tt {
+            background: var(--teal-bg)
+        }
+
+        .tc {
+            background: var(--coral-bg)
+        }
+
+        .ginfo {
+            padding: 14px 16px 16px
+        }
+
+            .ginfo h3 {
+                font-size: 14px;
+                font-weight: 500;
+                margin-bottom: 5px
+            }
+
+            .ginfo p {
+                font-size: 13px;
+                color: var(--text2);
+                line-height: 1.55;
+                margin-bottom: 11px
+            }
+
+        .glinks {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 11px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .glink {
+            font-size: 12px;
+            color: var(--purple);
+            border: .5px solid var(--border);
+            padding: 3px 10px;
+            border-radius: var(--r-pill);
+            text-decoration: none;
+            transition: border-color .15s,background .15s
+        }
+
+            .glink:hover {
+                border-color: var(--purple);
+                background: var(--purple-bg)
+            }
+
+        .gtags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px
+        }
+
+        .tag {
+            font-size: 11px;
+            color: var(--text3);
+            background: var(--bg2);
+            border: .5px solid var(--border);
+            padding: 2px 8px;
+            border-radius: var(--r-pill)
+        }
+
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+        }
+
+        .skills-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        .skill {
+            font-size: 13px;
+            color: var(--text2);
+            background: var(--bg2);
+            border: .5px solid var(--border);
+            padding: 6px 14px;
+            border-radius: var(--r-pill);
+            transition: background .15s,border-color .15s,color .15s;
+            cursor: default
+        }
+
+            .skill:hover {
+                background: var(--purple-bg);
+                border-color: var(--purple);
+                color: var(--purple-text)
+            }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 2.5rem;
+            align-items: start
+        }
+
+        .avatar {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: var(--purple-bg);
+            color: var(--purple-text);
+            font-size: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            transition: transform .3s;
+            cursor: default
+        }
+
+            .avatar:hover {
+                transform: rotate(-8deg) scale(1.1)
+            }
+
+        .aname {
+            font-size: 15px;
+            font-weight: 500
+        }
+
+        .arole {
+            font-size: 13px;
+            color: var(--text2);
+            margin-top: 3px;
+            line-height: 1.5
+        }
+
+        .about-body {
+            font-size: 15px;
+            color: var(--text2);
+            line-height: 1.78
+        }
+
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+            .contact-row a {
+                font-size: 14px;
+                color: var(--purple);
+                text-decoration: none;
+                transition: opacity .15s
+            }
+
+                .contact-row a:hover {
+                    opacity: .7;
+                    text-decoration: underline
+                }
+
+        .sep {
+            font-size: 14px;
+            color: var(--border2);
+            padding: 0 12px
+        }
+
+        footer {
+            padding: 2rem 0;
+            border-top: .5px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+            footer span {
+                font-size: 12px;
+                color: var(--text3)
+            }
+
+        @media(max-width:580px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem
+            }
+
+            .nav-inner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px
+            }
+        }
+    </style>
 </head>
 <body>
 
-<canvas id="sparkle-canvas"></canvas>
+    <canvas id="sparkle-canvas"></canvas>
 
-<div class="wrap">
-  <nav>
-    <div class="nav-inner">
-      <span class="nav-logo">Derrick Yu</span>
-      <div class="nav-links">
-        <a href="#games">Games</a>
-        <a href="#skills">Skills</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </div>
+    <div class="wrap">
+        <nav>
+            <div class="nav-inner">
+                <span class="nav-logo">Derrick Yu</span>
+                <div class="nav-links">
+                    <a href="#games">Games</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+        </nav>
     </div>
-  </nav>
-</div>
 
-<div class="hero">
-  <canvas id="hero-canvas"></canvas>
-  <div class="wrap hero-inner">
-    <div class="hero-badge reveal">
-      <span class="badge-dot"></span>
-      Available for work
-    </div>
-    <h1 class="reveal d1"><span id="tw"></span><span class="blink"></span></h1>
-    <p class="reveal d2">I am a Game Developer specializing in Game Technology. I code for PC and mobile using Unity and Unreal Engine—and put a lot of love into everything I build.</p>
-    <div class="btn-row reveal d3">
-      <a href="#games" class="btn btn-dark">See my games</a>
-      <a href="cv.pdf" download class="btn btn-light">Download CV</a>
-    </div>
-  </div>
-</div>
-
-<div class="wrap">
-
-<section id="games">
-  <p class="label reveal">Games</p>
-  <div class="games-grid">
-
-    <div class="game-card reveal d1" data-tilt>
-      <div class="thumb tp">
-        <!-- Replace with: <img src="images/game1.jpg" alt="Game screenshot"> -->
-        <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><rect x="10" y="20" width="40" height="26" rx="5" fill="#AFA9EC"/><rect x="22" y="12" width="16" height="13" rx="3" fill="#CECBF6"/><circle cx="30" cy="33" r="6" fill="#EEEDFE"/></svg>
-      </div>
-      <div class="ginfo">
-       <h3><a href="echoes-of-the-void.html" style="color:inherit;text-decoration:none;">Echoes of the void</a></h3>
-        <p>Sci-fi exploration with procedural worlds. Built in Unreal Engine 5 over 8 months.</p>
-        <div class="glinks">
-          <a class="glink" href="#">Steam →</a>
-          <a class="glink" href="#">GitHub →</a>
+    <div class="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="wrap hero-inner">
+            <div class="hero-badge reveal">
+                <span class="badge-dot"></span>
+                Available for work
+            </div>
+            <h1 class="reveal d1"><span id="tw"></span><span class="blink"></span></h1>
+            <p class="reveal d2">I am a Game Developer specializing in Game Technology. I code for PC and mobile using Unity and Unreal Engine—and put a lot of love into everything I build.</p>
+            <div class="btn-row reveal d3">
+                <a href="#games" class="btn btn-dark">See my games</a>
+                <a href="cv.pdf" download class="btn btn-light">Download CV</a>
+            </div>
         </div>
-        <div class="gtags"><span class="tag">UE5</span><span class="tag">C++</span><span class="tag">PC</span></div>
-      </div>
     </div>
 
-    <div class="game-card reveal d2" data-tilt>
-      <div class="thumb tt">
-        <!-- <img src="images/game2.jpg" alt="Tower Rush"> -->
-        <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><rect x="8" y="26" width="44" height="22" rx="4" fill="#5DCAA5"/><rect x="18" y="15" width="24" height="15" rx="3" fill="#9FE1CB"/><rect x="25" y="8" width="10" height="10" rx="2" fill="#E1F5EE"/></svg>
-      </div>
-      <div class="ginfo">
-        <h3>Tower Rush</h3>
-        <p>Mobile tower defense with adaptive AI. 50k+ downloads on Android.</p>
-        <div class="glinks">
-          <a class="glink" href="#">Play Store →</a>
-          <a class="glink" href="#">itch.io →</a>
-        </div>
-        <div class="gtags"><span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Mobile</span></div>
-      </div>
-    </div>
+    <div class="wrap">
 
-    <div class="game-card reveal d3" data-tilt>
-      <div class="thumb tc">
-        <!-- <img src="images/game3.jpg" alt="Pixel Runner"> -->
-        <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><polygon points="30,10 50,46 10,46" fill="#F0997B"/><rect x="22" y="34" width="16" height="8" rx="2" fill="#FAECE7"/></svg>
-      </div>
-      <div class="ginfo">
-        <h3>Pixel Runner</h3>
-        <p>2D endless runner with hand-crafted pixel art and procedural levels.</p>
-        <div class="glinks">
-          <a class="glink" href="#">itch.io →</a>
-          <a class="glink" href="#">GitHub →</a>
-        </div>
-        <div class="gtags"><span class="tag">Unity</span><span class="tag">2D</span><span class="tag">Pixel art</span></div>
-      </div>
-    </div>
+        <section id="games">
+            <p class="label reveal">Games</p>
+            <div class="games-grid">
 
-    <!-- Copy this block to add more games:
-    <div class="game-card reveal d1" data-tilt>
-      <div class="thumb tp">
-        <img src="images/game4.jpg" alt="My Game">
-      </div>
-      <div class="ginfo">
-        <h3>Game Title</h3>
-        <p>Short description of what makes this game interesting.</p>
-        <div class="glinks"><a class="glink" href="#">Play →</a></div>
-        <div class="gtags"><span class="tag">Engine</span><span class="tag">Platform</span></div>
-      </div>
-    </div>
-    -->
+                <!-- Echoes of the Void — whole card is clickable -->
+                <div class="game-card reveal d1" data-tilt>
+                    <div class="thumb tp">
+                        <!-- Replace with: <img src="images/game1.jpg" alt="Game screenshot"> -->
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><rect x="10" y="20" width="40" height="26" rx="5" fill="#AFA9EC" /><rect x="22" y="12" width="16" height="13" rx="3" fill="#CECBF6" /><circle cx="30" cy="33" r="6" fill="#EEEDFE" /></svg>
+                    </div>
+                    <div class="ginfo">
+                        <h3>Echoes of the void</h3>
+                        <p>Sci-fi exploration with procedural worlds. Built in Unreal Engine 5 over 8 months.</p>
+                        <div class="glinks">
+                            <a class="glink" href="#">Steam →</a>
+                            <a class="glink" href="#">GitHub →</a>
+                        </div>
+                        <div class="gtags"><span class="tag">UE5</span><span class="tag">C++</span><span class="tag">PC</span></div>
+                    </div>
+                    <!-- Transparent overlay — makes the whole card clickable -->
+                    <a href="echoes-of-the-void.html" class="card-overlay" aria-label="View Echoes of the Void"></a>
+                </div>
 
-  </div>
-</section>
+                <div class="game-card reveal d2" data-tilt>
+                    <div class="thumb tt">
+                        <!-- <img src="images/game2.jpg" alt="Tower Rush"> -->
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><rect x="8" y="26" width="44" height="22" rx="4" fill="#5DCAA5" /><rect x="18" y="15" width="24" height="15" rx="3" fill="#9FE1CB" /><rect x="25" y="8" width="10" height="10" rx="2" fill="#E1F5EE" /></svg>
+                    </div>
+                    <div class="ginfo">
+                        <h3>Tower Rush</h3>
+                        <p>Mobile tower defense with adaptive AI. 50k+ downloads on Android.</p>
+                        <div class="glinks">
+                            <a class="glink" href="#">Play Store →</a>
+                            <a class="glink" href="#">itch.io →</a>
+                        </div>
+                        <div class="gtags"><span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Mobile</span></div>
+                    </div>
+                </div>
 
-<section id="skills">
-  <p class="label reveal">Skills & tools</p>
-  <div class="skills-wrap">
-      <span class="skill reveal d1">Unity</span>
-      <span class="skill reveal d1">Unreal Engine 5</span>
-      <span class="skill reveal d1">C#</span>
-      <span class="skill reveal d2">C++</span>
-      <span class="skill reveal d2">Blueprints</span>
-      <span class="skill reveal d3">Git / GitHub</span>
-      <span class="skill reveal d3">Game AI</span>
-      <span class="skill reveal d3">Multiplayer / Netcode</span>
-      <span class="skill reveal d3">Games For Mobile</span>
-      <span class="skill reveal d3">Games For Pc</span>
-  </div>
-</section>
+                <div class="game-card reveal d3" data-tilt>
+                    <div class="thumb tc">
+                        <!-- <img src="images/game3.jpg" alt="Pixel Runner"> -->
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><polygon points="30,10 50,46 10,46" fill="#F0997B" /><rect x="22" y="34" width="16" height="8" rx="2" fill="#FAECE7" /></svg>
+                    </div>
+                    <div class="ginfo">
+                        <h3>Pixel Runner</h3>
+                        <p>2D endless runner with hand-crafted pixel art and procedural levels.</p>
+                        <div class="glinks">
+                            <a class="glink" href="#">itch.io →</a>
+                            <a class="glink" href="#">GitHub →</a>
+                        </div>
+                        <div class="gtags"><span class="tag">Unity</span><span class="tag">2D</span><span class="tag">Pixel art</span></div>
+                    </div>
+                </div>
 
-<section id="about">
-  <p class="label reveal">About</p>
-  <div class="about-grid">
-    <div class="reveal">
-        <img src="Images/me.jpg" alt="Derrick Yu" style="width:68px;height:68px;border-radius:50%;object-fit:cover;margin-bottom:12px;transition:transform .3s;cursor:default;" onmouseover="this.style.transform='rotate(-8deg) scale(1.1)'" onmouseout="this.style.transform='none'">      <div class="arole">Game developer<br>Petaling Jaya, Malaysia</div>
-    </div>
-    <p class="about-body reveal d1">
-        "How did they do that?"<br><br>
-        That single question has fueled my journey from my first controller to my current seat as a Game Development student at UOW Malaysia. My name is Derrick Yu Kai Zhen, and I build games from the ground up. There is a unique thrill in coding a world from scratch, and I am dedicated to mastering the technical artistry required to create the next generation of immersive gaming.
-    </p>
-  </div>
-</section>
+            </div>
+        </section>
 
-<section id="contact">
-  <p class="label reveal">Contact</p>
-  <div class="contact-row reveal d1">
-      <a href="mailto:your@email.com">your@email.com</a>
-      <span class="sep">·</span>
-      <!-- <a href="https://github.com/yourname" target="_blank">GitHub</a>
-      <span class="sep">·</span> -->
-      <a href="https://linkedin.com/in/yourname" target="_blank">LinkedIn</a>
-      <span class="sep">·</span>
-      <!-- <a href="https://yourname.itch.io" target="_blank">itch.io</a> -->
-      </div>
-    </section>
+        <section id="skills">
+            <p class="label reveal">Skills & tools</p>
+            <div class="skills-wrap">
+                <span class="skill reveal d1">Unity</span>
+                <span class="skill reveal d1">Unreal Engine 5</span>
+                <span class="skill reveal d1">C#</span>
+                <span class="skill reveal d2">C++</span>
+                <span class="skill reveal d2">Blueprints</span>
+                <span class="skill reveal d3">Git / GitHub</span>
+                <span class="skill reveal d3">Game AI</span>
+                <span class="skill reveal d3">Multiplayer / Netcode</span>
+                <span class="skill reveal d3">Games For Mobile</span>
+                <span class="skill reveal d3">Games For PC</span>
+            </div>
+        </section>
 
-    <footer>
-      <span>© 2026 Derrick Yu </span>
-      <span>GitHub Pages</span>
-    </footer>
+        <section id="about">
+            <p class="label reveal">About</p>
+            <div class="about-grid">
+                <div class="reveal">
+                    <img src="Images/me.jpg" alt="Derrick Yu" style="width:68px;height:68px;border-radius:50%;object-fit:cover;margin-bottom:12px;transition:transform .3s;cursor:default;" onmouseover="this.style.transform='rotate(-8deg) scale(1.1)'" onmouseout="this.style.transform='none'">
+                    <div class="arole">Game developer<br>Petaling Jaya, Malaysia</div>
+                </div>
+                <p class="about-body reveal d1">
+                    "How did they do that?"<br><br>
+                    That single question has fueled my journey from my first controller to my current seat as a Game Development student at UOW Malaysia. My name is Derrick Yu Kai Zhen, and I build games from the ground up. There is a unique thrill in coding a world from scratch, and I am dedicated to mastering the technical artistry required to create the next generation of immersive gaming.
+                </p>
+            </div>
+        </section>
+
+        <section id="contact">
+            <p class="label reveal">Contact</p>
+            <div class="contact-row reveal d1">
+                <a href="mailto:your@email.com">your@email.com</a>
+                <span class="sep">·</span>
+                <a href="https://linkedin.com/in/yourname" target="_blank">LinkedIn</a>
+                <span class="sep">·</span>
+            </div>
+        </section>
+
+        <footer>
+            <span>© 2026 Derrick Yu</span>
+            <span>GitHub Pages</span>
+        </footer>
 
     </div>
 
     <script>
-    /* ── Scroll reveal ── */
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') })
-    }, {threshold: 0.1})
-    document.querySelectorAll('.reveal').forEach(el => {
-      obs.observe(el)
-      if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
-    })
+        /* ── Scroll reveal ── */
+        const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') })
+        }, {threshold: 0.1})
+        document.querySelectorAll('.reveal').forEach(el => {
+        obs.observe(el)
+        if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
+        })
 
-    /* ── Typewriter ── */
-    const lines = [
-      "My Name Is\nDerrick Yu",
-      "I build games people\ncan't put down.",
-      "I turn ideas into\nplayable worlds."
-    ]
-    let li = 0, ci = 0, deleting = false
-    const tw = document.getElementById('tw')
-    function type() {
-      const line = lines[li]
-      if (!deleting) {
+        /* ── Typewriter ── */
+        const lines = [
+        "My Name Is\nDerrick Yu",
+        "I build games people\ncan't put down.",
+        "I turn ideas into\nplayable worlds."
+        ]
+        let li = 0, ci = 0, deleting = false
+        const tw = document.getElementById('tw')
+        function type() {
+        const line = lines[li]
+        if (!deleting) {
         ci++
         tw.innerHTML = line.slice(0, ci).replace('\n', '<br>')
         if (ci === line.length) { setTimeout(() => { deleting = true; type() }, 2400); return }
         setTimeout(type, 50 + Math.random() * 30)
-      } else {
+        } else {
         ci--
         tw.innerHTML = line.slice(0, ci).replace('\n', '<br>')
         if (ci === 0) { deleting = false; li = (li + 1) % lines.length; setTimeout(type, 300); return }
         setTimeout(type, 26)
-      }
-    }
-    type()
+        }
+        }
+        type()
 
-    /* ── Hero floating pixels ── */
-    const hc = document.getElementById('hero-canvas')
-    const hx = hc.getContext('2d')
-    let pts = []
-    function rsz() {
-      const h = document.querySelector('.hero')
-      hc.width = h.offsetWidth
-      hc.height = h.offsetHeight
-    }
-    function initPts() {
-      pts = []
-      const n = Math.max(20, Math.floor(hc.width / 24))
-      const cols = ['#AFA9EC','#9FE1CB','#F0997B','#F4C0D1','#CECBF6','#5DCAA5']
-      for (let i = 0; i < n; i++) {
+        /* ── Hero floating pixels ── */
+        const hc = document.getElementById('hero-canvas')
+        const hx = hc.getContext('2d')
+        let pts = []
+        function rsz() {
+        const h = document.querySelector('.hero')
+        hc.width = h.offsetWidth
+        hc.height = h.offsetHeight
+        }
+        function initPts() {
+        pts = []
+        const n = Math.max(20, Math.floor(hc.width / 24))
+        const cols = ['#AFA9EC','#9FE1CB','#F0997B','#F4C0D1','#CECBF6','#5DCAA5']
+        for (let i = 0; i < n; i++) {
         pts.push({
-          x: Math.random() * hc.width,
-          y: Math.random() * hc.height,
-          s: Math.random() * 3 + 1,
-          vy: -(Math.random() * 0.35 + 0.1),
-          vx: (Math.random() - 0.5) * 0.18,
-          a: Math.random() * 0.45 + 0.12,
-          c: cols[Math.floor(Math.random() * cols.length)]
+        x: Math.random() * hc.width,
+        y: Math.random() * hc.height,
+        s: Math.random() * 3 + 1,
+        vy: -(Math.random() * 0.35 + 0.1),
+        vx: (Math.random() - 0.5) * 0.18,
+        a: Math.random() * 0.45 + 0.12,
+        c: cols[Math.floor(Math.random() * cols.length)]
         })
-      }
-    }
-    function animPts() {
-      hx.clearRect(0, 0, hc.width, hc.height)
-      pts.forEach(p => {
+        }
+        }
+        function animPts() {
+        hx.clearRect(0, 0, hc.width, hc.height)
+        pts.forEach(p => {
         hx.globalAlpha = p.a
         hx.fillStyle = p.c
         hx.fillRect(p.x, p.y, p.s, p.s)
@@ -310,58 +722,58 @@ footer span{font-size:12px;color:var(--text3)}
         if (p.y < -8) p.y = hc.height + 4
         if (p.x < 0) p.x = hc.width
         if (p.x > hc.width) p.x = 0
-      })
-      hx.globalAlpha = 1
-      requestAnimationFrame(animPts)
-    }
-    new ResizeObserver(() => { rsz(); initPts() }).observe(document.querySelector('.hero'))
-    rsz(); initPts(); animPts()
+        })
+        hx.globalAlpha = 1
+        requestAnimationFrame(animPts)
+        }
+        new ResizeObserver(() => { rsz(); initPts() }).observe(document.querySelector('.hero'))
+        rsz(); initPts(); animPts()
 
-    /* ── Card tilt ── */
-    document.querySelectorAll('[data-tilt]').forEach(card => {
-      card.addEventListener('mousemove', e => {
+        /* ── Card tilt ── */
+        document.querySelectorAll('[data-tilt]').forEach(card => {
+        card.addEventListener('mousemove', e => {
         const r = card.getBoundingClientRect()
         const x = (e.clientX - r.left) / r.width - 0.5
         const y = (e.clientY - r.top) / r.height - 0.5
         card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.03)`
         card.style.transition = 'transform .05s'
-      })
-      card.addEventListener('mouseleave', () => {
+        })
+        card.addEventListener('mouseleave', () => {
         card.style.transform = 'perspective(600px) rotateX(0) rotateY(0) scale(1)'
         card.style.transition = 'transform .35s cubic-bezier(.22,1,.36,1)'
-      })
-    })
+        })
+        })
 
-    /* ── Cursor sparkle ── */
-    const sc = document.getElementById('sparkle-canvas')
-    const sx = sc.getContext('2d')
-    let sparks = []
-    function rszSpark() { sc.width = window.innerWidth; sc.height = window.innerHeight }
-    rszSpark()
-    window.addEventListener('resize', rszSpark)
-    const COLS = ['#AFA9EC','#7F77DD','#9FE1CB','#5DCAA5','#F5C4B3','#D85A30','#F4C0D1','#ED93B1']
-    let lastMouse = 0
-    window.addEventListener('mousemove', e => {
-      const now = Date.now()
-      if (now - lastMouse < 20) return
-      lastMouse = now
-      for (let i = 0; i < 4; i++) {
+        /* ── Cursor sparkle ── */
+        const sc = document.getElementById('sparkle-canvas')
+        const sx = sc.getContext('2d')
+        let sparks = []
+        function rszSpark() { sc.width = window.innerWidth; sc.height = window.innerHeight }
+        rszSpark()
+        window.addEventListener('resize', rszSpark)
+        const COLS = ['#AFA9EC','#7F77DD','#9FE1CB','#5DCAA5','#F5C4B3','#D85A30','#F4C0D1','#ED93B1']
+        let lastMouse = 0
+        window.addEventListener('mousemove', e => {
+        const now = Date.now()
+        if (now - lastMouse < 20) return
+        lastMouse = now
+        for (let i = 0; i < 4; i++) {
         const angle = Math.random() * Math.PI * 2
         const speed = Math.random() * 1.8 + 0.4
         sparks.push({
-          x: e.clientX, y: e.clientY,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - 1.2,
-          size: Math.random() * 4 + 2,
-          alpha: 1,
-          color: COLS[Math.floor(Math.random() * COLS.length)]
+        x: e.clientX, y: e.clientY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 1.2,
+        size: Math.random() * 4 + 2,
+        alpha: 1,
+        color: COLS[Math.floor(Math.random() * COLS.length)]
         })
-      }
-    })
-    function animSparks() {
-      sx.clearRect(0, 0, sc.width, sc.height)
-      sparks = sparks.filter(s => s.alpha > 0.03)
-      sparks.forEach(s => {
+        }
+        })
+        function animSparks() {
+        sx.clearRect(0, 0, sc.width, sc.height)
+        sparks = sparks.filter(s => s.alpha > 0.03)
+        sparks.forEach(s => {
         sx.globalAlpha = s.alpha
         sx.fillStyle = s.color
         const half = s.size / 2
@@ -370,11 +782,11 @@ footer span{font-size:12px;color:var(--text3)}
         s.vy += 0.07
         s.alpha -= 0.032
         s.size *= 0.97
-      })
-      sx.globalAlpha = 1
-      requestAnimationFrame(animSparks)
-    }
-    animSparks()
+        })
+        sx.globalAlpha = 1
+        requestAnimationFrame(animSparks)
+        }
+        animSparks()
     </script>
-    </body>
-    </html>
+</body>
+</html>
