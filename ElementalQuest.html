@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Echoes of the Void — Derrick Yu</title>
+    <title>Elemental Quest — Derrick Yu</title>
+    <link rel="icon" type="image/jpg" href="Images/portfolioLogo.jpg">
+
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -103,7 +105,7 @@
             padding: 0 1.5rem
         }
 
-        /* ── Nav ── */
+        /* Nav */
         nav {
             padding: 1.4rem 0;
             border-bottom: .5px solid var(--border)
@@ -136,7 +138,7 @@
                 color: var(--text)
             }
 
-        /* ── Banner ── */
+        /* Banner */
         .game-banner {
             width: 100%;
             height: 340px;
@@ -156,20 +158,7 @@
                 display: block
             }
 
-        .banner-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            opacity: .5
-        }
-
-            .banner-placeholder span {
-                font-size: 13px;
-                color: var(--purple-text)
-            }
-
-        /* ── Game header ── */
+        /* Game header */
         .game-header {
             margin-bottom: 2rem
         }
@@ -255,7 +244,6 @@
             border: .5px solid var(--border)
         }
 
-        /* ── Divider / label ── */
         hr {
             border: none;
             border-top: .5px solid var(--border);
@@ -271,7 +259,7 @@
             margin-bottom: 1.1rem
         }
 
-        /* ── About text ── */
+        /* About */
         .about-text {
             font-size: 15px;
             color: var(--text2);
@@ -287,7 +275,7 @@
                     margin-bottom: 0
                 }
 
-        /* ── Screenshots ── */
+        /* Screenshots */
         .screenshots {
             display: grid;
             grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
@@ -306,8 +294,15 @@
             align-items: center;
             justify-content: center;
             font-size: 12px;
-            color: var(--text3)
+            color: var(--text3);
+            cursor: pointer;
+            transition: border-color .2s, transform .2s
         }
+
+            .shot:hover {
+                border-color: var(--purple);
+                transform: scale(1.02)
+            }
 
             .shot img {
                 width: 100%;
@@ -316,7 +311,7 @@
                 display: block
             }
 
-        /* ── Stats ── */
+        /* Stats */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit,minmax(110px,1fr));
@@ -343,7 +338,7 @@
             color: var(--text3)
         }
 
-        /* ── What I did ── */
+        /* What I did */
         .did-list {
             list-style: none;
             display: flex;
@@ -372,7 +367,7 @@
             line-height: 1.65
         }
 
-        /* ── Accordion Mechanics ── */
+        /* Accordion */
         .mechanics-list {
             display: flex;
             flex-direction: column;
@@ -461,7 +456,6 @@
             transform: rotate(180deg)
         }
 
-        /* accordion body */
         .mechanic-body {
             display: grid;
             grid-template-rows: 0fr;
@@ -491,7 +485,7 @@
             padding-top: 1rem
         }
 
-        /* gif inside mechanic */
+        /* GIF */
         .mechanic-gif {
             border-radius: var(--r-sm);
             overflow: hidden;
@@ -527,7 +521,7 @@
             border-top: .5px solid var(--border)
         }
 
-        /* code inside mechanic */
+        /* Code */
         .code-block-wrap {
             border-radius: var(--r-sm);
             overflow: hidden;
@@ -637,7 +631,7 @@
             border: .5px solid var(--border)
         }
 
-        /* ── Footer ── */
+        /* Footer */
         footer {
             padding: 2rem 0;
             border-top: .5px solid var(--border);
@@ -663,6 +657,97 @@
                     text-decoration: underline
                 }
 
+        /* ── Lightbox ── */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.88);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem
+        }
+
+            .lightbox.active {
+                display: flex
+            }
+
+        .lightbox-img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: var(--r);
+            object-fit: contain;
+            user-select: none;
+            box-shadow: 0 24px 80px rgba(0,0,0,.5)
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 1.2rem;
+            right: 1.4rem;
+            background: rgba(255,255,255,.1);
+            border: .5px solid rgba(255,255,255,.25);
+            color: #fff;
+            font-size: 18px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s
+        }
+
+            .lightbox-close:hover {
+                background: rgba(255,255,255,.22)
+            }
+
+        .lightbox-prev,
+        .lightbox-next {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,.1);
+            border: .5px solid rgba(255,255,255,.2);
+            color: #fff;
+            font-size: 22px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s
+        }
+
+        .lightbox-prev {
+            left: 1.2rem
+        }
+
+        .lightbox-next {
+            right: 1.2rem
+        }
+
+            .lightbox-prev:hover,
+            .lightbox-next:hover {
+                background: rgba(255,255,255,.25)
+            }
+
+        .lightbox-counter {
+            position: fixed;
+            bottom: 1.4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            color: rgba(255,255,255,.55);
+            background: rgba(0,0,0,.4);
+            padding: 4px 14px;
+            border-radius: var(--r-pill)
+        }
+
         @media(max-width:560px) {
             .game-title {
                 font-size: 24px
@@ -675,12 +760,29 @@
             .game-header-top {
                 flex-direction: column
             }
+
+            .lightbox-prev {
+                left: .5rem
+            }
+
+            .lightbox-next {
+                right: .5rem
+            }
         }
     </style>
 </head>
 <body>
 
     <canvas id="sparkle-canvas"></canvas>
+
+    <!-- ── Lightbox ── -->
+    <div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <button class="lightbox-prev" onclick="changeImage(-1)">‹</button>
+        <img class="lightbox-img" id="lightbox-img" src="" alt="">
+        <button class="lightbox-next" onclick="changeImage(1)">›</button>
+        <span class="lightbox-counter" id="lightbox-counter"></span>
+    </div>
 
     <div class="wrap">
         <nav>
@@ -690,21 +792,17 @@
             </div>
         </nav>
 
-        <!-- ── Banner ── -->
+        <!-- Banner -->
         <div class="game-banner reveal">
-            <!-- Replace with: <img src="Images/echoes-banner.jpg" alt="Echoes of the Void banner"> -->
-            <div class="banner-placeholder">
-                <svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="10" y="20" width="40" height="26" rx="5" fill="#AFA9EC" /><rect x="22" y="12" width="16" height="13" rx="3" fill="#CECBF6" /><circle cx="30" cy="33" r="6" fill="#EEEDFE" /></svg>
-                <span>Replace with your banner image</span>
-            </div>
+            <img src="Images/EQBanner.jpg" alt="Elemental Quest Banner">
         </div>
 
-        <!-- ── Title & links ── -->
+        <!-- Title & links -->
         <div class="game-header reveal d1">
             <div class="game-header-top">
-                <h1 class="game-title">Echoes of the Void</h1>
+                <h1 class="game-title">Elemental Quest</h1>
                 <div class="btn-row">
-                    <a href="#" class="btn btn-dark">Play on Steam</a>
+                    <a href="https://uowmgames.itch.io/elemental-quest" target="_blank" class="btn btn-dark">Play on Itch.io</a>
                     <a href="#" class="btn btn-outline">View GitHub</a>
                 </div>
             </div>
@@ -712,44 +810,50 @@
                 <span class="tag">Unreal Engine 5</span>
                 <span class="tag">C++</span>
                 <span class="tag-plain">PC</span>
-                <span class="tag-plain">Solo project</span>
-                <span class="tag-plain">2025</span>
+                <span class="tag-plain">Final Year Project</span>
+                <span class="tag-plain">2026</span>
             </div>
         </div>
 
         <hr>
 
-        <!-- ── About ── -->
+        <!-- About -->
         <section class="reveal">
             <p class="label">About the game</p>
             <div class="about-text">
                 <p>
-                    Echoes of the Void is a sci-fi exploration game set in a procedurally generated universe.
-                    Players pilot a ship through uncharted star systems, uncovering ancient ruins and
-                    piecing together a mystery spanning thousands of years.
+                    Elemental Quest is a 3D action-adventure game where you play as Nerlim,
+                    a young mage mastering the elements of Fire, Grass, and Water. Princess Lyra has been captured
+                    you must journey through the ruined castle of Lord Eclipse, a fallen sorcerer who once tried to
+                    fuse Light and Dark magic. His castle gate is locked, needing the souls of 3 mighty heroes that
+                    have fallen into his castle grounds while trying to fight Lord Eclipse during a war. Explore
+                    overgrown courtyards, flooded docks, and molten forges, using elemental powers to defeat
+                    monsters and solve environmental puzzles.
                 </p>
-                <p>
-                    The game focuses on atmosphere and discovery over combat. Every playthrough generates
-                    a different set of star systems, ensuring no two players share the same journey.
-                </p>
+                <p>Elemental Quest is currently in development.</p>
             </div>
 
-            <!-- ── Screenshots (moved here, under About) ── -->
+            <!-- Screenshots -->
             <div class="screenshots">
-                <div class="shot"><!-- <img src="Images/echoes-ss1.jpg" alt="Screenshot 1"> -->Screenshot 1</div>
-                <div class="shot"><!-- <img src="Images/echoes-ss2.jpg" alt="Screenshot 2"> -->Screenshot 2</div>
-                <div class="shot"><!-- <img src="Images/echoes-ss3.jpg" alt="Screenshot 3"> -->Screenshot 3</div>
+                <div class="shot" onclick="openLightbox(0)"><img src="Images/EQ1.png" alt="Screenshot 1"></div>
+                <div class="shot" onclick="openLightbox(1)"><img src="Images/EQ2.png" alt="Screenshot 2"></div>
+                <div class="shot" onclick="openLightbox(2)"><img src="Images/EQ3.png" alt="Screenshot 3"></div>
+                <div class="shot" onclick="openLightbox(3)"><img src="Images/EQ4.png" alt="Screenshot 4"></div>
+                <div class="shot" onclick="openLightbox(4)"><img src="Images/EQ5.png" alt="Screenshot 5"></div>
+                <div class="shot" onclick="openLightbox(5)"><img src="Images/EQ6.png" alt="Screenshot 6"></div>
+                <div class="shot" onclick="openLightbox(6)"><img src="Images/EQ7.png" alt="Screenshot 7"></div>
+                <div class="shot" onclick="openLightbox(7)"><img src="Images/EQ8.png" alt="Screenshot 8"></div>
             </div>
         </section>
 
         <hr>
 
-        <!-- ── Stats ── -->
+        <!-- Stats -->
         <section class="reveal">
             <p class="label">At a glance</p>
             <div class="stats">
-                <div class="stat"><div class="stat-num">8</div><div class="stat-label">Months to build</div></div>
-                <div class="stat"><div class="stat-num">1</div><div class="stat-label">Developer</div></div>
+                <div class="stat"><div class="stat-num">6</div><div class="stat-label">Months to build</div></div>
+                <div class="stat"><div class="stat-num">7</div><div class="stat-label">Developers</div></div>
                 <div class="stat"><div class="stat-num">UE5</div><div class="stat-label">Engine</div></div>
                 <div class="stat"><div class="stat-num">PC</div><div class="stat-label">Platform</div></div>
             </div>
@@ -757,257 +861,424 @@
 
         <hr>
 
-        <!-- ── Mechanics (accordion) ── -->
+        <!-- Mechanics -->
         <section class="reveal">
             <p class="label">Mechanics</p>
             <p style="font-size:13px;color:var(--text3);margin-bottom:1.2rem;">Click a mechanic to see the GIF and code behind it.</p>
             <div class="mechanics-list">
 
-                <!-- ── Mechanic 1: Procedural World Generation ── -->
+                <!-- m1: Enemy AI -->
                 <div class="mechanic-item" id="m1">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m1')">
                         <div class="mechanic-icon">
-                            <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#7F77DD" stroke-width="1.5" /><path d="M7 4v3l2 1.5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" /></svg>
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Procedural world generation</span>
-                            <span class="mechanic-subtitle">C++ · FRandomStream · Seeded universe</span>
+                            <span class="mechanic-title">Enemy AI</span>
+                            <span class="mechanic-subtitle">C++ · StateTree · GAS System · Gameplay · AI</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">Each run seeds a unique universe — star positions, planet types, ruin placements, and enemy patrol routes are all generated at runtime using a single integer seed. No two playthroughs are the same, and seeds can be shared between players.</p>
-
-                                <!-- GIF -->
-                                <div class="mechanic-gif">
-                                    <!-- Replace with: <img src="Images/echoes-gen.gif" alt="Procedural universe generating"> -->
-                                    <div class="gif-placeholder">
-                                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg>
-                                        <span>echoes-gen.gif</span>
-                                    </div>
-                                    <div class="gif-caption">Procedural universe generating on load</div>
-                                </div>
-
-                                <!-- Code -->
+                                <p class="mechanic-desc">Enemies use Unreal's StateTree system combined with the Gameplay Ability System (GAS) to manage states like patrol, chase, attack, and death. Each enemy type has unique ability sets that are activated based on game conditions.</p>
+                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>enemy-ai.gif</span></div><div class="gif-caption">Enemy AI in action</div></div>
                                 <div class="code-block-wrap">
-                                    <div class="code-header">
-                                        <span class="code-filename">ProceduralWorldGen.cpp</span>
-                                        <span class="code-lang">C++</span>
-                                    </div>
-                                    <pre><code><cm>// Seed the random stream with the game session ID</cm>
-<kw>void</kw> <fn>AWorldGenerator</fn>::<fn>GenerateUniverse</fn>(<kw>int32</kw> Seed)
+                                    <div class="code-header"><span class="code-filename">EnemyAI.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// Activate ability based on current state</cm>
+<kw>void</kw> <fn>AEnemyBase</fn>::<fn>TryActivateAbilityByTag</fn>(<tp>FGameplayTag</tp> Tag)
 {
-    FRandomStream Stream(Seed);
-
-                                    <kw>for</kw> (<kw>int32</kw> i = <num>0</num>; i &lt; StarCount; i++)
+                                    <kw>if</kw> (AbilitySystemComponent)
     {
-        FVector Location = FVector(
-            Stream.<fn>FRandRange</fn>(-<num>50000.f</num>, <num>50000.f</num>),
-            Stream.<fn>FRandRange</fn>(-<num>50000.f</num>, <num>50000.f</num>),
-            Stream.<fn>FRandRange</fn>(-<num>10000.f</num>, <num>10000.f</num>)
+        AbilitySystemComponent-&gt;<fn>TryActivateAbilitiesByTag</fn>(
+            FGameplayTagContainer(Tag)
         );
-
-                                    <tp>AStarSystem</tp>* Star = <fn>GetWorld</fn>()-&gt;<fn>SpawnActor</fn>&lt;<tp>AStarSystem</tp>&gt;(
-            StarClass, Location, FRotator::ZeroRotator
-        );
-
-        Star-&gt;<fn>InitialiseStar</fn>(Stream.<fn>RandRange</fn>(<num>1</num>, <num>5</num>));
     }
 }</code></pre>
                                 </div>
-                                <div class="code-explain">
-                                    <p class="explain-label">What this does</p>
-                                    <div class="explain-text">
-                                        <p>This function generates the entire game universe from a single integer — the <span class="inline-code">Seed</span>. By passing the same seed to <span class="inline-code">FRandomStream</span>, every star position and planet will always be identical for that seed, which is how sharable universe codes work.</p>
-                                        <p>The loop runs <span class="inline-code">StarCount</span> times, each time picking a random 3D position within the defined space boundaries. It then spawns a <span class="inline-code">AStarSystem</span> actor and calls <span class="inline-code">InitialiseStar()</span> with a random size value (1–5) to vary the visual scale and number of orbiting planets.</p>
-                                    </div>
-                                </div>
-
+                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Uses the Gameplay Ability System to activate enemy abilities by tag. This keeps the AI logic clean and data-driven — each enemy Blueprint just sets which tags map to which abilities, without needing code changes.</p></div></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ── Mechanic 2: Ship Movement ── -->
+                <!-- m2: Puzzle Manager -->
                 <div class="mechanic-item" id="m2">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m2')">
                         <div class="mechanic-icon">
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Ship movement & physics</span>
-                            <span class="mechanic-subtitle">C++ · Chaos physics · Inertia & drag</span>
+                            <span class="mechanic-title">Puzzle Manager</span>
+                            <span class="mechanic-subtitle">C++ · Manager · Blueprint</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">The ship uses Unreal's Chaos physics with custom drag and thrust curves to simulate zero-gravity momentum. Holding the thruster builds speed; releasing lets inertia carry you forward until drag gradually bleeds the velocity off.</p>
-
-                                <!-- GIF -->
-                                <div class="mechanic-gif">
-                                    <!-- Replace with: <img src="Images/echoes-fly.gif" alt="Ship flying through nebula"> -->
-                                    <div class="gif-placeholder">
-                                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg>
-                                        <span>echoes-fly.gif</span>
-                                    </div>
-                                    <div class="gif-caption">Ship flying through a nebula field</div>
-                                </div>
-
-                                <!-- Code -->
+                                <p class="mechanic-desc">A central Puzzle Manager tracks all puzzles in the level. Each puzzle registers itself on begin play and notifies the manager when completed. The manager then checks win conditions and triggers the next game event.</p>
+                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>puzzle-manager.gif</span></div><div class="gif-caption">Puzzle manager tracking completion</div></div>
                                 <div class="code-block-wrap">
-                                    <div class="code-header">
-                                        <span class="code-filename">ShipMovementComponent.cpp</span>
-                                        <span class="code-lang">C++</span>
-                                    </div>
-                                    <pre><code><cm>// Apply thrust and drag each physics tick</cm>
-<kw>void</kw> <fn>UShipMovementComponent</fn>::<fn>TickComponent</fn>(
-                                    <kw>float</kw> DeltaTime,
-    ELevelTick TickType,
-    FActorComponentTickFunction* ThisTickFunction)
+                                    <div class="code-header"><span class="code-filename">PuzzleManager.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> <fn>APuzzleManager</fn>::<fn>OnPuzzleCompleted</fn>(<tp>APuzzleBase</tp>* Puzzle)
 {
-                                    <kw>Super</kw>::<fn>TickComponent</fn>(DeltaTime, TickType, ThisTickFunction);
-
-                                    <kw>if</kw> (bThrusting)
+    CompletedPuzzles.<fn>Add</fn>(Puzzle);
+                                    <kw>if</kw> (CompletedPuzzles.<fn>Num</fn>() >= RequiredPuzzles)
     {
-        Velocity += <fn>GetOwner</fn>()-&gt;<fn>GetActorForwardVector</fn>()
-                    * ThrustForce * DeltaTime;
+                                    <fn>TriggerLevelEvent</fn>();
     }
-
-                                    <cm>// Apply drag — slows the ship gradually in space</cm>
-    Velocity *= FMath::<fn>Clamp</fn>(<num>1.f</num> - (DragCoefficient * DeltaTime),
-                                    <num>0.f</num>, <num>1.f</num>);
-
-                                    <cm>// Clamp to max speed</cm>
-                                    <kw>if</kw> (Velocity.<fn>Size</fn>() &gt; MaxSpeed)
-        Velocity = Velocity.<fn>GetSafeNormal</fn>() * MaxSpeed;
-
-                                    <fn>GetOwner</fn>()-&gt;<fn>AddActorWorldOffset</fn>(Velocity, <kw>true</kw>);
 }</code></pre>
                                 </div>
-                                <div class="code-explain">
-                                    <p class="explain-label">What this does</p>
-                                    <div class="explain-text">
-                                        <p>This runs every physics frame to move the ship. When the player holds the thrust key, <span class="inline-code">bThrusting</span> is true and velocity builds up in the direction the ship is facing — the longer you hold it, the faster you go.</p>
-                                        <p>The drag line is the key to making space feel right. Multiplying velocity by a value slightly below 1 each frame means the ship slows down smoothly over time, like coasting. <span class="inline-code">DragCoefficient</span> is exposed to the editor so it can be tweaked without recompiling.</p>
-                                        <p>The final clamp ensures the ship never exceeds <span class="inline-code">MaxSpeed</span> regardless of how long thrust is held, preventing runaway velocity bugs.</p>
-                                    </div>
-                                </div>
-
+                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Each time a puzzle is solved it calls this function. Once the number of completed puzzles reaches the required count, <span class="inline-code">TriggerLevelEvent()</span> fires — opening a gate, spawning a boss, or playing a cutscene depending on the level.</p></div></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ── Mechanic 3: Ruin Discovery ── -->
+                <!-- m3: Trigger Manager -->
                 <div class="mechanic-item" id="m3">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m3')">
                         <div class="mechanic-icon">
-                            <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="4" width="10" height="7" rx="1.5" stroke="#7F77DD" stroke-width="1.5" /><path d="M5 4V3a2 2 0 0 1 4 0v1" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" /></svg>
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Ruin discovery & lore system</span>
-                            <span class="mechanic-subtitle">C++ · Proximity scan · Detail reveal</span>
+                            <span class="mechanic-title">Trigger Manager</span>
+                            <span class="mechanic-subtitle">C++ · Manager · Blueprint</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">Ancient ruins scattered across planets hold fragments of lore. Players scan ruins with a proximity sensor — the closer you are, the more detail is revealed. Collected fragments assemble into a timeline in the journal.</p>
-
-                                <!-- GIF -->
-                                <div class="mechanic-gif">
-                                    <!-- Replace with: <img src="Images/echoes-scan.gif" alt="Scanning a ruin"> -->
-                                    <div class="gif-placeholder">
-                                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg>
-                                        <span>echoes-scan.gif</span>
-                                    </div>
-                                    <div class="gif-caption">Scanning an ancient ruin for lore</div>
-                                </div>
-
-                                <!-- Code -->
+                                <p class="mechanic-desc">The Trigger Manager handles all overlap-based events in the level — zone entry, item pickups, enemy aggro triggers. Designers can configure triggers entirely in Blueprint without touching C++ code.</p>
+                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>trigger-manager.gif</span></div><div class="gif-caption">Trigger zones activating events</div></div>
                                 <div class="code-block-wrap">
-                                    <div class="code-header">
-                                        <span class="code-filename">RuinScanner.cpp</span>
-                                        <span class="code-lang">C++</span>
-                                    </div>
-                                    <pre><code><cm>// Called when player activates the scanner</cm>
-<kw>void</kw> <fn>ARuinScanner</fn>::<fn>ScanNearbyRuins</fn>()
+                                    <div class="code-header"><span class="code-filename">TriggerManager.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> <fn>ATriggerZone</fn>::<fn>OnOverlapBegin</fn>(
+                                    <tp>UPrimitiveComponent</tp>* OverlappedComp,
+                                    <tp>AActor</tp>* OtherActor, ...)
 {
-    TArray&lt;<tp>AActor</tp>*&gt; FoundActors;
-                                    <tp>UGameplayStatics</tp>::<fn>GetAllActorsOfClass</fn>(
-                                    <fn>GetWorld</fn>(), <tp>ARuinFragment</tp>::<fn>StaticClass</fn>(), FoundActors
-    );
-
-                                    <kw>for</kw> (<tp>AActor</tp>* Actor : FoundActors)
+                                    <kw>if</kw> (<fn>Cast</fn>&lt;<tp>APlayerCharacter</tp>&gt;(OtherActor))
     {
-                                    <kw>float</kw> Distance = FVector::<fn>Dist</fn>(
-                                    <fn>GetOwner</fn>()-&gt;<fn>GetActorLocation</fn>(),
-            Actor-&gt;<fn>GetActorLocation</fn>()
-        );
-
-                                    <kw>if</kw> (Distance &lt;= ScanRadius)
-        {
-                                    <tp>ARuinFragment</tp>* Ruin = <fn>Cast</fn>&lt;<tp>ARuinFragment</tp>&gt;(Actor);
-                                    <kw>float</kw> Detail = <num>1.f</num> - (Distance / ScanRadius);
-            Ruin-&gt;<fn>RevealLore</fn>(Detail);
-        }
+        OnPlayerEntered.<fn>Broadcast</fn>();
     }
 }</code></pre>
                                 </div>
-                                <div class="code-explain">
-                                    <p class="explain-label">What this does</p>
-                                    <div class="explain-text">
-                                        <p>This scans all ruin fragments in the world and reveals lore based on how close the player is. <span class="inline-code">GetAllActorsOfClass</span> finds every <span class="inline-code">ARuinFragment</span> in the level, then a distance check filters only ones within <span class="inline-code">ScanRadius</span>.</p>
-                                        <p>The clever part is the <span class="inline-code">Detail</span> calculation — dividing distance by the scan radius gives a 0 to 1 float. At maximum distance it's near 0 (barely revealed), right next to the ruin it approaches 1 (fully revealed). This value controls how much text and visual detail is shown, rewarding players for physically getting close.</p>
-                                    </div>
-                                </div>
-
+                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>When the player walks into a trigger zone this fires and broadcasts a delegate. Any Blueprint in the level can bind to <span class="inline-code">OnPlayerEntered</span> and react — no hardcoded references needed.</p></div></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Copy this block to add more mechanics:
+                <!-- m4: Enemy Spawner -->
                 <div class="mechanic-item" id="m4">
-                  <button class="mechanic-trigger" onclick="toggleMechanic('m4')">
-                    <div class="mechanic-icon">
-                      <svg viewBox="0 0 14 14" fill="none">YOUR ICON SVG</svg>
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m4')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Enemy Spawner</span>
+                            <span class="mechanic-subtitle">C++ · Spawner · Blueprint</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">Designer-friendly spawner that accepts a list of enemy classes, spawn points, and wave counts. Spawns enemies in waves and notifies the Puzzle Manager when all enemies are defeated.</p>
+                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>enemy-spawner.gif</span></div><div class="gif-caption">Wave spawning in action</div></div>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">EnemySpawner.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> <fn>AEnemySpawner</fn>::<fn>SpawnWave</fn>()
+{
+                                    <kw>for</kw> (<kw>auto</kw>&amp; Point : SpawnPoints)
+    {
+                                    <tp>AActor</tp>* Enemy = <fn>GetWorld</fn>()-&gt;<fn>SpawnActor</fn>(
+            EnemyClass, Point-&gt;<fn>GetActorTransform</fn>()
+        );
+        ActiveEnemies.<fn>Add</fn>(Enemy);
+    }
+}</code></pre>
+                                </div>
+                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Iterates over all designer-placed spawn points and spawns an enemy at each one. The spawned enemies are tracked in <span class="inline-code">ActiveEnemies</span> so the spawner knows when the wave is cleared.</p></div></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mechanic-trigger-text">
-                      <span class="mechanic-title">Your mechanic title</span>
-                      <span class="mechanic-subtitle">Short tech summary</span>
-                    </div>
-                    <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </button>
-                  <div class="mechanic-body">
-                    <div class="mechanic-body-inner">
-                      <div class="mechanic-content">
-                        <p class="mechanic-desc">Description here.</p>
-                        GIF and code blocks here (copy from above)
-                      </div>
-                    </div>
-                  </div>
                 </div>
-                -->
+
+                <!-- m5: Checkpoints -->
+                <div class="mechanic-item" id="m5">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m5')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Checkpoints</span>
+                            <span class="mechanic-subtitle">C++ · Checkpoints · Gameplay</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">When the player enters a checkpoint zone, their transform and current game state are saved to the Game Instance. On death, the player is respawned at the last activated checkpoint.</p>
+                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>checkpoint.gif</span></div><div class="gif-caption">Checkpoint activation and respawn</div></div>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">Checkpoint.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> <fn>ACheckpoint</fn>::<fn>ActivateCheckpoint</fn>(<tp>APlayerCharacter</tp>* Player)
+{
+                                    <kw>if</kw> (!bActivated)
+    {
+        bActivated = <kw>true</kw>;
+        SavedTransform = Player-&gt;<fn>GetActorTransform</fn>();
+        GameInstance-&gt;<fn>SetCheckpoint</fn>(SavedTransform);
+                                    <fn>PlayActivationEffect</fn>();
+    }
+}</code></pre>
+                                </div>
+                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Saves the player's current position to the Game Instance the first time they touch the checkpoint. The <span class="inline-code">bActivated</span> flag prevents it from re-saving if the player revisits. On death, the Game Instance provides the saved transform for respawn.</p></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- m6: Bush Puzzle -->
+                <div class="mechanic-item" id="m6">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m6')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Bush Puzzle</span>
+                            <span class="mechanic-subtitle">C++ · Puzzle · Gameplay</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">The player must use their Grass element ability to grow specific bushes in the correct order. Each bush listens for a GAS gameplay event and notifies the Puzzle Manager when activated in the right sequence.</p>
+                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>bush-puzzle.gif</span></div><div class="gif-caption">Bush puzzle being solved</div></div>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">BushPuzzle.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> <fn>ABush</fn>::<fn>OnGrassAbilityHit</fn>()
+{
+                                    <kw>if</kw> (PuzzleManager-&gt;<fn>IsNextInSequence</fn>(<kw>this</kw>))
+    {
+                                    <fn>GrowBush</fn>();
+        PuzzleManager-&gt;<fn>AdvanceSequence</fn>();
+    }
+                                    <kw>else</kw>
+    {
+        PuzzleManager-&gt;<fn>ResetSequence</fn>();
+    }
+}</code></pre>
+                                </div>
+                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>When the Grass ability hits a bush, it checks with the Puzzle Manager whether this bush is next in the expected sequence. Correct order advances progress; wrong order resets it — enforcing the puzzle challenge.</p></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- m7: Gate Puzzle -->
+                <div class="mechanic-item" id="m7">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m7')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Gate Puzzle</span>
+                            <span class="mechanic-subtitle">C++ · Puzzle · Gameplay</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">A gate that requires all connected pressure plates to be activated simultaneously. Plates can be held down by pushing objects onto them. The gate C++ class listens to all plate delegates and opens only when all are active at the same time.</p>
+                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>gate-puzzle.gif</span></div><div class="gif-caption">Gate opening when all plates active</div></div>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">GatePuzzle.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> <fn>AGate</fn>::<fn>CheckAllPlates</fn>()
+{
+                                    <kw>bool</kw> bAllActive = <kw>true</kw>;
+                                    <kw>for</kw> (<tp>APressurePlate</tp>* Plate : LinkedPlates)
+    {
+                                    <kw>if</kw> (!Plate-&gt;bIsActive)
+            bAllActive = <kw>false</kw>;
+    }
+                                    <kw>if</kw> (bAllActive) <fn>OpenGate</fn>();
+                                    <kw>else</kw> <fn>CloseGate</fn>();
+}</code></pre>
+                                </div>
+                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Every time any plate changes state it calls this. The loop checks every linked plate — if even one is inactive the gate stays shut. Only when all are simultaneously active does the gate open.</p></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- m8: Time Puzzle -->
+                <div class="mechanic-item" id="m8">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m8')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Time Puzzle</span>
+                            <span class="mechanic-subtitle">C++ · Puzzle · Gameplay</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">The player must hit all targets within a time limit. A countdown timer is managed in C++ and exposed to Blueprint for UI display. Missing the deadline resets the puzzle.</p>
+                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>time-puzzle.gif</span></div><div class="gif-caption">Time puzzle countdown</div></div>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">TimePuzzle.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> <fn>ATimePuzzle</fn>::<fn>Tick</fn>(<kw>float</kw> DeltaTime)
+{
+                                    <kw>Super</kw>::<fn>Tick</fn>(DeltaTime);
+                                    <kw>if</kw> (bActive)
+    {
+        TimeRemaining -= DeltaTime;
+                                    <kw>if</kw> (TimeRemaining &lt;= <num>0.f</num>)
+                                    <fn>ResetPuzzle</fn>();
+    }
+}</code></pre>
+                                </div>
+                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Every frame while active, the timer counts down. When it hits zero the puzzle resets. The <span class="inline-code">TimeRemaining</span> float is BlueprintReadOnly so the HUD widget can display it without needing a C++ reference.</p></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- m9: Sequence Puzzle -->
+                <div class="mechanic-item" id="m9">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m9')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Sequence Puzzle</span>
+                            <span class="mechanic-subtitle">C++ · Puzzle · Gameplay</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">The player must interact with objects in a specific order defined in a designer-set TArray. A sequence index tracks progress and resets to zero on any wrong input.</p>
+                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>sequence-puzzle.gif</span></div><div class="gif-caption">Sequence puzzle input order</div></div>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">SequencePuzzle.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> <fn>ASequencePuzzle</fn>::<fn>OnObjectActivated</fn>(<tp>AActor</tp>* Object)
+{
+                                    <kw>if</kw> (Object == CorrectSequence[CurrentIndex])
+    {
+        CurrentIndex++;
+                                    <kw>if</kw> (CurrentIndex >= CorrectSequence.<fn>Num</fn>())
+                                    <fn>CompletePuzzle</fn>();
+    }
+                                    <kw>else</kw>
+    {
+        CurrentIndex = <num>0</num>;
+    }
+}</code></pre>
+                                </div>
+                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Compares each activation against the expected sequence array. A correct input advances the index; a wrong one resets to zero. Simple but effective — the entire puzzle logic fits in one function.</p></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- m10: Level Manager -->
+                <div class="mechanic-item" id="m10">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m10')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Level Manager</span>
+                            <span class="mechanic-subtitle">C++ · Manager · Blueprint</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">Coordinates all major level events — loading sub-levels, triggering boss encounters, and managing overall win/loss conditions. Acts as the single source of truth for the current level state.</p>
+                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>level-manager.gif</span></div><div class="gif-caption">Level state transitions</div></div>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">LevelManager.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> <fn>ALevelManager</fn>::<fn>SetLevelState</fn>(<tp>ELevelState</tp> NewState)
+{
+    CurrentState = NewState;
+    OnLevelStateChanged.<fn>Broadcast</fn>(NewState);
+}</code></pre>
+                                </div>
+                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Changes the level state and broadcasts it to all listeners. Any Blueprint can bind to <span class="inline-code">OnLevelStateChanged</span> and react — the UI, enemies, music system, and camera all update automatically without the Level Manager needing direct references to them.</p></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- m11: Cutscenes -->
+                <div class="mechanic-item" id="m11">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m11')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Cutscenes</span>
+                            <span class="mechanic-subtitle">C++ · Cutscenes · Cinematic</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">Cutscenes are driven by Unreal's Level Sequencer. A C++ wrapper handles disabling player input, playing the sequence, and restoring control when it ends — keeping all cutscene logic in one place.</p>
+                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>cutscene.gif</span></div><div class="gif-caption">Intro cutscene playing</div></div>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">CutsceneManager.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> <fn>ACutsceneManager</fn>::<fn>PlayCutscene</fn>(<tp>ULevelSequence</tp>* Sequence)
+{
+                                    <fn>DisablePlayerInput</fn>();
+    SequencePlayer = <tp>ULevelSequencePlayer</tp>::<fn>CreateLevelSequencePlayer</fn>(
+                                    <fn>GetWorld</fn>(), Sequence, Settings, SequenceActor
+    );
+    SequencePlayer-&gt;OnFinished.<fn>AddDynamic</fn>(
+                                    <kw>this</kw>, &<fn>ACutsceneManager</fn>::<fn>OnCutsceneFinished</fn>
+    );
+    SequencePlayer-&gt;<fn>Play</fn>();
+}</code></pre>
+                                </div>
+                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Locks player input, creates a Level Sequence player, and binds <span class="inline-code">OnCutsceneFinished</span> to the sequence's end delegate. When the cutscene ends, input is automatically restored — no manual timers or Blueprint event chains needed.</p></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </section>
 
         <hr>
 
-        <!-- ── What I did ── -->
+        <!-- What I did -->
         <section class="reveal">
             <p class="label">What I did</p>
             <ul class="did-list">
-                <li><span class="did-dot"></span><span class="did-text">Built the procedural world generation system in C++ — each star system, planet layout, and ruin placement is seeded and unique per playthrough.</span></li>
-                <li><span class="did-dot"></span><span class="did-text">Designed ship movement and physics using Unreal's Chaos system, tuned for that weightless space feel with realistic inertia.</span></li>
-                <li><span class="did-dot"></span><span class="did-text">Created all shaders in HLSL — including the nebula background, engine trails, and holographic UI elements.</span></li>
-                <li><span class="did-dot"></span><span class="did-text">Implemented a save/load system using Unreal's serialisation pipeline, allowing players to resume at any discovered waypoint.</span></li>
+                <li><span class="did-dot"></span><span class="did-text">All Cutscenes in the Game</span></li>
+                <li><span class="did-dot"></span><span class="did-text">All Puzzles in the Game</span></li>
+                <li><span class="did-dot"></span><span class="did-text">All Enemies in the Game</span></li>
+                <li><span class="did-dot"></span><span class="did-text">Bosses</span></li>
+                <li><span class="did-dot"></span><span class="did-text">Checkpoints</span></li>
+                <li><span class="did-dot"></span><span class="did-text">Enemy Placement and Setup</span></li>
+                <li><span class="did-dot"></span><span class="did-text">Level Manager</span></li>
+                <li><span class="did-dot"></span><span class="did-text">Puzzle Placement and Setup</span></li>
             </ul>
         </section>
 
@@ -1019,45 +1290,77 @@
     </div>
 
     <script>
+        /* ── Lightbox ── */
+        const lbImages = [
+        'Images/EQ1.png','Images/EQ2.png','Images/EQ3.png','Images/EQ4.png',
+        'Images/EQ5.png','Images/EQ6.png','Images/EQ7.png','Images/EQ8.png'
+        ]
+        let lbIndex = 0
+
+        function openLightbox(i) {
+        lbIndex = i
+        document.getElementById('lightbox-img').src = lbImages[lbIndex]
+        document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length
+        document.getElementById('lightbox').classList.add('active')
+        document.body.style.overflow = 'hidden'
+        }
+
+        function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active')
+        document.body.style.overflow = ''
+        }
+
+        function closeLightboxOutside(e) {
+        if (e.target === document.getElementById('lightbox')) closeLightbox()
+        }
+
+        function changeImage(dir) {
+        lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length
+        document.getElementById('lightbox-img').src = lbImages[lbIndex]
+        document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length
+        }
+
+        document.addEventListener('keydown', e => {
+        if (!document.getElementById('lightbox').classList.contains('active')) return
+        if (e.key === 'ArrowRight') changeImage(1)
+        if (e.key === 'ArrowLeft') changeImage(-1)
+        if (e.key === 'Escape') closeLightbox()
+        })
+
         /* ── Accordion ── */
         function toggleMechanic(id) {
         const item = document.getElementById(id)
         const isOpen = item.classList.contains('open')
-        // Close all
         document.querySelectorAll('.mechanic-item').forEach(el => el.classList.remove('open'))
-        // Open clicked if it was closed
         if (!isOpen) {
         item.classList.add('open')
-        // Scroll into view smoothly after a tiny delay to let the animation start
-        setTimeout(() => {
-        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-        }, 50)
+        setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50)
         }
         }
 
         /* ── Scroll reveal ── */
         const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') })
-        }, {threshold: 0.08})
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
+        }, { threshold: 0.08 })
         document.querySelectorAll('.reveal').forEach(el => {
         obs.observe(el)
-        if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
+        if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
         })
 
         /* ── Cursor sparkle ── */
         const sc = document.getElementById('sparkle-canvas')
         const sx = sc.getContext('2d')
         let sparks = []
-        function rszSpark(){ sc.width = window.innerWidth; sc.height = window.innerHeight }
+        function rszSpark() { sc.width = window.innerWidth; sc.height = window.innerHeight }
         rszSpark()
         window.addEventListener('resize', rszSpark)
         const COLS = ['#AFA9EC','#7F77DD','#9FE1CB','#5DCAA5','#F5C4B3','#D85A30','#F4C0D1','#ED93B1']
         let lastMouse = 0
         window.addEventListener('mousemove', e => {
         const now = Date.now()
-        if(now - lastMouse < 20) return
+        if (now - lastMouse < 20) return
         lastMouse = now
-        for(let i = 0; i < 4; i++){
+        for (let i = 0; i < 4; i++) {
         const angle = Math.random() * Math.PI * 2
         const speed = Math.random() * 1.8 + 0.4
         sparks.push({
@@ -1070,7 +1373,7 @@
         })
         }
         })
-        function animSparks(){
+        function animSparks() {
         sx.clearRect(0, 0, sc.width, sc.height)
         sparks = sparks.filter(s => s.alpha > 0.03)
         sparks.forEach(s => {
