@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PetronasPersuit — Derrick Yu</title>
+    <link rel="icon" type="image/jpg" href="Images/portfolioLogo.jpg">
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #fafaf8;
+            --bg2: #f2f2ee;
+            --bg3: #eeecea;
+            --text: #1c1c1a;
+            --text2: #6b6b68;
+            --text3: #ababab;
+            --border: rgba(0,0,0,.08);
+            --border2: rgba(0,0,0,.15);
+            --purple: #7F77DD;
+            --purple-bg: #EEEDFE;
+            --purple-text: #3C3489;
+            --teal: #1D9E75;
+            --teal-bg: #E1F5EE;
+            --teal-text: #085041;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+            --r: 12px;
+            --r-sm: 8px;
+            --r-pill: 99px;
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root {
+                --bg: #121210;
+                --bg2: #1a1a18;
+                --bg3: #222220;
+                --text: #f0f0ec;
+                --text2: #8a8a85;
+                --text3: #444440;
+                --border: rgba(255,255,255,.07);
+                --border2: rgba(255,255,255,.14);
+                --purple: #9D97E8;
+                --purple-bg: #26215C;
+                --purple-text: #CECBF6;
+                --teal: #5DCAA5;
+                --teal-bg: #04342C;
+                --teal-text: #9FE1CB;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden
+        }
+
+        #sparkle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)
+        }
+
+            .reveal.visible {
+                opacity: 1;
+                transform: none
+            }
+
+        .d1 {
+            transition-delay: .07s
+        }
+
+        .d2 {
+            transition-delay: .14s
+        }
+
+        .d3 {
+            transition-delay: .21s
+        }
+
+        .wrap {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 0 1.5rem
+        }
+
+        nav {
+            padding: 1.4rem 0;
+            border-bottom: .5px solid var(--border)
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .nav-logo {
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text)
+        }
+
+        .back-btn {
+            font-size: 13px;
+            color: var(--text2);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: color .15s
+        }
+
+            .back-btn:hover {
+                color: var(--text)
+            }
+
+        .game-banner {
+            width: 100%;
+            height: 340px;
+            background: var(--purple-bg);
+            border-radius: var(--r);
+            overflow: hidden;
+            margin: 2.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+            .game-banner img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block
+            }
+
+        .game-header {
+            margin-bottom: 2rem
+        }
+
+        .game-header-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem
+        }
+
+        .game-title {
+            font-size: 32px;
+            font-weight: 500;
+            letter-spacing: -.02em;
+            line-height: 1.1
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .btn {
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 18px;
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            border: .5px solid var(--border2);
+            transition: transform .15s,opacity .15s;
+            text-decoration: none;
+            display: inline-block
+        }
+
+            .btn:active {
+                transform: scale(.97)
+            }
+
+        .btn-dark {
+            background: var(--text);
+            color: var(--bg);
+            border-color: transparent
+        }
+
+            .btn-dark:hover {
+                opacity: .8
+            }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text)
+        }
+
+            .btn-outline:hover {
+                background: var(--bg2)
+            }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px
+        }
+
+        .tag {
+            font-size: 12px;
+            color: var(--purple-text);
+            background: var(--purple-bg);
+            padding: 3px 10px;
+            border-radius: var(--r-pill);
+            border: .5px solid var(--border)
+        }
+
+        .tag-plain {
+            font-size: 12px;
+            color: var(--text3);
+            background: var(--bg2);
+            padding: 3px 10px;
+            border-radius: var(--r-pill);
+            border: .5px solid var(--border)
+        }
+
+        hr {
+            border: none;
+            border-top: .5px solid var(--border);
+            margin: 2.5rem 0
+        }
+
+        .label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 1.1rem
+        }
+
+        .about-text {
+            font-size: 15px;
+            color: var(--text2);
+            line-height: 1.8;
+            max-width: 660px
+        }
+
+            .about-text p {
+                margin-bottom: 1rem
+            }
+
+                .about-text p:last-child {
+                    margin-bottom: 0
+                }
+
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+            gap: 12px;
+            margin-top: 1.4rem
+        }
+
+        .shot {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg2);
+            border: .5px solid var(--border);
+            border-radius: var(--r);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text3);
+            cursor: pointer;
+            transition: border-color .2s, transform .2s
+        }
+
+            .shot:hover {
+                border-color: var(--purple);
+                transform: scale(1.02)
+            }
+
+            .shot img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block
+            }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(110px,1fr));
+            gap: 10px
+        }
+
+        .stat {
+            background: var(--bg2);
+            border-radius: var(--r-sm);
+            padding: 1rem;
+            text-align: center;
+            border: .5px solid var(--border)
+        }
+
+        .stat-num {
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 3px
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text3)
+        }
+
+        .did-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+            .did-list li {
+                display: flex;
+                gap: 12px;
+                align-items: flex-start
+            }
+
+        .did-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--purple);
+            margin-top: 9px;
+            flex-shrink: 0
+        }
+
+        .did-text {
+            font-size: 15px;
+            color: var(--text2);
+            line-height: 1.65
+        }
+
+        .mechanics-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .mechanic-item {
+            border: .5px solid var(--border);
+            border-radius: var(--r);
+            overflow: hidden;
+            transition: border-color .2s
+        }
+
+            .mechanic-item.open {
+                border-color: var(--purple)
+            }
+
+        .mechanic-trigger {
+            width: 100%;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            color: var(--text);
+            transition: background .15s
+        }
+
+            .mechanic-trigger:hover {
+                background: var(--bg2)
+            }
+
+        .mechanic-item.open .mechanic-trigger {
+            background: var(--purple-bg)
+        }
+
+        .mechanic-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--r-sm);
+            background: var(--purple-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .mechanic-item.open .mechanic-icon {
+            background: var(--bg)
+        }
+
+        .mechanic-icon svg {
+            width: 14px;
+            height: 14px
+        }
+
+        .mechanic-trigger-text {
+            flex: 1
+        }
+
+        .mechanic-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+            display: block
+        }
+
+        .mechanic-subtitle {
+            font-size: 12px;
+            color: var(--text3);
+            display: block;
+            margin-top: 2px
+        }
+
+        .mechanic-chevron {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            transition: transform .3s cubic-bezier(.22,1,.36,1)
+        }
+
+        .mechanic-item.open .mechanic-chevron {
+            transform: rotate(180deg)
+        }
+
+        .mechanic-body {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows .35s cubic-bezier(.22,1,.36,1)
+        }
+
+        .mechanic-item.open .mechanic-body {
+            grid-template-rows: 1fr
+        }
+
+        .mechanic-body-inner {
+            overflow: hidden
+        }
+
+        .mechanic-content {
+            padding: 0 1.25rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            border-top: .5px solid var(--border)
+        }
+
+        .mechanic-desc {
+            font-size: 14px;
+            color: var(--text2);
+            line-height: 1.7;
+            padding-top: 1rem
+        }
+
+        .mechanic-gif {
+            border-radius: var(--r-sm);
+            overflow: hidden;
+            border: .5px solid var(--border);
+            background: var(--bg2)
+        }
+
+            .mechanic-gif img {
+                width: 100%;
+                display: block
+            }
+
+        .gif-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: var(--bg2)
+        }
+
+            .gif-placeholder span {
+                font-size: 12px;
+                color: var(--text3)
+            }
+
+        .gif-caption {
+            font-size: 12px;
+            color: var(--text3);
+            padding: 8px 12px;
+            border-top: .5px solid var(--border)
+        }
+
+        .code-block-wrap {
+            border-radius: var(--r-sm);
+            overflow: hidden;
+            border: .5px solid var(--border)
+        }
+
+        .code-header {
+            background: var(--bg2);
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: .5px solid var(--border)
+        }
+
+        .code-filename {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text2);
+            font-family: monospace
+        }
+
+        .code-lang {
+            font-size: 11px;
+            color: var(--text3);
+            background: var(--bg3);
+            padding: 2px 8px;
+            border-radius: var(--r-pill);
+            border: .5px solid var(--border)
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 1.25rem 1.5rem;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.7;
+            font-family: 'SF Mono','Fira Code','Consolas',monospace
+        }
+
+        code {
+            color: var(--code-text)
+        }
+
+        .kw {
+            color: #cba6f7
+        }
+
+        .fn {
+            color: #89b4fa
+        }
+
+        .str {
+            color: #a6e3a1
+        }
+
+        .cm {
+            color: #6c7086;
+            font-style: italic
+        }
+
+        .num {
+            color: #fab387
+        }
+
+        .tp {
+            color: #f38ba8
+        }
+
+        .code-explain {
+            background: var(--teal-bg);
+            border: .5px solid var(--border);
+            border-radius: var(--r-sm);
+            padding: 1.1rem 1.25rem
+        }
+
+        .explain-label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--teal-text);
+            margin-bottom: 8px;
+            opacity: .7
+        }
+
+        .explain-text {
+            font-size: 14px;
+            color: var(--text2);
+            line-height: 1.7
+        }
+
+            .explain-text p {
+                margin-bottom: .6rem
+            }
+
+                .explain-text p:last-child {
+                    margin-bottom: 0
+                }
+
+        .inline-code {
+            font-family: 'SF Mono','Fira Code','Consolas',monospace;
+            font-size: 12px;
+            background: var(--bg2);
+            padding: 1px 5px;
+            border-radius: 4px;
+            border: .5px solid var(--border)
+        }
+
+        footer {
+            padding: 2rem 0;
+            border-top: .5px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 3rem
+        }
+
+            footer span {
+                font-size: 12px;
+                color: var(--text3)
+            }
+
+            footer a {
+                font-size: 12px;
+                color: var(--purple);
+                text-decoration: none
+            }
+
+                footer a:hover {
+                    text-decoration: underline
+                }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.88);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem
+        }
+
+            .lightbox.active {
+                display: flex
+            }
+
+        .lightbox-img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: var(--r);
+            object-fit: contain;
+            user-select: none;
+            box-shadow: 0 24px 80px rgba(0,0,0,.5)
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 1.2rem;
+            right: 1.4rem;
+            background: rgba(255,255,255,.1);
+            border: .5px solid rgba(255,255,255,.25);
+            color: #fff;
+            font-size: 18px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s
+        }
+
+            .lightbox-close:hover {
+                background: rgba(255,255,255,.22)
+            }
+
+        .lightbox-prev, .lightbox-next {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,.1);
+            border: .5px solid rgba(255,255,255,.2);
+            color: #fff;
+            font-size: 22px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s
+        }
+
+        .lightbox-prev {
+            left: 1.2rem
+        }
+
+        .lightbox-next {
+            right: 1.2rem
+        }
+
+            .lightbox-prev:hover, .lightbox-next:hover {
+                background: rgba(255,255,255,.25)
+            }
+
+        .lightbox-counter {
+            position: fixed;
+            bottom: 1.4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            color: rgba(255,255,255,.55);
+            background: rgba(0,0,0,.4);
+            padding: 4px 14px;
+            border-radius: var(--r-pill)
+        }
+
+        .gif-carousel {
+            position: relative;
+        }
+
+        .carousel-container {
+            display: flex;
+            width: 100%;
+        }
+
+        .carousel-slide {
+            width: 100%;
+            height: auto;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+            .carousel-slide:hover {
+                transform: scale(1.02);
+            }
+
+        @media(max-width:560px) {
+            .game-title {
+                font-size: 24px
+            }
+
+            .game-banner {
+                height: 200px
+            }
+
+            .game-header-top {
+                flex-direction: column
+            }
+
+            .lightbox-prev {
+                left: .5rem
+            }
+
+            .lightbox-next {
+                right: .5rem
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="sparkle-canvas"></canvas>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <button class="lightbox-prev" onclick="changeImage(-1)">‹</button>
+        <img class="lightbox-img" id="lightbox-img" src="" alt="">
+        <button class="lightbox-next" onclick="changeImage(1)">›</button>
+        <span class="lightbox-counter" id="lightbox-counter"></span>
+    </div>
+
+    <div class="wrap">
+        <nav>
+            <div class="nav-inner">
+                <a href="index.html" class="nav-logo">Derrick Yu</a>
+                <a href="index.html" class="back-btn">← Back to portfolio</a>
+            </div>
+        </nav>
+
+        <!-- Banner -->
+        <div class="game-banner reveal">
+            <img src="Images/pp/ppBanner.png"
+                 alt="Petronas Persuit Banner"
+                 style="width: 100%;
+       height: 100%;
+       object-fit: contain;
+       object-position: center;
+       background: #0f172a;">
+        </div>
+
+        <!-- Title & links -->
+        <div class="game-header reveal d1">
+            <div class="game-header-top">
+                <h1 class="game-title">Petronas Pursuit</h1>
+                <div class="btn-row">
+                    <a href="https://mikadamremi.itch.io/petronas-pursuit" target="_blank" class="btn btn-dark">Play on Itch.io</a>
+                    <a href="#" class="btn btn-outline">View GitHub</a>
+                </div>
+            </div>
+            <div class="tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag-plain">PC</span>
+                <span class="tag-plain">GameJam</span>
+                <span class="tag-plain">2025</span>
+            </div>
+        </div>
+
+        <!-- Winner Badge -->
+        <div style="margin: 1.5rem 0 2rem;
+                    padding: 14px 24px;
+                    background: #2C1F0F;
+                    border: 1.5px solid #F4B942;
+                    border-radius: var(--r);
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 12px;
+                    box-shadow: 0 4px 15px rgba(244, 185, 66, 0.15);">
+            <span style="font-size: 22px;">🏆</span>
+            <span style="font-weight: 600;
+                         color: #F4B942;
+                         font-size: 15.5px;
+                         letter-spacing: 0.02em;">
+                Winner of the UOW Malaysia x Virtuos: SemJam August 2025 (Champion)
+            </span>
+        </div>
+
+        <hr>
+
+        <!-- About -->
+        <section class="reveal">
+            <p class="label">About the game</p>
+            <div class="about-text">
+                <p>
+                    Petronas Pursuit is a 2D climber where you play as a criminal escaping the
+                    police force in a futuristic Kuala Lumpur. You need to climb all the way to the top
+                    of the Petronas Twin Towers to escape on your helicopter. But it's not so
+                    simple... The police force is on your trail, using drones and flying cars to stop
+                    you from escaping. Even the Petronas Twin Towers have engaged their laser
+                    defense system! You only have a limited amount of time before you get caught.
+                    The clock is ticking...
+                </p>
+            </div>
+
+            <!-- Screenshots -->
+            <div class="screenshots">
+                <div class="shot" onclick="openLightbox(0)"><img src="Images/pp/pp1.png" alt="Screenshot 1"></div>
+                <div class="shot" onclick="openLightbox(1)"><img src="Images/pp/pp2.png" alt="Screenshot 2"></div>
+                <div class="shot" onclick="openLightbox(2)"><img src="Images/pp/pp3.png" alt="Screenshot 3"></div>
+                <div class="shot" onclick="openLightbox(3)"><img src="Images/pp/pp4.png" alt="Screenshot 4"></div>
+                <div class="shot" onclick="openLightbox(4)"><img src="Images/pp/pp5.png" alt="Screenshot 5"></div>
+                <div class="shot" onclick="openLightbox(5)"><img src="Images/pp/pp6.png" alt="Screenshot 6"></div>
+            </div>
+
+            <!-- Gameplay GIFs Section -->
+            <p class="label" style="margin: 2.5rem 0 1.1rem 0;">Gameplay Demo</p>
+            <div class="screenshots" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+                <!-- Add your GIFs here -->
+                <div class="shot" onclick="openLightboxFromGif(0)">
+                    <img src="Images/pp/ppgameplay.gif" alt="Gameplay GIF 1" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+
+
+                <!-- Add more GIFs as needed -->
+                <!-- Example:
+        <div class="shot" onclick="openLightboxFromGif(2)">
+            <img src="Images/ai/ai_gif3.gif" alt="AI Behavior Demo">
+        </div>
+        -->
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- Stats -->
+        <section class="reveal">
+            <p class="label">At a glance</p>
+            <div class="stats">
+                <div class="stat"><div class="stat-num">2</div><div class="stat-label">Days to Build</div></div>
+                <div class="stat"><div class="stat-num">5</div><div class="stat-label">Developers</div></div>
+                <div class="stat"><div class="stat-num">Unity</div><div class="stat-label">Engine</div></div>
+                <div class="stat"><div class="stat-num">PC</div><div class="stat-label">Platform</div></div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- Mechanics -->
+        <section class="reveal">
+            <p class="label">Mechanics</p>
+            <p style="font-size:13px;color:var(--text3);margin-bottom:1.2rem;">Click a mechanic to see the GIF and code behind it.</p>
+            <div class="mechanics-list">
+
+                <!-- m1: Dash Particle Effect -->
+                <div class="mechanic-item" id="m1">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m1')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Dash Particle Effect</span>
+                            <span class="mechanic-subtitle">Unity · DOTween · Particle System</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">
+                                    When the player performs a dash, a dust cloud particle spawns at their feet for visual feedback,
+                                    while the character moves smoothly forward using DOTween with a natural easing curve.
+                                    This makes the dash feel responsive, powerful, and satisfying.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <div class="gif-placeholder">
+                                        <img src=" Images/pp/ppparticle.gif">
+                                        <span style="font-size:11px;"></span>
+                                    </div>
+                                    <div class="gif-caption">Player dashes → Dust cloud spawns at feet + smooth movement</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">DashEffectSystem.cs</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header">
+                                        <span class="code-filename">DashEffectSystem.cs</span>
+                                        <span class="code-lang">C#</span>
+                                    </div>
+                                    <pre><code><kw>using</kw> DG.Tweening;
+<kw>using</kw> UnityEngine;
+<kw>using</kw> System.Collections;
+
+<kw>public class</kw> <tp>DashEffectSystem</tp> : MonoBehaviour
+{
+    [Header("Dash Effect Settings")]
+    [SerializeField] GameObject dustCloud;
+    [SerializeField] <kw>private</kw> Vector3 dustOffset = <kw>new</kw> Vector3(0f, -0.5f, 0f);
+
+    <kw>public</kw> float dashDistance = 2f;
+    <kw>public</kw> float dashDuration = 0.2f;
+
+    <kw>private bool</kw> isDashing = false;
+
+    <kw>public</kw> IEnumerator DoDash(Vector2 dir)
+    {
+        isDashing = true;
+
+        <cm>// Spawn dust particle effect at player's feet</cm>
+        <kw>if</kw> (dustCloud != null)
+        {
+            Instantiate(dustCloud, transform.position + dustOffset, dustCloud.transform.rotation);
+        }
+
+        Vector2 startPos = transform.position;
+        Vector2 endPoint = startPos + (dir * dashDistance);
+
+        <cm>// Smooth dash movement with nice easing</cm>
+        <kw>yield return</kw> transform.DOMove(endPoint, dashDuration)
+            .SetEase(Ease.OutCubic)
+            .WaitForCompletion();
+
+        isDashing = false;
+    }
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>This system handles the core dash mechanic with both visual polish and smooth gameplay feel:</p>
+                                        <ul>
+                                            <li><strong>Visual Feedback</strong>: Instantly spawns a dust cloud prefab at the player's feet (offset slightly downward) to show ground interaction and power.</li>
+                                            <li><strong>Smooth Movement</strong>: Uses <span class="inline-code">DOTween</span> to move the player over <code>dashDuration</code> seconds with <span class="inline-code">Ease.OutCubic</span>. This creates a fast start and natural slowdown, making the dash feel weighty and satisfying.</li>
+                                            <li><strong>Coroutine</strong>: The dash runs as a coroutine so it doesn't block other player systems like animation or input.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">How to use</p>
+                                    <div class="explain-text">
+                                        <p>From your Player Controller, call it like this:</p>
+                                        <pre style="background:#1e1e2e;color:#cdd6f4;padding:12px;border-radius:6px;font-size:13px;"><code><kw>if</kw> (Input.GetKeyDown(KeyCode.Space) &amp;&amp; !dashSystem.isDashing)
+{
+    Vector2 dashDirection = GetInputDirection();   <cm>// or facing direction</cm>
+    StartCoroutine(dashSystem.DoDash(dashDirection));
+}</code></pre>
+                                        <p>Tip: Make sure your <code>dustCloud</code> prefab has a Particle System with "Play On Awake" and a short lifetime for best results.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- m2: Drone Obstacle -->
+                <div class="mechanic-item" id="m2">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m2')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Drone Obstacle</span>
+                            <span class="mechanic-subtitle">Unity · MoreMountains.Feedbacks · Steering Behavior</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">
+                                    The Drone is a dynamic flying enemy that moves horizontally into the play area, hovers while firing at the player with imperfect aiming,
+                                    and leaves after firing a set number of shots. It uses arrival steering for smooth deceleration and spawns warning indicators before each shot.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <div class="gif-placeholder">
+                                        <img src="Images/pp/ppdrone.gif" />
+                                        <span style="font-size:11px;">(Recommended: 16:9 showing movement + shooting)</span>
+                                    </div>
+                                    <div class="gif-caption">Drone flies in → aims with warning light → fires projectiles → leaves after 3 shots</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">Drone.cs</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header">
+                                        <span class="code-filename">Drone.cs</span>
+                                        <span class="code-lang">C#</span>
+                                    </div>
+                                    <pre><code><kw>using</kw> MoreMountains.Feedbacks;
+<kw>using</kw> UnityEngine;
+
+<kw>public class</kw> <tp>Drone</tp> : MonoBehaviour
+{
+    [Header("Movement")]
+    [SerializeField] <kw>private</kw> float moveSpeed = 3f;
+    [SerializeField] <kw>private</kw> float slowingRadius = 3f;
+    [SerializeField] <kw>private</kw> float fixedX = -6f;
+    [SerializeField] <kw>private</kw> float yOffset = 1f;
+
+    [Header("Shooting")]
+    [SerializeField] <kw>private</kw> GameObject projectilePrefab;
+    [SerializeField] <kw>private</kw> GameObject targetLightPrefab;
+    [SerializeField] <kw>private</kw> GameObject explosionPrefab;
+    [SerializeField] <kw>private</kw> float shootDelay = 1f;
+    [SerializeField] <kw>private</kw> int shotsBeforeLeaving = 3;
+    [SerializeField] <kw>private</kw> float missRadius = 1.5f;
+
+    <kw>private bool</kw> movingIn = false;
+    <kw>private bool</kw> leaving = false;
+    <kw>private int</kw> shotsFired = 0;
+    <kw>private</kw> Vector3 moveInWorldPos;
+
+    <kw>void</kw> Update()
+    {
+        <kw>if</kw> (movingIn)
+        {
+            moveInWorldPos = <kw>new</kw> Vector3(fixedX, player.position.y + yOffset, transform.position.z);
+            MoveIn();
+        }
+        <kw>else if</kw> (!leaving &amp;&amp; player != null)
+        {
+            shootTimer += Time.deltaTime;
+            <kw>if</kw> (shootTimer &gt;= shootDelay)
+            {
+                Shoot();
+                shootTimer = 0f;
+            }
+        }
+    }
+
+    <kw>void</kw> MoveIn()
+    {
+        Vector3 displacement = moveInWorldPos - transform.position;
+        float distance = displacement.magnitude;
+
+        <cm>// Arrival steering behavior for smooth deceleration</cm>
+        float speed = distance &lt;= slowingRadius 
+            ? moveSpeed * (distance / slowingRadius) 
+            : moveSpeed;
+
+        transform.position += displacement.normalized * speed * Time.deltaTime;
+
+        <kw>if</kw> (distance &lt;= 0.1f) movingIn = false;
+    }
+
+    <kw>void</kw> Shoot()
+    {
+        animator?.SetTrigger("IsShooting");
+
+        <cm>// Calculate spawn position with muzzle offset</cm>
+        Vector2 spawnPos = (Vector2)transform.position + 
+            ((Vector2)player.position - (Vector2)transform.position).normalized * muzzleOffset;
+
+        <cm>// Add randomized targeting for realistic imperfect aim</cm>
+        Vector2 targetPos = (Vector2)player.position + Random.insideUnitCircle * missRadius;
+
+        <cm>// Spawn visual warning indicator at target location</cm>
+        <kw>if</kw> (targetLightPrefab != null)
+            Instantiate(targetLightPrefab, targetPos, Quaternion.identity);
+
+        <cm>// Calculate rotation and spawn projectile</cm>
+        Vector2 dir = (targetPos - spawnPos).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
+
+        GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.Euler(0f, 0f, angle));
+        proj.GetComponent&lt;Projectiles&gt;()?.SetTarget(targetPos);
+        proj.GetComponent&lt;Projectiles&gt;()?.SetExplosionPrefab(explosionPrefab);
+        proj.GetComponent&lt;Projectiles&gt;()?.Launch();
+
+        <kw>if</kw> (++shotsFired &gt;= shotsBeforeLeaving)
+            leaving = true;
+    }
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>This Drone enemy creates engaging vertical climbing pressure:</p>
+                                        <ul>
+                                            <li><strong>Smart Movement</strong>: Uses an arrival steering behavior (slows down as it approaches its target X position) for natural, non-abrupt flying motion.</li>
+                                            <li><strong>Imperfect Aiming</strong>: Doesn't always shoot perfectly — adds randomness within <code>missRadius</code> so the player has a fair chance to dodge.</li>
+                                            <li><strong>Warning System</strong>: Spawns a target light prefab at the intended impact point before firing, giving the player a visual cue to react.</li>
+                                            <li><strong>Limited Engagement</strong>: Fires only a set number of shots (<code>shotsBeforeLeaving</code>) then leaves the screen, preventing the area from becoming too overwhelming.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">Key Features</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • Fixed horizontal entry position with dynamic Y tracking<br>
+                                            • Uses <strong>MoreMountains.Feedbacks</strong> for shooting animation trigger<br>
+                                            • Projectile gets rotation based on aim direction<br>
+                                            • Easy to tweak via Inspector (speed, shot count, miss amount, etc.)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- m3: Police Car Obstacle -->
+                <div class="mechanic-item" id="m3">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m3')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Police Car Obstacle</span>
+                            <span class="mechanic-subtitle">Unity · Sine Wave Movement · Procedural Animation</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">
+                                    The Police Car is a horizontally moving obstacle that patrols back and forth using a smooth sine wave.
+                                    Each car has a randomized phase offset so they don't all move in sync, creating a more natural and challenging dodging experience while climbing.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <div class="gif-placeholder">
+                                        <img src="Images/pp/ppcar.gif">
+                                        <span style="font-size:11px;"></span>
+                                    </div>
+                                    <div class="gif-caption">Police cars moving smoothly left and right using sine wave motion</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">PoliceCar.cs</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header">
+                                        <span class="code-filename">PoliceCar.cs</span>
+                                        <span class="code-lang">C#</span>
+                                    </div>
+                                    <pre><code><kw>using</kw> UnityEngine;
+
+<kw>public class</kw> <tp>PoliceCar</tp> : MonoBehaviour
+{
+    [SerializeField] <kw>private</kw> float distance = 5f;
+    [SerializeField] <kw>private</kw> float speed = 2f;
+
+    <kw>private</kw> Vector3 startPos;
+    <kw>private</kw> float phaseOffset;
+
+    <kw>void</kw> Start()
+    {
+        startPos = transform.position;
+        <cm>// Random offset so cars aren't synchronized</cm>
+        phaseOffset = Random.Range(0f, Mathf.PI * 2);
+    }
+
+    <kw>void</kw> Update()
+    {
+        <cm>// Smooth side-to-side movement using sine wave</cm>
+        float offset = Mathf.Sin(Time.time * speed + phaseOffset) * distance;
+        transform.position = <kw>new</kw> Vector3(startPos.x + offset, startPos.y, startPos.z);
+    }
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>This simple but effective script creates dynamic horizontal obstacles perfect for a vertical climber:</p>
+                                        <ul>
+                                            <li><strong>Sine Wave Movement</strong>: Uses <code>Mathf.Sin()</code> to create smooth, natural back-and-forth motion.</li>
+                                            <li><strong>Phase Offset</strong>: Each car gets a random starting phase so they move out of sync — preventing predictable patterns and increasing challenge.</li>
+                                            <li><strong>Configurable</strong>: Easy to tweak <code>distance</code> (how wide they patrol) and <code>speed</code> (how fast they move) directly in the Inspector.</li>
+                                            <li><strong>Lightweight</strong>: Very performant and works well even with many cars on screen.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">How to use</p>
+                                    <div class="explain-text">
+                                        <p>Simply attach this script to your Police Car prefab. You can:</p>
+                                        <ul>
+                                            <li>Adjust <strong>distance</strong> to control how far left/right the car moves</li>
+                                            <li>Change <strong>speed</strong> to make cars faster or slower</li>
+                                            <li>Duplicate the prefab multiple times at different heights for layered obstacles</li>
+                                        </ul>
+                                        <p>Tip: Combine with colliders set as triggers or solid obstacles depending on whether the player should die on contact or get knocked back.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- m4: Cutscene -->
+                <div class="mechanic-item" id="m4">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m4')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Cutscene</span>
+                            <span class="mechanic-subtitle">Cutscene · Unity Timeline</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">
+                                    This is a simple opening cutscene made using Unity Timeline.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <div class="gif-placeholder">
+                                        <img src="Images/pp/ppcutscene1.gif">
+                                        <span style="font-size:11px;"></span>
+                                    </div>
+                                    <div class="gif-caption"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- What I did -->
+        <section class="reveal">
+            <p class="label">What I did</p>
+            <ul class="did-list">
+                <li><span class="did-dot"></span><span class="did-text">All Obsticles in the Game</span></li>
+                <li><span class="did-dot"></span><span class="did-text">Cutscenes</span></li>
+                <li><span class="did-dot"></span><span class="did-text">Dash Particles Effect</span></li>
+                <li><span class="did-dot"></span><span class="did-text">Obsticle Placement in Game</span></li>
+
+            </ul>
+        </section>
+
+        <footer>
+            <span>© 2026 Derrick Yu</span>
+            <a href="index.html">← Back to all games</a>
+        </footer>
+
+    </div>
+
+    <script>
+        /* Lightbox */
+        let lbImages = [
+        'Images/pp/pp1.png','Images/pp/pp2.png','Images/pp/pp3.png','Images/pp/pp4.png',
+        'Images/pp/pp5.png','Images/pp/pp6.png'
+        ]
+        let lbIndex = 0
+
+        function openLightbox(i) {
+        lbIndex = i
+        document.getElementById('lightbox-img').src = lbImages[lbIndex]
+        document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length
+        document.getElementById('lightbox').classList.add('active')
+        document.body.style.overflow = 'hidden'
+        }
+        /* === GIF Lightbox Support === */
+let lbGifs = [
+'Images/pp/ppgameplay.gif'
+// Add more GIF paths here
+];
+
+ function openLightboxFromGif(i) {
+ lbIndex = i;
+  lbImages = lbGifs;                    // Switch to GIF array
+ document.getElementById('lightbox-img').src = lbGifs[lbIndex];
+ document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbGifs.length;
+ document.getElementById('lightbox').classList.add('active');
+ document.body.style.overflow = 'hidden';
+ }
+        function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active')
+        document.body.style.overflow = ''
+        }
+
+        function closeLightboxOutside(e) {
+        if (e.target === document.getElementById('lightbox')) closeLightbox()
+        }
+
+        function changeImage(dir) {
+        lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length
+        document.getElementById('lightbox-img').src = lbImages[lbIndex]
+        document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length
+        }
+
+        function openLightboxFromCarousel(src, carouselId) {
+        const container = document.getElementById(carouselId);
+        const slides = container.getElementsByTagName('img');
+        let index = 0;
+        for (let i = 0; i < slides.length; i++) {
+        if (slides[i].src === src) { index = i; break; }
+        }
+        lbImages = Array.from(slides).map(img => img.src);
+        lbIndex = index;
+        document.getElementById('lightbox-img').src = lbImages[lbIndex];
+        document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length;
+        document.getElementById('lightbox').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        }
+
+        document.addEventListener('keydown', e => {
+        if (!document.getElementById('lightbox').classList.contains('active')) return
+        if (e.key === 'ArrowRight') changeImage(1)
+        if (e.key === 'ArrowLeft') changeImage(-1)
+        if (e.key === 'Escape') closeLightbox()
+        })
+
+        /* Accordion */
+        function toggleMechanic(id) {
+        const item = document.getElementById(id)
+        const isOpen = item.classList.contains('open')
+        document.querySelectorAll('.mechanic-item').forEach(el => el.classList.remove('open'))
+        if (!isOpen) {
+        item.classList.add('open')
+        setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50)
+        }
+        }
+
+        /* Scroll reveal */
+        const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
+        }, { threshold: 0.08 })
+        document.querySelectorAll('.reveal').forEach(el => {
+        obs.observe(el)
+        if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
+        })
+
+        /* Cursor sparkle */
+        const sc = document.getElementById('sparkle-canvas')
+        const sx = sc.getContext('2d')
+        let sparks = []
+        function rszSpark() { sc.width = window.innerWidth; sc.height = window.innerHeight }
+        rszSpark()
+        window.addEventListener('resize', rszSpark)
+        const COLS = ['#AFA9EC','#7F77DD','#9FE1CB','#5DCAA5','#F5C4B3','#D85A30','#F4C0D1','#ED93B1']
+        let lastMouse = 0
+        window.addEventListener('mousemove', e => {
+        const now = Date.now()
+        if (now - lastMouse < 20) return
+        lastMouse = now
+        for (let i = 0; i < 4; i++) {
+        const angle = Math.random() * Math.PI * 2
+        const speed = Math.random() * 1.8 + 0.4
+        sparks.push({
+        x: e.clientX, y: e.clientY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 1.2,
+        size: Math.random() * 4 + 2,
+        alpha: 1,
+        color: COLS[Math.floor(Math.random() * COLS.length)]
+        })
+        }
+        })
+        function animSparks() {
+        sx.clearRect(0, 0, sc.width, sc.height)
+        sparks = sparks.filter(s => s.alpha > 0.03)
+        sparks.forEach(s => {
+        sx.globalAlpha = s.alpha
+        sx.fillStyle = s.color
+        const h = s.size / 2
+        sx.fillRect(s.x - h, s.y - h, s.size, s.size)
+        s.x += s.vx; s.y += s.vy
+        s.vy += 0.07
+        s.alpha -= 0.032
+        s.size *= 0.97
+        })
+        sx.globalAlpha = 1
+        requestAnimationFrame(animSparks)
+        }
+        animSparks()
+    </script>
+</body>
+</html>

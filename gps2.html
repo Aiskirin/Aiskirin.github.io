@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Devils Contract — Derrick Yu</title>
+    <link rel="icon" type="image/jpg" href="Images/portfolioLogo.jpg">
+
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -103,7 +105,6 @@
             padding: 0 1.5rem
         }
 
-        /* ── Nav ── */
         nav {
             padding: 1.4rem 0;
             border-bottom: .5px solid var(--border)
@@ -136,7 +137,6 @@
                 color: var(--text)
             }
 
-        /* ── Banner ── */
         .game-banner {
             width: 100%;
             height: 340px;
@@ -156,20 +156,6 @@
                 display: block
             }
 
-        .banner-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            opacity: .5
-        }
-
-            .banner-placeholder span {
-                font-size: 13px;
-                color: var(--purple-text)
-            }
-
-        /* ── Game header ── */
         .game-header {
             margin-bottom: 2rem
         }
@@ -255,7 +241,6 @@
             border: .5px solid var(--border)
         }
 
-        /* ── Divider / label ── */
         hr {
             border: none;
             border-top: .5px solid var(--border);
@@ -271,7 +256,6 @@
             margin-bottom: 1.1rem
         }
 
-        /* ── About text ── */
         .about-text {
             font-size: 15px;
             color: var(--text2);
@@ -287,7 +271,6 @@
                     margin-bottom: 0
                 }
 
-        /* ── Screenshots ── */
         .screenshots {
             display: grid;
             grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
@@ -306,8 +289,15 @@
             align-items: center;
             justify-content: center;
             font-size: 12px;
-            color: var(--text3)
+            color: var(--text3);
+            cursor: pointer;
+            transition: border-color .2s, transform .2s
         }
+
+            .shot:hover {
+                border-color: var(--purple);
+                transform: scale(1.02)
+            }
 
             .shot img {
                 width: 100%;
@@ -316,7 +306,6 @@
                 display: block
             }
 
-        /* ── Stats ── */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit,minmax(110px,1fr));
@@ -343,7 +332,6 @@
             color: var(--text3)
         }
 
-        /* ── What I did ── */
         .did-list {
             list-style: none;
             display: flex;
@@ -372,7 +360,6 @@
             line-height: 1.65
         }
 
-        /* ── Accordion Mechanics ── */
         .mechanics-list {
             display: flex;
             flex-direction: column;
@@ -461,7 +448,6 @@
             transform: rotate(180deg)
         }
 
-        /* accordion body */
         .mechanic-body {
             display: grid;
             grid-template-rows: 0fr;
@@ -491,17 +477,22 @@
             padding-top: 1rem
         }
 
-        /* gif inside mechanic */
+        /* Add this to your <style> section */
         .mechanic-gif {
             border-radius: var(--r-sm);
             overflow: hidden;
             border: .5px solid var(--border);
-            background: var(--bg2)
+            background: var(--bg2);
+            padding: 4px; /* Small padding for breathing room */
         }
 
             .mechanic-gif img {
                 width: 100%;
-                display: block
+                height: auto;
+                max-height: 460px; /* Good max height for portrait GIFs */
+                object-fit: contain; /* Prevents stretching */
+                display: block;
+                margin: 0 auto;
             }
 
         .gif-placeholder {
@@ -527,7 +518,6 @@
             border-top: .5px solid var(--border)
         }
 
-        /* code inside mechanic */
         .code-block-wrap {
             border-radius: var(--r-sm);
             overflow: hidden;
@@ -637,7 +627,6 @@
             border: .5px solid var(--border)
         }
 
-        /* ── Footer ── */
         footer {
             padding: 2rem 0;
             border-top: .5px solid var(--border);
@@ -663,6 +652,113 @@
                     text-decoration: underline
                 }
 
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.88);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem
+        }
+
+            .lightbox.active {
+                display: flex
+            }
+
+        .lightbox-img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: var(--r);
+            object-fit: contain;
+            user-select: none;
+            box-shadow: 0 24px 80px rgba(0,0,0,.5)
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 1.2rem;
+            right: 1.4rem;
+            background: rgba(255,255,255,.1);
+            border: .5px solid rgba(255,255,255,.25);
+            color: #fff;
+            font-size: 18px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s
+        }
+
+            .lightbox-close:hover {
+                background: rgba(255,255,255,.22)
+            }
+
+        .lightbox-prev, .lightbox-next {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,.1);
+            border: .5px solid rgba(255,255,255,.2);
+            color: #fff;
+            font-size: 22px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s
+        }
+
+        .lightbox-prev {
+            left: 1.2rem
+        }
+
+        .lightbox-next {
+            right: 1.2rem
+        }
+
+            .lightbox-prev:hover, .lightbox-next:hover {
+                background: rgba(255,255,255,.25)
+            }
+
+        .lightbox-counter {
+            position: fixed;
+            bottom: 1.4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            color: rgba(255,255,255,.55);
+            background: rgba(0,0,0,.4);
+            padding: 4px 14px;
+            border-radius: var(--r-pill)
+        }
+        .gif-carousel {
+            position: relative;
+        }
+
+        .carousel-container {
+            display: flex;
+            width: 100%;
+        }
+
+        .carousel-slide {
+            width: 100%;
+            height: auto;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+            .carousel-slide:hover {
+                transform: scale(1.02);
+            }
         @media(max-width:560px) {
             .game-title {
                 font-size: 24px
@@ -675,6 +771,14 @@
             .game-header-top {
                 flex-direction: column
             }
+
+            .lightbox-prev {
+                left: .5rem
+            }
+
+            .lightbox-next {
+                right: .5rem
+            }
         }
     </style>
 </head>
@@ -682,39 +786,41 @@
 
     <canvas id="sparkle-canvas"></canvas>
 
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <button class="lightbox-prev" onclick="changeImage(-1)">‹</button>
+        <img class="lightbox-img" id="lightbox-img" src="" alt="">
+        <button class="lightbox-next" onclick="changeImage(1)">›</button>
+        <span class="lightbox-counter" id="lightbox-counter"></span>
+    </div>
+
     <div class="wrap">
         <nav>
             <div class="nav-inner">
-                <span class="nav-logo">
-                    <img src="Images/portfolioLogo.jpg" alt="logo" style="width:24px;height:24px;border-radius:4px;object-fit:cover;vertical-align:middle;margin-right:8px;">
-                    Derrick Yu
-                </span>
+                <a href="index.html" class="nav-logo">Derrick Yu</a>
                 <a href="index.html" class="back-btn">← Back to portfolio</a>
             </div>
         </nav>
 
-        <!-- ── Banner ── -->
+        <!-- Banner -->
         <div class="game-banner reveal">
-            <!-- Replace with: <img src="Images/echoes-banner.jpg" alt="Echoes of the Void banner"> -->
-            <div class="banner-placeholder">
-                <svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="10" y="20" width="40" height="26" rx="5" fill="#AFA9EC" /><rect x="22" y="12" width="16" height="13" rx="3" fill="#CECBF6" /><circle cx="30" cy="33" r="6" fill="#EEEDFE" /></svg>
-                <span>Replace with your banner image</span>
-            </div>
+            <img src="Images/DD/ddBanner.png" alt="Devils Contract Banner">
         </div>
 
-        <!-- ── Title & links ── -->
+        <!-- Title & links -->
         <div class="game-header reveal d1">
             <div class="game-header-top">
                 <h1 class="game-title">Devils Contract</h1>
                 <div class="btn-row">
-                    <a href="#" class="btn btn-dark">Play on Steam</a>
+                    <a href="https://uowmgames.itch.io/devils-contract" target="_blank" class="btn btn-dark">Play on Itch.io</a>
                     <a href="#" class="btn btn-outline">View GitHub</a>
                 </div>
             </div>
             <div class="tags">
                 <span class="tag">Unity</span>
                 <span class="tag">C#</span>
-                <span class="tag-plain">Mobile</span>
+                <span class="tag-plain">PC</span>
                 <span class="tag-plain">School Group Project</span>
                 <span class="tag-plain">2025</span>
             </div>
@@ -722,7 +828,7 @@
 
         <hr>
 
-        <!-- ── About ── -->
+        <!-- About -->
         <section class="reveal">
             <p class="label">About the game</p>
             <div class="about-text">
@@ -730,7 +836,7 @@
                     In the lawless heart of the Wild West, you are a gunslinger with one goal to be
                     the fastest, deadliest shot in town. To prove your worth, you seek out the four
                     greatest gunslingers. But before your first duel, a mysterious cowboy appears,
-                    offering you a golden gun an unrivaled weapon that guarantees victory with
+                    offering you a golden gun—an unrivaled weapon that guarantees victory with
                     every headshot.
 
                 </p>
@@ -742,279 +848,335 @@
                 </p>
             </div>
 
-            <!-- ── Screenshots (moved here, under About) ── -->
+            <!-- Screenshots -->
             <div class="screenshots">
-                <div class="shot"><!-- <img src="Images/echoes-ss1.jpg" alt="Screenshot 1"> -->Screenshot 1</div>
-                <div class="shot"><!-- <img src="Images/echoes-ss2.jpg" alt="Screenshot 2"> -->Screenshot 2</div>
-                <div class="shot"><!-- <img src="Images/echoes-ss3.jpg" alt="Screenshot 3"> -->Screenshot 3</div>
+                <div class="shot" onclick="openLightbox(0)"><img src="Images/DD/dd1.png" alt="Screenshot 1"></div>
+                <div class="shot" onclick="openLightbox(1)"><img src="Images/DD/dd2.png" alt="Screenshot 2"></div>
+                <div class="shot" onclick="openLightbox(2)"><img src="Images/DD/dd3.png" alt="Screenshot 3"></div>
+                <div class="shot" onclick="openLightbox(3)"><img src="Images/DD/dd5.png" alt="Screenshot 4"></div>
+ 
             </div>
         </section>
 
         <hr>
 
-        <!-- ── Stats ── -->
+        <!-- Stats -->
         <section class="reveal">
             <p class="label">At a glance</p>
             <div class="stats">
                 <div class="stat"><div class="stat-num">3</div><div class="stat-label">Months to build</div></div>
-                <div class="stat"><div class="stat-num">8</div><div class="stat-label">Developer</div></div>
+                <div class="stat"><div class="stat-num">8</div><div class="stat-label">Developers</div></div>
                 <div class="stat"><div class="stat-num">Unity</div><div class="stat-label">Engine</div></div>
-                <div class="stat"><div class="stat-num">Mobile</div><div class="stat-label">Platform</div></div>
+                <div class="stat"><div class="stat-num">PC</div><div class="stat-label">Platform</div></div>
             </div>
         </section>
 
         <hr>
 
-        <!-- ── Mechanics (accordion) ── -->
+        <!-- Mechanics -->
         <section class="reveal">
             <p class="label">Mechanics</p>
             <p style="font-size:13px;color:var(--text3);margin-bottom:1.2rem;">Click a mechanic to see the GIF and code behind it.</p>
             <div class="mechanics-list">
 
-                <!-- ── Mechanic 1: EnemySpawner ── -->
+                <!-- m1: Enemy AI & Spawner -->
                 <div class="mechanic-item" id="m1">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m1')">
                         <div class="mechanic-icon">
-                            <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#7F77DD" stroke-width="1.5" /><path d="M7 4v3l2 1.5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" /></svg>
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">EnemySpawner</span>
-                            <span class="mechanic-subtitle">C# · Wave-Based . Designer-Friendly </span>
+                            <span class="mechanic-title">Enemy Wave Spawner</span>
+                            <span class="mechanic-subtitle">C# · Phase-based System · Designer-Friendly Tool</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">Each run seeds a unique universe — star positions, planet types, ruin placements, and enemy patrol routes are all generated at runtime using a single integer seed. No two playthroughs are the same, and seeds can be shared between players.</p>
+                                <p class="mechanic-desc">
+                                    The enemy system features a flexible, phase-based wave spawner that allows designers to easily create multi-stage combat encounters.
+                                    Each phase supports different enemy types, spawn points, patrol paths, delays, and special behaviors (like hostage spawns or checkpoints).
+                                </p>
 
-                                <!-- GIF -->
                                 <div class="mechanic-gif">
-                                    <!-- Replace with: <img src="Images/echoes-gen.gif" alt="Procedural universe generating"> -->
-                                    <div class="gif-placeholder">
-                                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg>
-                                        <span>echoes-gen.gif</span>
-                                    </div>
-                                    <div class="gif-caption">Procedural universe generating on load</div>
+                                    <img src="Images/DD/ddwave.gif" alt="Enemy wave spawner in action" style="width:100%; height:auto; display:block;">
+                                    <div class="gif-caption">Phase-based enemy spawning with staggered delays and patrol routes</div>
                                 </div>
 
-                                <!-- Code -->
+                                <p class="label" style="margin-bottom:.5rem;">EnemySpawner.cs — Phase System</p>
                                 <div class="code-block-wrap">
-                                    <div class="code-header">
-                                        <span class="code-filename">ProceduralWorldGen.cpp</span>
-                                        <span class="code-lang">C++</span>
-                                    </div>
-                                    <pre><code><cm>// Seed the random stream with the game session ID</cm>
-<kw>void</kw> <fn>AWorldGenerator</fn>::<fn>GenerateUniverse</fn>(<kw>int32</kw> Seed)
+                                    <div class="code-header"><span class="code-filename">EnemySpawner.cs</span><span class="code-lang">C#</span></div>
+                                    <pre><code>public class EnemySpawner : MonoBehaviour 
 {
-    FRandomStream Stream(Seed);
-
-                                    <kw>for</kw> (<kw>int32</kw> i = <num>0</num>; i &lt; StarCount; i++)
+    [System.Serializable]
+    public class Phase 
     {
-        FVector Location = FVector(
-            Stream.<fn>FRandRange</fn>(-<num>50000.f</num>, <num>50000.f</num>),
-            Stream.<fn>FRandRange</fn>(-<num>50000.f</num>, <num>50000.f</num>),
-            Stream.<fn>FRandRange</fn>(-<num>10000.f</num>, <num>10000.f</num>)
-        );
+        public string phaseName;
+        public Transform[] spawnPoints;
+        public Transform[] walkPoints;
+        public bool[] spawnNormalEnemy;
+        public bool[] spawnStrongEnemy;
+        public bool[] spawnHostage;
+        public float[] spawnDelays;
+        public bool isCheckPoint;
+    }
 
-                                    <tp>AStarSystem</tp>* Star = <fn>GetWorld</fn>()-&gt;<fn>SpawnActor</fn>&lt;<tp>AStarSystem</tp>&gt;(
-            StarClass, Location, FRotator::ZeroRotator
-        );
+    private int totalEnemiesInCurrentPhase = 0;
+    private int enemiesKilled = 0;
 
-        Star-&gt;<fn>InitialiseStar</fn>(Stream.<fn>RandRange</fn>(<num>1</num>, <num>5</num>));
+    IEnumerator SpawnEnemiesInPhase(Phase phase)
+    {
+        for (int i = 0; i < phase.spawnPoints.Length; i++)
+        {
+            yield return new WaitForSeconds(phase.spawnDelays[i]);
+
+            if (phase.spawnNormalEnemy[i]) 
+                SpawnEnemy(normalEnemyPrefab, phase.spawnPoints[i]);
+
+            if (phase.spawnStrongEnemy[i]) 
+                SpawnEnemy(strongEnemyPrefab, phase.spawnPoints[i]);
+
+            totalEnemiesInCurrentPhase++;
+        }
+    }
+
+    public void RemoveEnemy()
+    {
+        enemiesKilled++;
+        if (enemiesKilled >= totalEnemiesInCurrentPhase)
+        {
+            EndPhase();   // Move to next phase or trigger checkpoint
+        }
     }
 }</code></pre>
                                 </div>
+
                                 <div class="code-explain">
                                     <p class="explain-label">What this does</p>
                                     <div class="explain-text">
-                                        <p>This function generates the entire game universe from a single integer — the <span class="inline-code">Seed</span>. By passing the same seed to <span class="inline-code">FRandomStream</span>, every star position and planet will always be identical for that seed, which is how sharable universe codes work.</p>
-                                        <p>The loop runs <span class="inline-code">StarCount</span> times, each time picking a random 3D position within the defined space boundaries. It then spawns a <span class="inline-code">AStarSystem</span> actor and calls <span class="inline-code">InitialiseStar()</span> with a random size value (1–5) to vary the visual scale and number of orbiting planets.</p>
+                                        <p>
+                                            The <strong>EnemySpawner</strong> uses a serialized <code>Phase</code> class that designers can configure directly in the Inspector.
+                                            Each phase supports staggered spawning with individual delays, different enemy types, patrol routes, and optional checkpoint behavior.
+                                        </p>
+                                        <p>When enemies die, they call <code>RemoveEnemy()</code>, which tracks progress and automatically advances to the next phase once all enemies in the current wave are defeated.</p>
                                     </div>
                                 </div>
 
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">Key Advantages</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • Fully designer-friendly — no coding needed to set up waves<br>
+                                            • Supports multiple enemy types per phase (normal, strong, hostage)<br>
+                                            • Staggered spawn delays create more dynamic combat pacing<br>
+                                            • Integrated with patrol system using <code>walkPoints</code><br>
+                                            • Checkpoint support to trigger events after clearing a phase<br>
+                                            • Clean separation between spawning logic and individual enemy AI
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ── Mechanic 2: Boss Target Spawner ── -->
+                <!-- m2: Audio Manager -->
                 <div class="mechanic-item" id="m2">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m2')">
                         <div class="mechanic-icon">
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Boss Target Spawner</span>
-                            <span class="mechanic-subtitle">C# · Editable Spawn Points ·  Designer Friendly</span>
+                            <span class="mechanic-title">Audio Manager</span>
+                            <span class="mechanic-subtitle">C# · Sound FX Pooling · Random Variation · Easy Designer Use</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">The ship uses Unreal's Chaos physics with custom drag and thrust curves to simulate zero-gravity momentum. Holding the thruster builds speed; releasing lets inertia carry you forward until drag gradually bleeds the velocity off.</p>
+                                <p class="mechanic-desc">
+                                    The Audio Manager is a lightweight, reusable system for playing sound effects in the game.
+                                    It supports random sound variation, dynamic spawning at specific locations, and automatic cleanup — making it easy for designers and other scripts to trigger high-quality audio feedback without performance issues.
+                                </p>
 
-                                <!-- GIF -->
-                                <div class="mechanic-gif">
-                                    <!-- Replace with: <img src="Images/echoes-fly.gif" alt="Ship flying through nebula"> -->
-                                    <div class="gif-placeholder">
-                                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg>
-                                        <span>echoes-fly.gif</span>
-                                    </div>
-                                    <div class="gif-caption">Ship flying through a nebula field</div>
-                                </div>
+                          
 
-                                <!-- Code -->
+                                <p class="label" style="margin-bottom:.5rem;">AudioManager.cs — Core Sound System</p>
                                 <div class="code-block-wrap">
-                                    <div class="code-header">
-                                        <span class="code-filename">ShipMovementComponent.cpp</span>
-                                        <span class="code-lang">C++</span>
-                                    </div>
-                                    <pre><code><cm>// Apply thrust and drag each physics tick</cm>
-<kw>void</kw> <fn>UShipMovementComponent</fn>::<fn>TickComponent</fn>(
-                                    <kw>float</kw> DeltaTime,
-    ELevelTick TickType,
-    FActorComponentTickFunction* ThisTickFunction)
+                                    <div class="code-header"><span class="code-filename">AudioManager.cs</span><span class="code-lang">C#</span></div>
+                                    <pre><code>public class AudioManager : MonoBehaviour 
 {
-                                    <kw>Super</kw>::<fn>TickComponent</fn>(DeltaTime, TickType, ThisTickFunction);
+    [SerializeField] private AudioSource soundFXObject;
 
-                                    <kw>if</kw> (bThrusting)
+    public void PlayRandomSoundFxClip(AudioClip[] audioClip, Transform spawnTransform, float volume)
     {
-        Velocity += <fn>GetOwner</fn>()-&gt;<fn>GetActorForwardVector</fn>()
-                    * ThrustForce * DeltaTime;
+        // Pick a random sound from the array
+        int rand = Random.Range(0, audioClip.Length);
+
+        // Create audio source at the position
+        AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
+
+        // Play the sound
+        audioSource.clip = audioClip[rand];
+        audioSource.volume = volume;
+        audioSource.Play();
+
+        // Auto-cleanup when done
+        float clipLength = audioSource.clip.length;
+        Destroy(audioSource.gameObject, clipLength);
     }
-
-                                    <cm>// Apply drag — slows the ship gradually in space</cm>
-    Velocity *= FMath::<fn>Clamp</fn>(<num>1.f</num> - (DragCoefficient * DeltaTime),
-                                    <num>0.f</num>, <num>1.f</num>);
-
-                                    <cm>// Clamp to max speed</cm>
-                                    <kw>if</kw> (Velocity.<fn>Size</fn>() &gt; MaxSpeed)
-        Velocity = Velocity.<fn>GetSafeNormal</fn>() * MaxSpeed;
-
-                                    <fn>GetOwner</fn>()-&gt;<fn>AddActorWorldOffset</fn>(Velocity, <kw>true</kw>);
 }</code></pre>
                                 </div>
+
                                 <div class="code-explain">
                                     <p class="explain-label">What this does</p>
                                     <div class="explain-text">
-                                        <p>This runs every physics frame to move the ship. When the player holds the thrust key, <span class="inline-code">bThrusting</span> is true and velocity builds up in the direction the ship is facing — the longer you hold it, the faster you go.</p>
-                                        <p>The drag line is the key to making space feel right. Multiplying velocity by a value slightly below 1 each frame means the ship slows down smoothly over time, like coasting. <span class="inline-code">DragCoefficient</span> is exposed to the editor so it can be tweaked without recompiling.</p>
-                                        <p>The final clamp ensures the ship never exceeds <span class="inline-code">MaxSpeed</span> regardless of how long thrust is held, preventing runaway velocity bugs.</p>
+                                        <p>
+                                            This method allows any script to easily play a random sound effect from an array at a specific world position.
+                                            It instantiates a temporary <code>AudioSource</code>, plays the chosen clip, and automatically destroys the object after the sound finishes — preventing memory leaks and keeping the scene clean.
+                                        </p>
                                     </div>
                                 </div>
 
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">Key Advantages</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • Supports **random sound variation** — prevents repetitive audio fatigue<br>
+                                            • Spawns sound at exact location for proper 3D spatial audio<br>
+                                            • Fully configurable volume per call<br>
+                                            • Automatic cleanup using `Destroy` with delay<br>
+                                            • Very easy to use from any script (gunshots, footsteps, UI, impacts, etc.)<br>
+                                            • Designer-friendly — just assign an array of AudioClips in the Inspector
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-top:1.2rem;">Usage Example</p>
+                                <div class="code-explain">
+                                    <div class="explain-text">
+                                        <p>From any other script (e.g. Gun, Player, Enemy):</p>
+                                        <pre><code>audioManager.PlayRandomSoundFxClip(gunshotClips, firePoint, 0.9f);</code></pre>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ── Mechanic 3: Ruin Discovery ── -->
-                <div class="mechanic-item" id="m3">
-                    <button class="mechanic-trigger" onclick="toggleMechanic('m3')">
+                <!-- Boss Target Spawner Block -->
+                <div class="mechanic-item" id="mX">
+                    <!-- Change mX to your actual ID, e.g. m3 or m4 -->
+                    <button class="mechanic-trigger" onclick="toggleMechanic('mX')">
                         <div class="mechanic-icon">
-                            <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="4" width="10" height="7" rx="1.5" stroke="#7F77DD" stroke-width="1.5" /><path d="M5 4V3a2 2 0 0 1 4 0v1" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" /></svg>
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Ruin discovery & lore system</span>
-                            <span class="mechanic-subtitle">C++ · Proximity scan · Detail reveal</span>
+                            <span class="mechanic-title">Boss Target Spawner</span>
+                            <span class="mechanic-subtitle">C# · Phase-based Targeting · Rapid-fire Support</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">Ancient ruins scattered across planets hold fragments of lore. Players scan ruins with a proximity sensor — the closer you are, the more detail is revealed. Collected fragments assemble into a timeline in the journal.</p>
+                                <p class="mechanic-desc">
+                                    The Boss Target Spawner is a flexible system that manages multiple phases of boss fights by spawning and cycling through target points.
+                                    Designers can easily configure different phases with varying target locations and special behaviors like rapid-fire attack zones.
+                                </p>
 
-                                <!-- GIF -->
                                 <div class="mechanic-gif">
-                                    <!-- Replace with: <img src="Images/echoes-scan.gif" alt="Scanning a ruin"> -->
-                                    <div class="gif-placeholder">
-                                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg>
-                                        <span>echoes-scan.gif</span>
-                                    </div>
-                                    <div class="gif-caption">Scanning an ancient ruin for lore</div>
+                                    <img src="Images/DD/ddboss1.gif" alt="Boss Target Spawner in action" style="width:100%; height:auto; display:block;">
+                                    <div class="gif-caption">Dynamic target spawning across multiple boss fight phases with rapid-fire zones</div>
                                 </div>
 
-                                <!-- Code -->
+                                <p class="label" style="margin-bottom:.5rem;">BossTargetSpawner.cs — Core Logic</p>
                                 <div class="code-block-wrap">
-                                    <div class="code-header">
-                                        <span class="code-filename">RuinScanner.cpp</span>
-                                        <span class="code-lang">C++</span>
-                                    </div>
-                                    <pre><code><cm>// Called when player activates the scanner</cm>
-<kw>void</kw> <fn>ARuinScanner</fn>::<fn>ScanNearbyRuins</fn>()
+                                    <div class="code-header"><span class="code-filename">BossTargetSpawner.cs</span><span class="code-lang">C#</span></div>
+                                    <pre><code>public class BossTargetSpawner : MonoBehaviour 
 {
-    TArray&lt;<tp>AActor</tp>*&gt; FoundActors;
-                                    <tp>UGameplayStatics</tp>::<fn>GetAllActorsOfClass</fn>(
-                                    <fn>GetWorld</fn>(), <tp>ARuinFragment</tp>::<fn>StaticClass</fn>(), FoundActors
-    );
-
-                                    <kw>for</kw> (<tp>AActor</tp>* Actor : FoundActors)
+    [System.Serializable]
+    public class TargetPoint 
     {
-                                    <kw>float</kw> Distance = FVector::<fn>Dist</fn>(
-                                    <fn>GetOwner</fn>()-&gt;<fn>GetActorLocation</fn>(),
-            Actor-&gt;<fn>GetActorLocation</fn>()
-        );
+        public Transform point;
+        public bool isSpam;   // Rapid-fire attacks
+    }
 
-                                    <kw>if</kw> (Distance &lt;= ScanRadius)
+    [System.Serializable]
+    public class Phase 
+    {
+        public string phaseName;
+        public List<TargetPoint> targetPoints;
+    }
+
+    private List<Transform> targetPoints = new List<Transform>();
+    private int currentPhaseIndex = 0;
+
+    public void LoadPhaseTargets(int phaseIndex)
+    {
+        targetPoints.Clear();
+        foreach (TargetPoint target in phases[phaseIndex].targetPoints)
         {
-                                    <tp>ARuinFragment</tp>* Ruin = <fn>Cast</fn>&lt;<tp>ARuinFragment</tp>&gt;(Actor);
-                                    <kw>float</kw> Detail = <num>1.f</num> - (Distance / ScanRadius);
-            Ruin-&gt;<fn>RevealLore</fn>(Detail);
+            if (target.point != null)
+                targetPoints.Add(target.point);
         }
+        currentPhaseIndex = phaseIndex;
+    }
+
+    public void LoadNextPhaseTargets()
+    {
+        int nextPhaseIndex = currentPhaseIndex + 1;
+        if (nextPhaseIndex < phases.Count)
+            LoadPhaseTargets(nextPhaseIndex);
     }
 }</code></pre>
                                 </div>
+
                                 <div class="code-explain">
                                     <p class="explain-label">What this does</p>
                                     <div class="explain-text">
-                                        <p>This scans all ruin fragments in the world and reveals lore based on how close the player is. <span class="inline-code">GetAllActorsOfClass</span> finds every <span class="inline-code">ARuinFragment</span> in the level, then a distance check filters only ones within <span class="inline-code">ScanRadius</span>.</p>
-                                        <p>The clever part is the <span class="inline-code">Detail</span> calculation — dividing distance by the scan radius gives a 0 to 1 float. At maximum distance it's near 0 (barely revealed), right next to the ruin it approaches 1 (fully revealed). This value controls how much text and visual detail is shown, rewarding players for physically getting close.</p>
+                                        <p>The system uses a serialized <code>Phase</code> class that designers can configure in the Inspector. Each phase contains a list of target points, some marked as <code>isSpam</code> for rapid-fire attack sections.</p>
+                                        <p><code>LoadPhaseTargets()</code> clears the current list and loads all targets for the new phase. <code>LoadNextPhaseTargets()</code> automatically advances to the next phase when called (usually after the player clears the current one).</p>
                                     </div>
                                 </div>
 
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">Key Advantages</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • Fully designer-friendly — phases and targets are configured entirely in the Unity Inspector<br>
+                                            • Supports multiple phases per boss fight<br>
+                                            • Special <code>isSpam</code> flag allows certain targets to trigger rapid-fire attacks<br>
+                                            • Clean and reusable — easily extendable for more complex boss behaviors<br>
+                                            • Automatic progression with <code>LoadNextPhaseTargets()</code>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Copy this block to add more mechanics:
-                <div class="mechanic-item" id="m4">
-                  <button class="mechanic-trigger" onclick="toggleMechanic('m4')">
-                    <div class="mechanic-icon">
-                      <svg viewBox="0 0 14 14" fill="none">YOUR ICON SVG</svg>
-                    </div>
-                    <div class="mechanic-trigger-text">
-                      <span class="mechanic-title">Your mechanic title</span>
-                      <span class="mechanic-subtitle">Short tech summary</span>
-                    </div>
-                    <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </button>
-                  <div class="mechanic-body">
-                    <div class="mechanic-body-inner">
-                      <div class="mechanic-content">
-                        <p class="mechanic-desc">Description here.</p>
-                        GIF and code blocks here (copy from above)
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                -->
+
+
+
 
             </div>
         </section>
 
         <hr>
 
-        <!-- ── What I did ── -->
+        <!-- What I did -->
         <section class="reveal">
             <p class="label">What I did</p>
             <ul class="did-list">
-                <li><span class="did-dot"></span><span class="did-text">Enemy Spawner.</span></li>
-                <li><span class="did-dot"></span><span class="did-text">Boss Target Spawner</span></li>
-                <li><span class="did-dot"></span><span class="did-text">Enemy AI</span></li>
+                <li><span class="did-dot"></span><span class="did-text">AudioManager</span></li>
+                <li><span class="did-dot"></span><span class="did-text">All Enemies in the Game</span></li>
+                <li><span class="did-dot"></span><span class="did-text">All Bosses</span></li>
+                <li><span class="did-dot"></span><span class="did-text">Boss Target Spawner System</span></li>
+                <li><span class="did-dot"></span><span class="did-text">Enemy Spawner</span></li>
             </ul>
         </section>
 
@@ -1026,45 +1188,100 @@
     </div>
 
     <script>
-        /* ── Accordion ── */
+        /* Lightbox */
+        let lbImages = [
+        'Images/DD/dd1.png','Images/DD/dd2.png','Images/DD/dd3.png','Images/DD/dd5.png'
+        ]
+        let lbIndex = 0
+
+        function openLightbox(i) {
+        lbIndex = i
+        document.getElementById('lightbox-img').src = lbImages[lbIndex]
+        document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length
+        document.getElementById('lightbox').classList.add('active')
+        document.body.style.overflow = 'hidden'
+        }
+
+        function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active')
+        document.body.style.overflow = ''
+        }
+
+        function closeLightboxOutside(e) {
+        if (e.target === document.getElementById('lightbox')) closeLightbox()
+        }
+
+        function changeImage(dir) {
+        lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length
+        document.getElementById('lightbox-img').src = lbImages[lbIndex]
+        document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length
+        }
+
+        // Allow clicking carousel images to open in lightbox
+function openLightboxFromCarousel(src, carouselId) {
+    // Find current index of clicked image
+    const container = document.getElementById(carouselId);
+    const slides = container.getElementsByTagName('img');
+    let index = 0;
+    
+    for (let i = 0; i < slides.length; i++) {
+        if (slides[i].src === src) {
+            index = i;
+            break;
+        }
+    }
+    
+    // Reuse your existing lightbox but with all carousel images
+    lbImages = Array.from(slides).map(img => img.src);  // temporarily override with carousel images
+    lbIndex = index;
+    
+    document.getElementById('lightbox-img').src = lbImages[lbIndex];
+    document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+        document.addEventListener('keydown', e => {
+        if (!document.getElementById('lightbox').classList.contains('active')) return
+        if (e.key === 'ArrowRight') changeImage(1)
+        if (e.key === 'ArrowLeft') changeImage(-1)
+        if (e.key === 'Escape') closeLightbox()
+        })
+
+        /* Accordion */
         function toggleMechanic(id) {
         const item = document.getElementById(id)
         const isOpen = item.classList.contains('open')
-        // Close all
         document.querySelectorAll('.mechanic-item').forEach(el => el.classList.remove('open'))
-        // Open clicked if it was closed
         if (!isOpen) {
         item.classList.add('open')
-        // Scroll into view smoothly after a tiny delay to let the animation start
-        setTimeout(() => {
-        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-        }, 50)
+        setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50)
         }
         }
 
-        /* ── Scroll reveal ── */
+        /* Scroll reveal */
         const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') })
-        }, {threshold: 0.08})
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
+        }, { threshold: 0.08 })
         document.querySelectorAll('.reveal').forEach(el => {
         obs.observe(el)
-        if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
+        if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
         })
 
-        /* ── Cursor sparkle ── */
+        /* Cursor sparkle */
         const sc = document.getElementById('sparkle-canvas')
         const sx = sc.getContext('2d')
         let sparks = []
-        function rszSpark(){ sc.width = window.innerWidth; sc.height = window.innerHeight }
+        function rszSpark() { sc.width = window.innerWidth; sc.height = window.innerHeight }
         rszSpark()
         window.addEventListener('resize', rszSpark)
         const COLS = ['#AFA9EC','#7F77DD','#9FE1CB','#5DCAA5','#F5C4B3','#D85A30','#F4C0D1','#ED93B1']
         let lastMouse = 0
         window.addEventListener('mousemove', e => {
         const now = Date.now()
-        if(now - lastMouse < 20) return
+        if (now - lastMouse < 20) return
         lastMouse = now
-        for(let i = 0; i < 4; i++){
+        for (let i = 0; i < 4; i++) {
         const angle = Math.random() * Math.PI * 2
         const speed = Math.random() * 1.8 + 0.4
         sparks.push({
@@ -1077,7 +1294,7 @@
         })
         }
         })
-        function animSparks(){
+        function animSparks() {
         sx.clearRect(0, 0, sc.width, sc.height)
         sparks = sparks.filter(s => s.alpha > 0.03)
         sparks.forEach(s => {

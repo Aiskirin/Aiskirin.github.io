@@ -105,7 +105,6 @@
             padding: 0 1.5rem
         }
 
-        /* Nav */
         nav {
             padding: 1.4rem 0;
             border-bottom: .5px solid var(--border)
@@ -138,7 +137,6 @@
                 color: var(--text)
             }
 
-        /* Banner */
         .game-banner {
             width: 100%;
             height: 340px;
@@ -158,7 +156,6 @@
                 display: block
             }
 
-        /* Game header */
         .game-header {
             margin-bottom: 2rem
         }
@@ -259,7 +256,6 @@
             margin-bottom: 1.1rem
         }
 
-        /* About */
         .about-text {
             font-size: 15px;
             color: var(--text2);
@@ -275,7 +271,6 @@
                     margin-bottom: 0
                 }
 
-        /* Screenshots */
         .screenshots {
             display: grid;
             grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
@@ -311,7 +306,6 @@
                 display: block
             }
 
-        /* Stats */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit,minmax(110px,1fr));
@@ -338,7 +332,6 @@
             color: var(--text3)
         }
 
-        /* What I did */
         .did-list {
             list-style: none;
             display: flex;
@@ -367,7 +360,6 @@
             line-height: 1.65
         }
 
-        /* Accordion */
         .mechanics-list {
             display: flex;
             flex-direction: column;
@@ -485,7 +477,6 @@
             padding-top: 1rem
         }
 
-        /* GIF */
         .mechanic-gif {
             border-radius: var(--r-sm);
             overflow: hidden;
@@ -521,7 +512,6 @@
             border-top: .5px solid var(--border)
         }
 
-        /* Code */
         .code-block-wrap {
             border-radius: var(--r-sm);
             overflow: hidden;
@@ -631,7 +621,6 @@
             border: .5px solid var(--border)
         }
 
-        /* Footer */
         footer {
             padding: 2rem 0;
             border-top: .5px solid var(--border);
@@ -657,7 +646,6 @@
                     text-decoration: underline
                 }
 
-        /* ── Lightbox ── */
         .lightbox {
             display: none;
             position: fixed;
@@ -704,8 +692,7 @@
                 background: rgba(255,255,255,.22)
             }
 
-        .lightbox-prev,
-        .lightbox-next {
+        .lightbox-prev, .lightbox-next {
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
@@ -731,8 +718,7 @@
             right: 1.2rem
         }
 
-            .lightbox-prev:hover,
-            .lightbox-next:hover {
+            .lightbox-prev:hover, .lightbox-next:hover {
                 background: rgba(255,255,255,.25)
             }
 
@@ -747,7 +733,26 @@
             padding: 4px 14px;
             border-radius: var(--r-pill)
         }
+        .gif-carousel {
+            position: relative;
+        }
 
+        .carousel-container {
+            display: flex;
+            width: 100%;
+        }
+
+        .carousel-slide {
+            width: 100%;
+            height: auto;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+            .carousel-slide:hover {
+                transform: scale(1.02);
+            }
         @media(max-width:560px) {
             .game-title {
                 font-size: 24px
@@ -775,7 +780,7 @@
 
     <canvas id="sparkle-canvas"></canvas>
 
-    <!-- ── Lightbox ── -->
+    <!-- Lightbox -->
     <div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
         <button class="lightbox-close" onclick="closeLightbox()">✕</button>
         <button class="lightbox-prev" onclick="changeImage(-1)">‹</button>
@@ -875,29 +880,140 @@
                         </div>
                         <div class="mechanic-trigger-text">
                             <span class="mechanic-title">Enemy AI</span>
-                            <span class="mechanic-subtitle">C++ · StateTree · GAS System · Gameplay · AI</span>
+                            <span class="mechanic-subtitle">C++ · StateTree · GAS · Perception · BattleCircle</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">Enemies use Unreal's StateTree system combined with the Gameplay Ability System (GAS) to manage states like patrol, chase, attack, and death. Each enemy type has unique ability sets that are activated based on game conditions.</p>
-                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>enemy-ai.gif</span></div><div class="gif-caption">Enemy AI in action</div></div>
+
+                                <p class="mechanic-desc">
+                                    The enemy AI is built across three classes with clear responsibilities.
+                                    <strong>EQEnemy</strong> is the character body — it owns the stats, GAS component, and reacts to gameplay events like being hit, stunned, or knocked back.
+                                    <strong>EnemyAIController</strong> is the brain — it runs perception, sends events to the StateTree, and coordinates with the BattleCircle system to manage how many enemies attack at once.
+                                    <strong>SkeletonAttackTask</strong> is a single StateTree node — it fires the attack ability via GAS and manages the attack cooldown loop.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <img src="Images/EQ/EnemyAI.gif" alt="Enemy AI in action" style="width:100%; height:auto; display:block;">
+                                    <div class="gif-caption">Enemy detecting, chasing, and attacking the player</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">EQEnemy.cpp — The Character</p>
+
                                 <div class="code-block-wrap">
-                                    <div class="code-header"><span class="code-filename">EnemyAI.cpp</span><span class="code-lang">C++</span></div>
-                                    <pre><code><cm>// Activate ability based on current state</cm>
-<kw>void</kw> <fn>AEnemyBase</fn>::<fn>TryActivateAbilityByTag</fn>(<tp>FGameplayTag</tp> Tag)
+                                    <div class="code-header"><span class="code-filename">EQEnemy.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// On possession, pass patrol/chase settings to the controller
+// then start the StateTree</cm>
+<kw>if</kw> (<tp>AEnemyAIController</tp>* EnemyAI = <fn>Cast</fn>&lt;<tp>AEnemyAIController</tp>&gt;(WeakController.<fn>Get</fn>()))
 {
-                                    <kw>if</kw> (AbilitySystemComponent)
+    EnemyAI-&gt;<fn>SetPatrolSpeed</fn>(WeakThis-&gt;PatrolSpeed);
+    EnemyAI-&gt;<fn>SetChaseSpeed</fn>(WeakThis-&gt;ChaseSpeed);
+
+    <kw>if</kw> (EnemyAI-&gt;StateTreeComponent &amp;&amp; WeakThis-&gt;StateTree)
     {
-        AbilitySystemComponent-&gt;<fn>TryActivateAbilitiesByTag</fn>(
-            FGameplayTagContainer(Tag)
-        );
+        EnemyAI-&gt;StateTreeComponent-&gt;<fn>SetStateTree</fn>(WeakThis-&gt;StateTree);
+        EnemyAI-&gt;StateTreeComponent-&gt;<fn>StartLogic</fn>();
+    }
+}
+
+<cm>// When hit, check element tag and react — e.g. Grass hit applies a stun</cm>
+<kw>if</kw> (AbilitySystemComponent-&gt;<fn>HasMatchingGameplayTag</fn>(Tags.Damage_Grass))
+{
+    <kw>if</kw> (!bShieldActive) <fn>ApplyStun</fn>();
+}</code></pre>
+                                </div>
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>EQEnemy owns the <span class="inline-code">AbilitySystemComponent</span> and <span class="inline-code">AttributeSet</span> — the two core GAS objects. On possession it pushes its designer-set speeds and StateTree asset to the controller, then starts the AI logic.</p>
+                                        <p>It also listens to GAS attribute and tag events directly. When health changes, it checks which element tag is on the ASC — Fire, Water, or Grass — and reacts accordingly: breaking a matching shield, applying a stun, or triggering a hit flash. The enemy doesn't know who hit it, it just reads its own tags.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">EnemyAIController.cpp — The Brain</p>
+
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">EnemyAIController.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// Perception sees the player — send event to StateTree</cm>
+<kw>if</kw> (Stimulus.<fn>WasSuccessfullySensed</fn>())
+{
+    CurrentTarget = Actor;
+    <fn>SetFocus</fn>(Actor);
+
+    <kw>if</kw> (<tp>UBattleCircleSubsystem</tp>* BCS = GetWorld()-&gt;<fn>GetSubsystem</fn>&lt;<tp>UBattleCircleSubsystem</tp>&gt;())
+        BCS-&gt;<fn>RegisterEnemy</fn>(<kw>this</kw>);
+
+        <tp>FGameplayTag</tp> PlayerDetectedTag = <tp>FGameplayTag</tp>::<fn>RequestGameplayTag</fn>(<str>"AIEventPlayerInSight"</str>);
+        <fn>SendStateTreeEvent</fn>(PlayerDetectedTag);
+}
+
+<cm>// Forward the event into the running StateTree</cm>
+<kw>void</kw> <fn>AEnemyAIController</fn>::<fn>SendStateTreeEvent</fn>(<tp>FGameplayTag</tp> EventTag)
+{
+    <kw>if</kw> (StateTreeComponent &amp;&amp; StateTreeComponent-&gt;<fn>IsRunning</fn>())
+    {
+        <tp>FStateTreeEvent</tp> Event;
+        Event.Tag = EventTag;
+        StateTreeComponent-&gt;<fn>SendStateTreeEvent</fn>(Event);
     }
 }</code></pre>
                                 </div>
-                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Uses the Gameplay Ability System to activate enemy abilities by tag. This keeps the AI logic clean and data-driven — each enemy Blueprint just sets which tags map to which abilities, without needing code changes.</p></div></div>
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>The controller owns the <span class="inline-code">AIPerceptionComponent</span> and watches for sight stimuli. When the player enters view it sets them as focus, registers with the <span class="inline-code">BattleCircleSubsystem</span> (which limits how many enemies attack at once), and fires the <span class="inline-code">AIEventPlayerInSight</span> tag into the StateTree to trigger the Chase state.</p>
+                                        <p>When the player is lost it releases its attack token, clears focus, and sends <span class="inline-code">AIEventPlayerNotInSight</span> — sending the enemy back to patrol. The StateTree never polls the world directly; it only reacts to events the controller pushes to it.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">SkeletonAttackTask.cpp — The Action</p>
+
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">SkeletonAttackTask.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// EnterState — bail immediately if enemy is stunned</cm>
+<kw>if</kw> (Enemy-&gt;<fn>IsStunned</fn>()) <kw>return</kw> <tp>EStateTreeRunStatus</tp>::Failed;
+
+<cm>// Tick — fire the GAS attack ability once after a short delay</cm>
+<kw>if</kw> (!InstanceData.bHasAttacked &amp;&amp; InstanceData.TimeElapsed &gt;= <num>0.2f</num>)
+{
+    InstanceData.bHasAttacked = <kw>true</kw>;
+    <tp>FGameplayTag</tp> AttackTag = <tp>FEQGameplayTags</tp>::<fn>Get</fn>().Abilities_Attack;
+    ASC-&gt;<fn>TryActivateAbilitiesByTag</fn>(<tp>FGameplayTagContainer</tp>(AttackTag));
+}
+
+<cm>// After cooldown — stay in Attack if still in range, exit if not</cm>
+<kw>if</kw> (InstanceData.TimeElapsed &gt;= InstanceData.AttackCoolDown)
+{
+    <kw>return</kw> (DistanceToTarget &lt;= InstanceData.AttackRange)
+    ? <tp>EStateTreeRunStatus</tp>::Running   <cm>// loop attack</cm>
+    : <tp>EStateTreeRunStatus</tp>::Succeeded; <cm>// back to Chase</cm>
+}</code></pre>
+                                </div>
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>This StateTree Task runs while the enemy is in the Attack state. On entry it immediately checks if the enemy is stunned and fails out if so, letting the StateTree transition elsewhere.</p>
+                                        <p>Each tick it accumulates time. After 0.2 seconds it fires the <span class="inline-code">Abilities_Attack</span> tag into the enemy's ASC — GAS handles finding and playing the right attack ability. After the full cooldown it checks distance: still close enough means it resets and attacks again; too far means it returns <span class="inline-code">Succeeded</span>, which signals the StateTree to go back to Chase. On exit it releases the BattleCircle attack token so another enemy can take its turn.</p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">How they connect</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            <strong>EQEnemy</strong> spawns with its StateTree asset and speeds set in Blueprint →
+                                            on possession it hands them to <strong>EnemyAIController</strong> and starts the StateTree →
+                                            the controller's <strong>Perception</strong> detects the player and sends <span class="inline-code">AIEventPlayerInSight</span> into the StateTree →
+                                            StateTree transitions to Chase, then to Attack when in range →
+                                            <strong>SkeletonAttackTask</strong> runs and calls <span class="inline-code">TryActivateAbilitiesByTag</span> on EQEnemy's ASC →
+                                            GAS fires the attack ability →
+                                            on death, EQEnemy calls <span class="inline-code">NotifyDeath()</span> on the controller which releases the BattleCircle token and sends <span class="inline-code">AIEventDead</span> to cleanly shut the StateTree down.
+                                        </p>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -911,27 +1027,148 @@
                         </div>
                         <div class="mechanic-trigger-text">
                             <span class="mechanic-title">Puzzle Manager</span>
-                            <span class="mechanic-subtitle">C++ · Manager · Blueprint</span>
+                            <span class="mechanic-subtitle">C++ · Manager · Blueprint · Dissolve</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">A central Puzzle Manager tracks all puzzles in the level. Each puzzle registers itself on begin play and notifies the manager when completed. The manager then checks win conditions and triggers the next game event.</p>
-                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>puzzle-manager.gif</span></div><div class="gif-caption">Puzzle manager tracking completion</div></div>
+
+                                <p class="mechanic-desc">
+                                    The Puzzle Manager is a designer-facing actor you drop into any level and configure entirely from Blueprint.
+                                    You assign whichever puzzle types you need — door switches, grass switches, time puzzles, or sequence puzzles — and the manager auto-registers itself with all of them on BeginPlay.
+                                    When every assigned puzzle reports as activated, the manager fires its completion event.
+                                    <strong>AppearingActor</strong> is what the manager rewards the player with — an actor that dissolves into existence using a dynamic material, complete with sound and Niagara effects.
+                                </p>
+
+                                
+
+                                <p class="label" style="margin-bottom:.5rem;">PuzzleManager.cpp — The Coordinator</p>
+
                                 <div class="code-block-wrap">
                                     <div class="code-header"><span class="code-filename">PuzzleManager.cpp</span><span class="code-lang">C++</span></div>
-                                    <pre><code><kw>void</kw> <fn>APuzzleManager</fn>::<fn>OnPuzzleCompleted</fn>(<tp>APuzzleBase</tp>* Puzzle)
+                                    <pre><code><cm>// BeginPlay — auto-registers this manager with every assigned puzzle</cm>
+<kw>for</kw> (<tp>ADoorSwitch</tp>* Switch : RequiredSwitches)
+    <kw>if</kw> (Switch &amp;&amp; !Switch-&gt;PuzzleManager) Switch-&gt;PuzzleManager = <kw>this</kw>;
+
+<kw>for</kw> (<tp>AGrassSwitch</tp>* GrassSwitch : RequiredGrassSwitches)
+    <kw>if</kw> (GrassSwitch &amp;&amp; !GrassSwitch-&gt;PuzzleManager) GrassSwitch-&gt;PuzzleManager = <kw>this</kw>;
+
+<kw>for</kw> (<tp>ATimePuzzle</tp>* TimePuzzleObj : RequiredTimePuzzleObjects)
+    <kw>if</kw> (TimePuzzleObj &amp;&amp; !TimePuzzleObj-&gt;PuzzleManager) TimePuzzleObj-&gt;PuzzleManager = <kw>this</kw>;
+
+<kw>for</kw> (<tp>ASequencePuzzle</tp>* SeqPuzzle : RequiredSequencePuzzleObjects)
+    <kw>if</kw> (SeqPuzzle &amp;&amp; !SeqPuzzle-&gt;PuzzleManager) SeqPuzzle-&gt;PuzzleManager = <kw>this</kw>;
+
+<cm>// CheckPuzzleCompletion — called whenever any puzzle reports a state change</cm>
+<kw>if</kw> (bAllActivated &amp;&amp; !bPuzzleComplete)
 {
-    CompletedPuzzles.<fn>Add</fn>(Puzzle);
-                                    <kw>if</kw> (CompletedPuzzles.<fn>Num</fn>() >= RequiredPuzzles)
-    {
-                                    <fn>TriggerLevelEvent</fn>();
-    }
+    bPuzzleComplete = <kw>true</kw>;
+    <fn>ExecutePuzzleComplete</fn>();
+}
+<kw>else if</kw> (!bAllActivated &amp;&amp; bPuzzleComplete)
+{
+    bPuzzleComplete = <kw>false</kw>;
+    <fn>UpdateActorsState</fn>(<kw>false</kw>); <cm>// reverse the effect if puzzle broken</cm>
 }</code></pre>
                                 </div>
-                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Each time a puzzle is solved it calls this function. Once the number of completed puzzles reaches the required count, <span class="inline-code">TriggerLevelEvent()</span> fires — opening a gate, spawning a boss, or playing a cutscene depending on the level.</p></div></div>
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>On BeginPlay the manager loops through every array the designer filled in — door switches, grass switches, time puzzles, sequence puzzles — and injects itself as their manager reference. No manual wiring per puzzle object is needed.</p>
+                                        <p>Every time any puzzle piece changes state it calls <span class="inline-code">CheckPuzzleCompletion</span>, which tallies all arrays in one pass. If everything is activated it fires <span class="inline-code">ExecutePuzzleComplete</span>. Crucially, if a puzzle can be un-solved (a switch toggled off, a plate stepped off), the manager catches that too and reverses the completion effect automatically.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">PuzzleManager.cpp — Sequence &amp; Timer Logic</p>
+
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">PuzzleManager.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// OnSequencePuzzleHit — enforce correct order</cm>
+<kw>void</kw> <fn>APuzzleManager</fn>::<fn>OnSequencePuzzleHit</fn>(<tp>ASequencePuzzle</tp>* Object)
+{
+    <cm>// Count already-activated objects to know expected index</cm>
+    <kw>int32</kw> ActivatedCount = <num>0</num>;
+    <kw>for</kw> (<tp>ASequencePuzzle</tp>* SeqPuzzle : RequiredSequencePuzzleObjects)
+        <kw>if</kw> (SeqPuzzle &amp;&amp; SeqPuzzle-&gt;<fn>IsActivated</fn>() &amp;&amp; SeqPuzzle != Object)
+            ActivatedCount++;
+
+    <cm>// Wrong order — reset every object immediately</cm>
+    <kw>if</kw> (Object-&gt;SequenceIndex != ActivatedCount)
+    {
+        <kw>for</kw> (<tp>ASequencePuzzle</tp>* SeqPuzzle : RequiredSequencePuzzleObjects)
+            <kw>if</kw> (SeqPuzzle) SeqPuzzle-&gt;<fn>Reset</fn>();
+            <kw>return</kw>;
+    }
+
+    <cm>// First correct hit — start the sequence timer</cm>
+    <kw>if</kw> (bUseSequenceTimer)
+    {
+        GetWorldTimerManager().<fn>SetTimer</fn>(
+            SequenceTimerHandle, <kw>this</kw>,
+            &amp;<fn>APuzzleManager</fn>::<fn>OnSequenceTimerExpired</fn>,
+            SequenceTimeLimit, <kw>false</kw>
+        );
+    }
+    <fn>CheckPuzzleCompletion</fn>();
+}</code></pre>
+                                </div>
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>For sequence puzzles the manager tracks order by counting how many objects are already activated before the new hit arrives. If the incoming object's <span class="inline-code">SequenceIndex</span> doesn't match that count, the order is wrong and everything resets immediately.</p>
+                                        <p>If a sequence timer is enabled, the first correct hit starts a countdown. Hit the remaining objects before it expires and the puzzle completes — miss the deadline and <span class="inline-code">OnSequenceTimerExpired</span> resets the whole thing. This all runs in the manager with no extra code needed in the individual puzzle objects.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">AppearingActor.cpp — The Reward</p>
+
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">AppearingActor.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// SetupDissolveMaterials — swap every mesh slot to a dynamic dissolve material</cm>
+<kw>for</kw> (<kw>int32</kw> i = <num>0</num>; i &lt; ActorMesh-&gt;<fn>GetNumMaterials</fn>(); i++)
+{
+    <tp>UMaterialInstanceDynamic</tp>* DynMat = <tp>UMaterialInstanceDynamic</tp>::<fn>Create</fn>(DissolveMaterial, <kw>this</kw>);
+    ActorMesh-&gt;<fn>SetMaterial</fn>(i, DynMat);
+    DynamicMaterials.<fn>Add</fn>(DynMat);
+}
+
+<cm>// UpdateDissolve — ticks at ~60fps, drives the dissolve scalar parameter</cm>
+CurrentDissolveValue += Direction * DissolveSpeed * DeltaTime;
+<kw>for</kw> (<tp>UMaterialInstanceDynamic</tp>* DynMat : DynamicMaterials)
+    DynMat-&gt;<fn>SetScalarParameterValue</fn>(DissolveParameterName, CurrentDissolveValue);
+
+<cm>// OnAnimationComplete — restore originals and enable collision</cm>
+<kw>if</kw> (<tp>FMath</tp>::<fn>IsNearlyEqual</fn>(CurrentDissolveValue, DissolveEndValue, <num>0.1f</num>))
+{
+    bIsVisible = <kw>true</kw>;
+    <fn>UpdateCollision</fn>(<kw>true</kw>);
+    <fn>RestoreOriginalMaterials</fn>(); <cm>// swap dissolve mat back to original</cm>
+}</code></pre>
+                                </div>
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>When the Puzzle Manager calls <span class="inline-code">TriggerAppear()</span>, the AppearingActor stores all original mesh materials, then replaces every slot with a dynamic instance of the dissolve material. A timer running at ~60fps increments a scalar parameter on that material from the start value (invisible) to the end value (fully solid), creating the dissolve-in effect.</p>
+                                        <p>Once the animation completes it swaps the original materials back in and re-enables collision — so the appeared object looks and behaves exactly as the artist intended, with no dissolve material left on it. <span class="inline-code">TriggerDisappear()</span> runs the same process in reverse. The designer sets the dissolve speed, emissive glow colour, sound, and Niagara effect all from Blueprint.</p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">How they connect</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            Designer places a <strong>PuzzleManager</strong> and assigns any mix of puzzle types in the Inspector →
+                                            BeginPlay auto-registers the manager with every assigned puzzle →
+                                            player solves puzzles in the level; each one calls back into the manager →
+                                            <span class="inline-code">CheckPuzzleCompletion</span> runs after every change and tallies all arrays →
+                                            when all pass, <span class="inline-code">ExecutePuzzleComplete</span> fires <span class="inline-code">OnPuzzleCompleted</span> and calls <span class="inline-code">TriggerAppear()</span> on any assigned <strong>AppearingActors</strong> →
+                                            AppearingActor swaps in the dissolve material, animates the scalar parameter each frame, then restores the original materials once fully visible.
+                                        </p>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -944,29 +1181,139 @@
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Trigger Manager</span>
-                            <span class="mechanic-subtitle">C++ · Manager · Blueprint</span>
+                            <span class="mechanic-title">Universal Trigger System</span>
+                            <span class="mechanic-subtitle">C++ · Manager · Blueprint · Modular Events</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">The Trigger Manager handles all overlap-based events in the level — zone entry, item pickups, enemy aggro triggers. Designers can configure triggers entirely in Blueprint without touching C++ code.</p>
-                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>trigger-manager.gif</span></div><div class="gif-caption">Trigger zones activating events</div></div>
+                                <p class="mechanic-desc">
+                                    The <strong>Universal Trigger</strong> is a single, highly flexible actor that handles almost every event-based interaction in the game — enemy wave spawning, combat puzzles, checkpoints, appearing/disappearing actors, and on-screen instructions.
+                                </p>
+                                <p class="mechanic-desc">
+                                    Instead of creating many different trigger classes, I built one powerful trigger that designers can configure entirely in Blueprint. This dramatically reduced blueprint spaghetti and made level design much faster and more consistent.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <div class="gif-carousel" style="position:relative; overflow:hidden; border-radius:var(--r-sm);">
+                                        <div class="carousel-container" id="universal-carousel" style="display:flex; transition:transform 0.4s ease;">
+
+                                            <!-- Image 1 -->
+                                            <img src="Images/EQ/Trigger1.png"
+                                                 alt="Universal Trigger activating enemy spawn"
+                                                 class="carousel-slide"
+                                                 onclick="openLightboxFromCarousel(this.src, 'universal-carousel')">
+
+                                            <!-- Image 2 -->
+                                            <img src="Images/EQ/Trigger2.png"
+                                                 alt="Universal Trigger with checkpoint"
+                                                 class="carousel-slide"
+                                                 onclick="openLightboxFromCarousel(this.src, 'universal-carousel')">
+
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Simple navigation dots or arrows (optional but nice) -->
+                                    <div style="text-align:center; margin-top:8px; font-size:11px; color:var(--text3);">
+                                        ← Click images to view • Multiple examples of Universal Trigger in action →
+                                    </div>
+
+                                    <div class="gif-caption">Universal Trigger handling enemy spawns, checkpoints, combat arenas, and rewards</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">UniversalTrigger.cpp — Core Logic</p>
                                 <div class="code-block-wrap">
-                                    <div class="code-header"><span class="code-filename">TriggerManager.cpp</span><span class="code-lang">C++</span></div>
-                                    <pre><code><kw>void</kw> <fn>ATriggerZone</fn>::<fn>OnOverlapBegin</fn>(
-                                    <tp>UPrimitiveComponent</tp>* OverlappedComp,
-                                    <tp>AActor</tp>* OtherActor, ...)
+                                    <div class="code-header"><span class="code-filename">UniversalTrigger.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// On overlap — only the player character can activate</cm>
+AEQCharacter* EQChar = <fn>Cast</fn>&lt;<tp>AEQCharacter</tp>&gt;(OtherActor);
+<kw>if</kw> (!EQChar) <kw>return</kw>;
+
+<cm>// Prevent re-triggering if set to one-time use</cm>
+<kw>if</kw> (bTriggerOnce &amp;&amp; bHasTriggered) <kw>return</kw>;
+
+bHasTriggered = <kw>true</kw>;
+
+<cm>// Checkpoints are handled first</cm>
+<kw>if</kw> (bIsCheckpoint)
+<fn>ActivateCheckpoint</fn>(EQChar);
+
+<fn>ExecuteTrigger</fn>();</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>The trigger only reacts to the player character. It supports one-time or repeatable triggers and always handles checkpoints before running the main logic.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">ExecuteTrigger() — The Heart of the System</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">UniversalTrigger.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// Appearing actors on trigger activation</cm>
+<kw>if</kw> (bMakeActorsAppearOnTrigger)
+<fn>UpdateAppearingActors</fn>(AppearingActorsOnTrigger, <kw>true</kw>);
+
+<kw>switch</kw> (TriggerType)
 {
-                                    <kw>if</kw> (<fn>Cast</fn>&lt;<tp>APlayerCharacter</tp>&gt;(OtherActor))
-    {
-        OnPlayerEntered.<fn>Broadcast</fn>();
-    }
+<kw>case</kw> EUniversalTriggerType::EnemySpawn:
+    EnemySpawnSystem-&gt;<fn>Execute</fn>();
+                                    <kw>break</kw>;
+    
+<kw>case</kw> EUniversalTriggerType::CombatPuzzle:
+    CombatPuzzleSystem-&gt;<fn>Execute</fn>();
+                                    <kw>break</kw>;
+
+<kw>case</kw> EUniversalTriggerType::Instruction:
+                                    <fn>ShowInstructionToPlayer</fn>();
+                                    <kw>break</kw>;
 }</code></pre>
                                 </div>
-                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>When the player walks into a trigger zone this fires and broadcasts a delegate. Any Blueprint in the level can bind to <span class="inline-code">OnPlayerEntered</span> and react — no hardcoded references needed.</p></div></div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p><strong>TriggerType</strong> is an enum that tells the trigger what role it should play. Depending on the type, it delegates to specialized subsystems (<code>UEnemySpawnSystem</code> and <code>UCombatPuzzleSystem</code>) or directly shows instructions.</p>
+                                        <p>It also supports <strong>AppearingActors</strong> — objects that can fade in or out when the trigger fires or when the objective is completed.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">OnObjectiveComplete() — Completion Flow</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">UniversalTrigger.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> AUniversalTrigger::<fn>OnObjectiveComplete</fn>()
+{
+                                    <cm>// Handle reward actors when puzzle/combat is finished</cm>
+                                    <kw>if</kw> (bMakeActorsAppearOnComplete)
+                                    <fn>UpdateAppearingActors</fn>(AppearingActorsOnComplete, <kw>true</kw>);
+
+                                    <fn>HideCurrentInstruction</fn>();
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>When a combat puzzle or enemy wave is cleared, this function is called (usually from the subsystem). It can spawn rewards (via AppearingActor) and automatically clean up any on-screen instructions.</p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">Key Advantages</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • One actor type instead of many → easier maintenance<br>
+                                            • Fully configurable in Blueprint (no C++ changes needed for new levels)<br>
+                                            • Built-in support for checkpoints, instructions, and AppearingActors<br>
+                                            • Clean separation: Trigger → Subsystems (Spawn / Combat Puzzle)<br>
+                                            • Supports both one-time and repeatable triggers<br>
+                                            • Debug-friendly (P key resets the trigger)
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -979,30 +1326,139 @@
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Enemy Spawner</span>
-                            <span class="mechanic-subtitle">C++ · Spawner · Blueprint</span>
+                            <span class="mechanic-title">Combat Puzzle & Wave Spawner</span>
+                            <span class="mechanic-subtitle">C++ · CombatPuzzleSystem · Multi-Wave · Dynamic Enemies</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">Designer-friendly spawner that accepts a list of enemy classes, spawn points, and wave counts. Spawns enemies in waves and notifies the Puzzle Manager when all enemies are defeated.</p>
-                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>enemy-spawner.gif</span></div><div class="gif-caption">Wave spawning in action</div></div>
+                                <p class="mechanic-desc">
+                                    The <strong>CombatPuzzleSystem</strong> is a powerful, designer-friendly component that turns any arena into a multi-wave combat puzzle.
+                                    It handles enemy wave spawning, arena wall management, spider/frog baby registration, and seamless progression between waves.
+                                </p>
+                                <p class="mechanic-desc">
+                                    Integrated directly into the <strong>Universal Trigger</strong>, designers can set up complex combat encounters entirely in Blueprint by configuring waves, spawn points, delays, enemy types, and shields.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <img src="Images/EQ/CombatPuzzle.gif" alt="Enemy AI in action" style="width:100%; height:auto; display:block;">
+                                    <div class="gif-caption">Player enters and got trap , Enemies spawn , Defeat all the Enemies to deactivate the walls</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">CombatPuzzleSystem.cpp — Execute & Wave Management</p>
                                 <div class="code-block-wrap">
-                                    <div class="code-header"><span class="code-filename">EnemySpawner.cpp</span><span class="code-lang">C++</span></div>
-                                    <pre><code><kw>void</kw> <fn>AEnemySpawner</fn>::<fn>SpawnWave</fn>()
+                                    <div class="code-header"><span class="code-filename">CombatPuzzleSystem.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// Called by UniversalTrigger when player enters arena</cm>
+<kw>void</kw> UCombatPuzzleSystem::<fn>Execute</fn>()
 {
-                                    <kw>for</kw> (<kw>auto</kw>&amp; Point : SpawnPoints)
+                                    <kw>if</kw> (bCombatActive || bPuzzleCompleted) <kw>return</kw>;
+
+    bCombatActive = <kw>true</kw>;
+    CurrentWaveIndex = 0;
+
+                                    <cm>// Raise arena walls</cm>
+                                    <kw>for</kw> (AActor* Wall : WallsToActivate)
+                                    <fn>SetWallActive</fn>(Wall, <kw>true</kw>);
+
+                                    <kw>if</kw> (Waves.Num() > 0)
+                                    <fn>StartWave</fn>(0);
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>When the player enters the trigger, the system activates the combat arena by raising walls and immediately starts the first enemy wave. It prevents re-triggering once combat begins or the puzzle is solved.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">StartWave() — Smart Delayed Spawning</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">CombatPuzzleSystem.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// Calculate expected enemies (excluding babies)</cm>
+<kw>for</kw> (const FCombatEnemySpawnPoint&amp; Point : Wave.SpawnPoints)
+                                    <kw>for</kw> (const FIndividualEnemySpawn&amp; Spawn : Point.EnemiesToSpawn)
+        EnemiesExpectedThisWave++;
+
+<cm>// Spawn with individual delays</cm>
+<kw>for</kw> (const FCombatEnemySpawnPoint&amp; Point : Wave.SpawnPoints)
+{
+                                    <kw>for</kw> (const FIndividualEnemySpawn&amp; Spawn : Point.EnemiesToSpawn)
     {
-                                    <tp>AActor</tp>* Enemy = <fn>GetWorld</fn>()-&gt;<fn>SpawnActor</fn>(
-            EnemyClass, Point-&gt;<fn>GetActorTransform</fn>()
-        );
-        ActiveEnemies.<fn>Add</fn>(Enemy);
+        GetWorld()-&gt;GetTimerManager().<fn>SetTimer</fn>(..., 
+            [this, Spawn, Point]() { 
+                                    <fn>SpawnEnemyAtLocation</fn>(Spawn.EnemyType, ...);
+            }, Spawn.SpawnDelay, <kw>false</kw>);
     }
 }</code></pre>
                                 </div>
-                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Iterates over all designer-placed spawn points and spawns an enemy at each one. The spawned enemies are tracked in <span class="inline-code">ActiveEnemies</span> so the spawner knows when the wave is cleared.</p></div></div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>Each wave can have multiple spawn points and enemies with custom spawn delays. This creates dramatic, staggered enemy entrances instead of everything spawning at once.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Wave Completion Logic (The Tricky Part)</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">CombatPuzzleSystem.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// Called by enemies when they die</cm>
+<kw>void</kw> UCombatPuzzleSystem::<fn>OnEnemyDied</fn>()
+{
+    EnemiesDied++;
+    GetWorld()-&gt;GetTimerManager().<fn>SetTimerForNextTick</fn>([this]() {
+                                    <fn>CheckWaveComplete</fn>();
+    });
+}
+
+<kw>void</kw> UCombatPuzzleSystem::<fn>CheckWaveComplete</fn>()
+{
+                                    <kw>if</kw> (!bAllEnemiesQueued || bWaveCompletionPending) <kw>return</kw>;
+                                    <kw>if</kw> (PendingChildrenToRegister &gt; 0) <kw>return</kw>;   <cm>// Wait for spider babies</cm>
+                                    <kw>if</kw> (EnemiesDied &lt; EnemiesExpectedThisWave) <kw>return</kw>;
+
+    bWaveCompletionPending = <kw>true</kw>;
+                                    <fn>AdvanceOrCompleteWave</fn>();
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>This is the most sophisticated part. The system intelligently waits until:</p>
+                                        <ul style="font-size:13px; color:var(--text2); margin:8px 0;">
+                                            <li>All enemies have been queued for spawning</li>
+                                            <li>All baby enemies (spiderlings, etc.) have registered themselves</li>
+                                            <li>The exact expected number of enemies have died</li>
+                                        </ul>
+                                        <p>Using <code>SetTimerForNextTick</code> prevents race conditions when multiple enemies die in the same frame.</p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">Special Features</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • <strong>Multi-wave support</strong> with configurable delay between waves<br>
+                                            • <strong>Dynamic enemy types</strong> (Flower, Spider, Frog, Crab, Golem, FireFrog)<br>
+                                            • <strong>Shield system</strong> — enemies can spawn with Fire/Grass/Water shields<br>
+                                            • <strong>Baby enemy support</strong> — spiders can spawn children that properly register<br>
+                                            • <strong>Arena walls</strong> — automatically raises/lowers walls to trap player during combat<br>
+                                            • <strong>Reset support</strong> — fully resettable for testing or replayability<br>
+                                            • <strong>Patrol spline integration</strong> for enemies that need to follow paths
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-top:1.5rem; margin-bottom:.5rem;">How it connects to Universal Trigger</p>
+                                <div class="code-explain">
+                                    <div class="explain-text">
+                                        <p>When the final wave is cleared, <code>AdvanceOrCompleteWave()</code> calls <code>OnObjectiveComplete()</code> on the owning <strong>UniversalTrigger</strong>, which then hides instructions and can make reward actors appear.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1015,30 +1471,135 @@
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Checkpoints</span>
-                            <span class="mechanic-subtitle">C++ · Checkpoints · Gameplay</span>
+                            <span class="mechanic-title">Checkpoint System</span>
+                            <span class="mechanic-subtitle">C++ · UniversalTrigger · GameMode · PlayerState</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">When the player enters a checkpoint zone, their transform and current game state are saved to the Game Instance. On death, the player is respawned at the last activated checkpoint.</p>
-                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>checkpoint.gif</span></div><div class="gif-caption">Checkpoint activation and respawn</div></div>
+                                <p class="mechanic-desc">
+                                    The checkpoint system allows players to respawn at the last activated checkpoint after death, instead of restarting from the beginning of the level.
+                                    It is seamlessly integrated into the <strong>UniversalTrigger</strong> actor, making it extremely easy for designers to place checkpoints throughout the level.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <img src="Images/EQ/Checkpoint.gif" alt="Enemy AI in action" style="width:100%; height:auto; display:block;">
+                                    <div class="gif-caption">Player dies and respawn at Checkpoint</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">UniversalTrigger.cpp — Checkpoint Activation</p>
                                 <div class="code-block-wrap">
-                                    <div class="code-header"><span class="code-filename">Checkpoint.cpp</span><span class="code-lang">C++</span></div>
-                                    <pre><code><kw>void</kw> <fn>ACheckpoint</fn>::<fn>ActivateCheckpoint</fn>(<tp>APlayerCharacter</tp>* Player)
+                                    <div class="code-header"><span class="code-filename">UniversalTrigger.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// When player overlaps a checkpoint trigger</cm>
+<kw>if</kw> (bIsCheckpoint)
 {
-                                    <kw>if</kw> (!bActivated)
+                                    <fn>ActivateCheckpoint</fn>(EQChar);
+}
+
+<kw>void</kw> AUniversalTrigger::<fn>ActivateCheckpoint</fn>(AEQCharacter* Character)
+{
+                                    <kw>if</kw> (!CheckpointSpawnPoint) <kw>return</kw>;
+
+                                    <kw>if</kw> (APlayerController* PC = Cast&lt;APlayerController&gt;(Character-&gt;GetController()))
     {
-        bActivated = <kw>true</kw>;
-        SavedTransform = Player-&gt;<fn>GetActorTransform</fn>();
-        GameInstance-&gt;<fn>SetCheckpoint</fn>(SavedTransform);
-                                    <fn>PlayActivationEffect</fn>();
+                                    <kw>if</kw> (AEQPlayerState* PS = PC-&gt;GetPlayerState&lt;AEQPlayerState&gt;())
+        {
+            FVector SpawnLoc = CheckpointSpawnPoint-&gt;GetActorLocation();
+            FRotator SpawnRot = FRotator(0.f, 45.f, 0.f); <cm>// Force consistent yaw</cm>
+            
+            PS-&gt;SetCheckpointLocation(SpawnLoc, SpawnRot);
+        }
     }
 }</code></pre>
                                 </div>
-                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Saves the player's current position to the Game Instance the first time they touch the checkpoint. The <span class="inline-code">bActivated</span> flag prevents it from re-saving if the player revisits. On death, the Game Instance provides the saved transform for respawn.</p></div></div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            When the player walks into a trigger marked as a checkpoint, it saves the location and rotation to the <strong>PlayerState</strong>.
+                                            The checkpoint only activates once (unless reset), and the spawn point is taken from a separate actor reference placed by the designer.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">GameMode Integration — Respawning at Checkpoint</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">EQGameModeBase.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// Override to support checkpoint respawn</cm>
+AActor* AEQGameModeBase::<fn>FindPlayerStart_Implementation</fn>(AController* Player, const FString&amp; IncomingName)
+{
+                                    <kw>if</kw> (AEQPlayerState* PS = Player-&gt;GetPlayerState&lt;AEQPlayerState&gt;())
+    {
+                                    <kw>if</kw> (PS-&gt;HasCheckpoint())
+        {
+            FVector Loc = PS-&gt;GetCheckpointLocation();
+            FRotator Rot = PS-&gt;GetCheckpointRotation();
+
+                                    <cm>// Spawn a temporary PlayerStart at the checkpoint</cm>
+            APlayerStart* TempStart = GetWorld()-&gt;SpawnActor&lt;APlayerStart&gt;(
+            APlayerStart::StaticClass(), Loc, Rot);
+
+                                    <kw>if</kw> (TempStart) <kw>return</kw> TempStart;
+        }
+    }
+                                    <kw>return</kw> Super::FindPlayerStart_Implementation(Player, IncomingName);
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            Before spawning the player (on death or level restart), the GameMode checks if the PlayerState has an active checkpoint.
+                                            If yes, it dynamically creates a temporary <code>APlayerStart</code> at that exact location and rotation.
+                                            This gives full control over where and how the player respawns without needing multiple permanent PlayerStarts.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Resetting Combat Puzzles on Death</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">EQGameModeBase.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> AEQGameModeBase::<fn>RestartPlayer</fn>(AController* NewPlayer)
+{
+                                    <fn>ResetAllCombatPuzzles</fn>();   <cm>// Reset all combat arenas on death</cm>
+
+                                    <cm>// Clean up old pawn and respawn</cm>
+                                    <kw>if</kw> (APawn* OldPawn = PC-&gt;GetPawn())
+    {
+        PC-&gt;UnPossess();
+        OldPawn-&gt;Destroy();
+    }
+
+    Super::RestartPlayer(NewPlayer);
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            On every player respawn (including after death), the GameMode automatically resets all <strong>CombatPuzzleSystems</strong> across the level.
+                                            This ensures that if the player died during a combat arena, the walls and enemies reset properly for the next attempt.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">Key Advantages</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • Fully integrated into the <strong>UniversalTrigger</strong> — designers just tick a checkbox and assign a spawn point<br>
+                                            • Consistent player rotation on respawn (forced yaw of 45°)<br>
+                                            • Automatic reset of all combat puzzles on death<br>
+                                            • Clean separation: Trigger handles saving • GameMode handles spawning<br>
+                                            • Supports both normal level starts and checkpoint respawns
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1051,32 +1612,117 @@
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Bush Puzzle</span>
-                            <span class="mechanic-subtitle">C++ · Puzzle · Gameplay</span>
+                            <span class="mechanic-title">Bush Puzzle (Fire Spread Mechanic)</span>
+                            <span class="mechanic-subtitle">C++ · Gameplay Ability · Niagara · Dynamic Dissolve · NavMesh</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">The player must use their Grass element ability to grow specific bushes in the correct order. Each bush listens for a GAS gameplay event and notifies the Puzzle Manager when activated in the right sequence.</p>
-                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>bush-puzzle.gif</span></div><div class="gif-caption">Bush puzzle being solved</div></div>
+                                <p class="mechanic-desc">
+                                    The Bush Puzzle is an interactive environmental puzzle where the player must use their <strong>Fire elemental ability</strong> to ignite special bushes.
+                                    Once ignited, bushes burn with realistic dissolve effects, spread fire to nearby bushes, and eventually destroy themselves — opening new paths for the player and AI.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <img src="Images/EQ/BushPuzzle.gif" alt="Enemy AI in action" style="width:100%; height:auto; display:block;">
+                                    <div class="gif-caption">Player Hitting only one bush with fire , the rest nearby will burn too</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">BushPuzzle.cpp — Core Ignition Logic</p>
                                 <div class="code-block-wrap">
                                     <div class="code-header"><span class="code-filename">BushPuzzle.cpp</span><span class="code-lang">C++</span></div>
-                                    <pre><code><kw>void</kw> <fn>ABush</fn>::<fn>OnGrassAbilityHit</fn>()
+                                    <pre><code><kw>void</kw> ABushPuzzle::<fn>IgniteBush</fn>()
 {
-                                    <kw>if</kw> (PuzzleManager-&gt;<fn>IsNextInSequence</fn>(<kw>this</kw>))
+                                    <kw>if</kw> (bIsIgnited) <kw>return</kw>;
+    bIsIgnited = <kw>true</kw>;
+
+                                    <cm>// Swap to dynamic dissolve material with fire emissive</cm>
+                                    <kw>for</kw> (int32 i = 0; i &lt; BushMesh-&gt;GetNumMaterials(); i++)
     {
-                                    <fn>GrowBush</fn>();
-        PuzzleManager-&gt;<fn>AdvanceSequence</fn>();
+        UMaterialInstanceDynamic* DynMat = UMaterialInstanceDynamic::Create(DissolveMaterial, this);
+        BushMesh-&gt;SetMaterial(i, DynMat);
+        DynMat-&gt;SetVectorParameterValue("EmissiveColor", FLinearColor(1.0f, 0.3f, 0.0f, 1.0f));
+        DynMat-&gt;SetScalarParameterValue("Disolve", -0.4f);
     }
-                                    <kw>else</kw>
+
+                                    <fn>PlaySound</fn>(IgniteSound);
+                                    <fn>SpawnNiagaraEffect</fn>(BurningEffect);
+
+                                    <cm>// Start dissolve animation + destruction timer</cm>
+    GetWorldTimerManager().SetTimer(DissolveTimerHandle, this, &ABushPuzzle::UpdateDissolve, 0.05f, true);
+    GetWorldTimerManager().SetTimer(DestructionTimerHandle, this, &ABushPuzzle::DestroyBush, DestructionDelay, false);
+
+                                    <kw>if</kw> (bCanSpreadFire)
+        GetWorldTimerManager().SetTimer(FireSpreadTimerHandle, this, &ABushPuzzle::SpreadFireToNearbyBushes, FireSpreadDelay, false);
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>When the player hits the bush with a Fire ability (via <code>TriggerIgnite()</code>), the bush switches to a dynamic material, starts burning with Niagara particles, plays sound, and begins a timed dissolve effect. After a delay, the bush is fully destroyed.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Fire Spread System</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">BushPuzzle.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> ABushPuzzle::<fn>SpreadFireToNearbyBushes</fn>()
+{
+    TArray&lt;FOverlapResult&gt; OverlapResults;
+    GetWorld()-&gt;OverlapMultiByObjectType(
+        OverlapResults,
+        GetActorLocation(),
+        FQuat::Identity,
+        FCollisionObjectQueryParams(ECC_WorldDynamic),
+        FCollisionShape::MakeSphere(FireSpreadRadius)
+    );
+
+                                    <kw>for</kw> (const FOverlapResult&amp; Result : OverlapResults)
     {
-        PuzzleManager-&gt;<fn>ResetSequence</fn>();
+                                    <kw>if</kw> (ABushPuzzle* Nearby = Cast&lt;ABushPuzzle&gt;(Result.GetActor()))
+        {
+                                    <kw>if</kw> (!Nearby-&gt;bIsIgnited)
+                Nearby-&gt;TriggerIgnite();
+        }
     }
 }</code></pre>
                                 </div>
-                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>When the Grass ability hits a bush, it checks with the Puzzle Manager whether this bush is next in the expected sequence. Correct order advances progress; wrong order resets it — enforcing the puzzle challenge.</p></div></div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>After igniting, the bush automatically spreads fire to all other <code>ABushPuzzle</code> actors within a configurable radius using a sphere overlap query. This creates satisfying chain-reaction moments where one well-placed Fire ability can clear an entire area of bushes.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Visual &amp; Navigation Polish</p>
+                                <div class="code-explain">
+                                    <div class="explain-text">
+                                        <p>
+                                            • <strong>Dynamic Dissolve Material</strong>: Real-time lerp from -0.4 to 0.7 on the "Disolve" parameter for smooth burning effect<br>
+                                            • <strong>Player Proximity Fresnel</strong>: Bushes glow with a special material when the player gets close (then revert when player leaves)<br>
+                                            • <strong>NavMesh Integration</strong>: Collision box is set to affect navigation. Once destroyed, collision is disabled so enemies and the player can path through the cleared area.<br>
+                                            • <strong>Niagara Effects</strong>: Burning fire + destruction burst for high visual quality
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">Key Features &amp; Design Highlights</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • Fully driven by <strong>Gameplay Ability System (GAS)</strong> — the Fire ability sends a tag/event to trigger ignition<br>
+                                            • Chain-reaction fire spread creates emergent gameplay<br>
+                                            • Smooth timed dissolve with sound + VFX<br>
+                                            • Proper NavMesh updating so AI doesn't get stuck after bushes burn<br>
+                                            • Proximity-based visual feedback for better player readability<br>
+                                            • Designer-friendly: adjustable spread radius, burn delay, destruction timing, and materials all exposed in Blueprint
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1089,31 +1735,144 @@
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Gate Puzzle</span>
-                            <span class="mechanic-subtitle">C++ · Puzzle · Gameplay</span>
+                            <span class="mechanic-title">Gate & Key Puzzle</span>
+                            <span class="mechanic-subtitle">C++ · Collectible Keys · Flying Animation · Multi-Key Gate</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">A gate that requires all connected pressure plates to be activated simultaneously. Plates can be held down by pushing objects onto them. The gate C++ class listens to all plate delegates and opens only when all are active at the same time.</p>
-                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>gate-puzzle.gif</span></div><div class="gif-caption">Gate opening when all plates active</div></div>
+                                <p class="mechanic-desc">
+                                    The Gate & Key Puzzle requires the player to find and collect floating keys scattered in the level.
+                                    Once collected, each key dramatically flies to the assigned gate, visually inserts itself, and unlocks the door only when all required keys are delivered.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <img src="Images/EQ/DoorPuzzle.gif" alt="Enemy AI in action" style="width:100%; height:auto; display:block;">
+                                    <div class="gif-caption">Player Collecting 3 Balls to Unlock the door</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">APuzzleKey.cpp — Collection & Flight System</p>
                                 <div class="code-block-wrap">
-                                    <div class="code-header"><span class="code-filename">GatePuzzle.cpp</span><span class="code-lang">C++</span></div>
-                                    <pre><code><kw>void</kw> <fn>AGate</fn>::<fn>CheckAllPlates</fn>()
+                                    <div class="code-header"><span class="code-filename">PuzzleKey.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// Player enters interaction zone</cm>
+<kw>void</kw> APuzzleKey::<fn>OnBoxBeginOverlap</fn>(...)
 {
-                                    <kw>bool</kw> bAllActive = <kw>true</kw>;
-                                    <kw>for</kw> (<tp>APressurePlate</tp>* Plate : LinkedPlates)
-    {
-                                    <kw>if</kw> (!Plate-&gt;bIsActive)
-            bAllActive = <kw>false</kw>;
-    }
-                                    <kw>if</kw> (bAllActive) <fn>OpenGate</fn>();
-                                    <kw>else</kw> <fn>CloseGate</fn>();
+    OverlappingPlayer = Character;
+                                    <fn>BindInteractInput</fn>();        <cm>// Bind F key</cm>
+                                    <fn>ShowInteractPrompt</fn>(true);
+}
+
+<kw>void</kw> APuzzleKey::<fn>OnInteractPressed</fn>()
+{
+    bAlreadyCollected = <kw>true</kw>;
+                                    <fn>UnbindInteractInput</fn>();
+                                    <fn>ShowInteractPrompt</fn>(false);
+    
+                                    <fn>FlyToGate</fn>(AssignedGate);
 }</code></pre>
                                 </div>
-                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Every time any plate changes state it calls this. The loop checks every linked plate — if even one is inactive the gate stays shut. Only when all are simultaneously active does the gate open.</p></div></div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>When the player presses <strong>F</strong> near a key, it disables further interaction and begins its dramatic flight sequence toward the assigned gate.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Smart Flying Animation (Tick)</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">PuzzleKey.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>if</kw> (FlightPhase == EKeyFlightPhase::LiftingUp)
+{
+    Loc.Z = FMath::FInterpConstantTo(Loc.Z, LiftTargetZ, DeltaTime, LiftSpeed);
+    ...
+                                    <kw>if</kw> (reached height) FlightPhase = FlyingToGate;
+}
+
+<kw>if</kw> (FlightPhase == EKeyFlightPhase::FlyingToGate)
+{
+    FVector Target = (Distance &gt; DescentDistance) 
+        ? FVector(Gate.X, Gate.Y, Loc.Z)   <cm>// Fly horizontally first</cm>
+        : GateLocation;                     <cm>// Then descend</cm>
+
+    Direction = (Target - Loc).GetSafeNormal();
+    SetActorRotation(Direction.Rotation());
+    SetActorLocation(Loc + Direction * FlySpeed * DeltaTime);
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>The key uses a two-phase flight system:</p>
+                                        <ul style="font-size:13px;color:var(--text2);">
+                                            <li><strong>Lift Up</strong>: Rises vertically from its floating position</li>
+                                            <li><strong>Fly to Gate</strong>: Flies horizontally at constant height, then descends smoothly into the gate</li>
+                                        </ul>
+                                        <p>It also constantly rotates to face the direction of travel for a natural look.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">AGate.cpp — Multi-Key Gate Logic</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">Gate.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> AGate::<fn>RegisterKeyDelivered</fn>()
+{
+    CollectedKeys++;
+
+                                    <fn>ActivateKeyMesh</fn>(CollectedKeys);   <cm>// Show key visually inserted</cm>
+
+                                    <kw>if</kw> (CollectedKeys >= RequiredKeys)
+    {
+                                    <fn>CompletePuzzle</fn>();
+    }
+}
+
+<kw>void</kw> AGate::<fn>CompletePuzzle</fn>()
+{
+    bPuzzleComplete = <kw>true</kw>;
+    DoorMesh-&gt;SetVisibility(false);
+    DoorMesh-&gt;SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    
+                                    <fn>PlaySound</fn>(DoorUnlockSound);
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>The gate tracks how many keys have arrived. For each delivered key, it reveals a corresponding key mesh on the gate model (visual feedback). Once all required keys are collected, the door disappears and collision is disabled, opening the path forward.</p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">How the Key and Gate Work Together</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            1. Designer places an <strong>APuzzleKey</strong> and assigns its <code>AssignedGate</code> reference in Blueprint.<br>
+                                            2. Player approaches → sees interact prompt and presses <strong>F</strong>.<br>
+                                            3. Key lifts up, flies smoothly to the gate’s <code>KeyArrivalPoint</code>, and calls <code>RegisterKeyDelivered()</code> on arrival.<br>
+                                            4. Gate shows the key visually “inserted” and increments its counter.<br>
+                                            5. When the final key arrives, the gate opens automatically with sound and VFX.
+                                        </p>
+                                        <p>This creates a satisfying “collection → cinematic delivery → reward” loop that feels rewarding and visually clear.</p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label" style="color:var(--teal-text);">Nice Details</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • Keys gently bob up and down when idle<br>
+                                            • Niagara effect on keys for magical feel<br>
+                                            • Proper input binding/unbinding to avoid conflicts<br>
+                                            • Visual key insertion on the gate (KeyMesh1/2/3)<br>
+                                            • Smooth two-phase flight with rotation
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1126,30 +1885,126 @@
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Time Puzzle</span>
-                            <span class="mechanic-subtitle">C++ · Puzzle · Gameplay</span>
+                            <span class="mechanic-title">Time Puzzle (Water Bell)</span>
+                            <span class="mechanic-subtitle">C++ · Gameplay Ability System · Timed Challenge · Dynamic Materials</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">The player must hit all targets within a time limit. A countdown timer is managed in C++ and exposed to Blueprint for UI display. Missing the deadline resets the puzzle.</p>
-                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>time-puzzle.gif</span></div><div class="gif-caption">Time puzzle countdown</div></div>
+                                <p class="mechanic-desc">
+                                    The Time Puzzle is a fast-paced challenge where the player must hit multiple bell targets with their <strong>Water elemental ability</strong> within a limited time.
+                                    Each successful hit activates a bell and starts (or resets) a countdown. All bells must remain active until the timer expires to solve the puzzle.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <img src="Images/EQ/BellPuzzle.gif" alt="Enemy AI in action" style="width:100%; height:auto; display:block;">
+                                    <div class="gif-caption">Player Needs to hits all bells witihn a certain amount of time to deactivate the wall</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">TimePuzzle.cpp — Water Hit Detection via GAS</p>
                                 <div class="code-block-wrap">
                                     <div class="code-header"><span class="code-filename">TimePuzzle.cpp</span><span class="code-lang">C++</span></div>
-                                    <pre><code><kw>void</kw> <fn>ATimePuzzle</fn>::<fn>Tick</fn>(<kw>float</kw> DeltaTime)
+                                    <pre><code><cm>// Register for Water damage tag in BeginPlay</cm>
+AbilitySystemComponent-&gt;RegisterGameplayTagEvent(
+    GameplayTags.Damage_Water,
+    EGameplayTagEventType::NewOrRemoved
+).AddUObject(this, &ATimePuzzle::OnWaterTagChanged);
+
+<kw>void</kw> ATimePuzzle::<fn>OnWaterTagChanged</fn>(const FGameplayTag CallbackTag, int32 NewCount)
 {
-                                    <kw>Super</kw>::<fn>Tick</fn>(DeltaTime);
-                                    <kw>if</kw> (bActive)
+                                    <kw>if</kw> (NewCount &gt; 0 &amp;&amp; !bActivated)
     {
-        TimeRemaining -= DeltaTime;
-                                    <kw>if</kw> (TimeRemaining &lt;= <num>0.f</num>)
-                                    <fn>ResetPuzzle</fn>();
+                                    <fn>ActivateObject</fn>();
     }
 }</code></pre>
                                 </div>
-                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Every frame while active, the timer counts down. When it hits zero the puzzle resets. The <span class="inline-code">TimeRemaining</span> float is BlueprintReadOnly so the HUD widget can display it without needing a C++ reference.</p></div></div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>The puzzle uses Unreal’s <strong>Gameplay Ability System (GAS)</strong> for detection. When the player’s Water projectile hits the bell’s DetectionBox, it applies the <code>Damage_Water</code> tag to the puzzle’s AbilitySystemComponent. This cleanly triggers activation without direct projectile references.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Activation &amp; Countdown Logic</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">TimePuzzle.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> ATimePuzzle::<fn>ActivateObject</fn>()
+{
+                                    <kw>if</kw> (bActivated) <kw>return</kw>;
+    bActivated = <kw>true</kw>;
+
+                                    <fn>PlaySound</fn>(BellSound);
+                                    <fn>RefreshMaterials</fn>();                 <cm>// Switch to glowing material</cm>
+
+                                    <cm>// Start or reset the countdown timer</cm>
+    GetWorldTimerManager().SetTimer(
+        CountdownTimer, this, &ATimePuzzle::OnTimerExpired, TimeLimit, false
+    );
+
+                                    <kw>if</kw> (PuzzleManager)
+        PuzzleManager-&gt;OnTimePuzzleObjectHit(this);
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>Hitting a bell with Water activates it, plays a sound, changes its material to a glowing state, and starts a countdown. The puzzle notifies the <strong>PuzzleManager</strong> so it can track overall progress across multiple bells.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Timer Expiration &amp; Reset</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">TimePuzzle.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> ATimePuzzle::<fn>OnTimerExpired</fn>()
+{
+    bActivated = <kw>false</kw>;
+                                    <fn>RefreshMaterials</fn>();                 <cm>// Return to idle look</cm>
+
+                                    <kw>if</kw> (PuzzleManager)
+        PuzzleManager-&gt;OnTimePuzzleObjectExpired(this);
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>If the timer runs out before the puzzle is solved, the bell deactivates and notifies the PuzzleManager. This forces the player to hit all bells again within the time limit — creating a real sense of pressure and urgency.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Visual Feedback System</p>
+                                <div class="code-explain">
+                                    <div class="explain-text">
+                                        <p>
+                                            • <strong>Dynamic Materials</strong>: Bells switch between default, activated, and Fresnel-highlight versions.<br>
+                                            • <strong>Player Proximity</strong>: When the player gets close, the bell and stand use glowing Fresnel materials for better readability.<br>
+                                            • <strong>Separation of Concerns</strong>: Collision on the pole, visual bell on top, and a dedicated DetectionBox for the Water ability.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">How it connects to the Puzzle Manager</p>
+                                    <div class="explain-text">
+                                        <p>Every time a bell is successfully hit or expires, it calls back into the <strong>PuzzleManager</strong>. The manager tracks all time puzzles in the level and only declares the overall puzzle solved when every bell is active at the same time (i.e. no timers have expired yet).</p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label" style="color:var(--teal-text);">Design Highlights</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • Clean GAS integration instead of messy direct collision checks<br>
+                                            • Smart material switching with proximity awareness<br>
+                                            • Fully resettable for failed attempts<br>
+                                            • Designer-friendly: adjustable TimeLimit, DetectionBox size, and materials exposed in Blueprint
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1162,33 +2017,102 @@
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Sequence Puzzle</span>
-                            <span class="mechanic-subtitle">C++ · Puzzle · Gameplay</span>
+                            <span class="mechanic-title">Sequence Puzzle (Fire Order)</span>
+                            <span class="mechanic-subtitle">C++ · Ordered Activation · GAS Integration · Dynamic Visuals</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">The player must interact with objects in a specific order defined in a designer-set TArray. A sequence index tracks progress and resets to zero on any wrong input.</p>
-                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>sequence-puzzle.gif</span></div><div class="gif-caption">Sequence puzzle input order</div></div>
+                                <p class="mechanic-desc">
+                                    The Sequence Puzzle requires the player to hit a series of switches with their <strong>Fire elemental ability</strong> in a specific order.
+                                    Hitting them in the correct sequence activates each one with fire effects; any mistake resets the entire puzzle.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <img src="Images/EQ/SPuzzle.gif" alt="Enemy AI in action" style="width:100%; height:auto; display:block;">
+                                    <div class="gif-caption">Player needs to lit up all the torches in a correct sequence to deactivate the door</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">SequencePuzzle.cpp — Fire Detection via GAS</p>
                                 <div class="code-block-wrap">
                                     <div class="code-header"><span class="code-filename">SequencePuzzle.cpp</span><span class="code-lang">C++</span></div>
-                                    <pre><code><kw>void</kw> <fn>ASequencePuzzle</fn>::<fn>OnObjectActivated</fn>(<tp>AActor</tp>* Object)
+                                    <pre><code><cm>// Register for Fire damage tag</cm>
+AbilitySystemComponent-&gt;RegisterGameplayTagEvent(
+    GameplayTags.Damage_Fire,
+    EGameplayTagEventType::NewOrRemoved
+).AddUObject(this, &ASequencePuzzle::OnFireTagChanged);
+
+<kw>void</kw> ASequencePuzzle::<fn>OnFireTagChanged</fn>(const FGameplayTag CallbackTag, int32 NewCount)
 {
-                                    <kw>if</kw> (Object == CorrectSequence[CurrentIndex])
+                                    <kw>if</kw> (NewCount &gt; 0 &amp;&amp; !bActivated)
     {
-        CurrentIndex++;
-                                    <kw>if</kw> (CurrentIndex >= CorrectSequence.<fn>Num</fn>())
-                                    <fn>CompletePuzzle</fn>();
-    }
-                                    <kw>else</kw>
-    {
-        CurrentIndex = <num>0</num>;
+                                    <fn>ActivateObject</fn>();
     }
 }</code></pre>
                                 </div>
-                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Compares each activation against the expected sequence array. A correct input advances the index; a wrong one resets to zero. Simple but effective — the entire puzzle logic fits in one function.</p></div></div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>Like other elemental puzzles, this one uses the <strong>Gameplay Ability System (GAS)</strong>. When the player’s Fire ability hits the DetectionBox, it applies the <code>Damage_Fire</code> tag, cleanly triggering activation without direct projectile references.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Activation &amp; Sequence Logic</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">SequencePuzzle.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> ASequencePuzzle::<fn>ActivateObject</fn>()
+{
+                                    <kw>if</kw> (bActivated) <kw>return</kw>;
+    bActivated = <kw>true</kw>;
+
+                                    <fn>SetFireVisible</fn>(true);   <cm>// Show Niagara fire effect</cm>
+
+                                    <kw>if</kw> (PuzzleManager)
+        PuzzleManager-&gt;OnSequencePuzzleHit(this);   <cm>// Tell manager to check order</cm>
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>When hit correctly, the switch lights up with a persistent fire Niagara effect and notifies the <strong>PuzzleManager</strong>. The manager then checks whether this switch was the next expected one in the sequence.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Smart Visual Feedback</p>
+                                <div class="code-explain">
+                                    <div class="explain-text">
+                                        <p>
+                                            • <strong>Niagara Fire Effect</strong>: Activates only when the switch is correctly hit in sequence.<br>
+                                            • <strong>Player Proximity Material</strong>: Switches to a glowing material when the player gets close.<br>
+                                            • <strong>Dynamic Outline</strong>: In <code>Tick()</code>, the switch renders with custom depth (outline) when the player is nearby for better readability.<br>
+                                            • <strong>Reset Behavior</strong>: On wrong order or puzzle failure, fire effects turn off and materials reset.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">How it connects to the Puzzle Manager</p>
+                                    <div class="explain-text">
+                                        <p>The SequencePuzzle doesn’t decide correctness itself. It simply calls <code>OnSequencePuzzleHit(this)</code> every time it’s activated. The <strong>PuzzleManager</strong> tracks the order using each object’s <code>SequenceIndex</code> and decides whether to advance, reset the whole sequence, or complete the puzzle.</p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label" style="color:var(--teal-text);">Design Highlights</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • Clean GAS-based interaction (consistent with other elemental puzzles)<br>
+                                            • Persistent visual state (fire stays on for correct hits)<br>
+                                            • Proximity-based feedback (material + outline) improves player readability<br>
+                                            • Fully resettable — wrong order immediately turns off all fire effects<br>
+                                            • Tick-based outline is lightweight and only checks distance to player
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1201,30 +2125,133 @@
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Level Manager</span>
-                            <span class="mechanic-subtitle">C++ · Manager · Blueprint</span>
+                            <span class="mechanic-title">Level Transition & Progress System</span>
+                            <span class="mechanic-subtitle">C++ · Persistent Progress · Smart Portals · Save System</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
-                                <p class="mechanic-desc">Coordinates all major level events — loading sub-levels, triggering boss encounters, and managing overall win/loss conditions. Acts as the single source of truth for the current level state.</p>
-                                <div class="mechanic-gif"><div class="gif-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#ababab" stroke-width="1.5" /><path d="M12 16l5-3v6l-5-3z" fill="#ababab" /></svg><span>level-manager.gif</span></div><div class="gif-caption">Level state transitions</div></div>
+                                <p class="mechanic-desc">
+                                    The Level Transition System controls how players move between boss levels and the hub.
+                                    It features smart portals that change appearance based on progress, require previous levels to be cleared, and only allow travel once unlocked.
+                                </p>
+
+                                <div class="mechanic-gif">
+                                    <img src="Images/EQ/LevelDoor.gif" alt="Enemy AI in action" style="width:100%; height:auto; display:block;">
+                                    <div class="gif-caption">Smart portals that change color and state based on progress — locked (red), unlocked (blue), and completed (green)</div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem;">ATransitionLevel.cpp — Smart Portal Logic</p>
                                 <div class="code-block-wrap">
-                                    <div class="code-header"><span class="code-filename">LevelManager.cpp</span><span class="code-lang">C++</span></div>
-                                    <pre><code><kw>void</kw> <fn>ALevelManager</fn>::<fn>SetLevelState</fn>(<tp>ELevelState</tp> NewState)
+                                    <div class="code-header"><span class="code-filename">TransitionLevel.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><cm>// Dynamic material based on state</cm>
+UMaterialInterface* ATransitionLevel::<fn>GetProximityMaterial</fn>() const
 {
-    CurrentState = NewState;
-    OnLevelStateChanged.<fn>Broadcast</fn>(NewState);
+                                    <kw>if</kw> (!bGateUnlocked) return FresnelLockedMaterial;
+                                    <kw>if</kw> (bLevelCleared)  return FresnelLevelDoneMaterial;
+                                    <kw>return</kw> FresnelMaterial;
+}
+
+<kw>void</kw> ATransitionLevel::<fn>RefreshClearedState</fn>()
+{
+    bLevelCleared = ULevelPref::IsLevelCleared(GateLevelType);
+    bGateUnlocked = (RequiredPreviousLevel == EBossLevelType::None) 
+        || ULevelPref::IsLevelCleared(RequiredPreviousLevel);
+
+                                    <kw>if</kw> (bPlayerInRange)
+        PortalMesh-&gt;SetMaterial(0, <fn>GetProximityMaterial</fn>());
 }</code></pre>
                                 </div>
-                                <div class="code-explain"><p class="explain-label">What this does</p><div class="explain-text"><p>Changes the level state and broadcasts it to all listeners. Any Blueprint can bind to <span class="inline-code">OnLevelStateChanged</span> and react — the UI, enemies, music system, and camera all update automatically without the Level Manager needing direct references to them.</p></div></div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>The portal automatically updates its appearance and interactivity based on save data:</p>
+                                        <ul style="font-size:13px;color:var(--text2);">
+                                            <li><strong>Locked</strong> — requires previous level to be completed</li>
+                                            <li><strong>Unlocked</strong> — player can interact (press F)</li>
+                                            <li><strong>Cleared</strong> — shows a different glowing effect after beating the boss</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Player Interaction & Travel</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">TransitionLevel.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> ATransitionLevel::<fn>OnInteractPressed</fn>()
+{
+                                    <kw>if</kw> (!bGateUnlocked || TargetLevelName.IsNone()) <kw>return</kw>;
+
+                                    <fn>PlaySound</fn>(TransitionSound);
+    UGameplayStatics::OpenLevel(this, TargetLevelName);
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>When the player presses <strong>F</strong> near an unlocked portal, it plays a transition sound and loads the target level. Interaction is only bound when the player is in range and the gate is unlocked.</p>
+                                    </div>
+                                </div>
+
+                                <p class="label" style="margin-bottom:.5rem; margin-top:.5rem;">Persistent Progress — ULevelPref</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header"><span class="code-filename">LevelPref.cpp</span><span class="code-lang">C++</span></div>
+                                    <pre><code><kw>void</kw> ULevelPref::<fn>SetLevelCleared</fn>(EBossLevelType LevelType)
+{
+    ULevelPref* Save = <fn>LoadOrCreate</fn>();
+                                    <cm>// Set flag for Grass / Fire / Water boss</cm>
+                                    <kw>switch</kw> (LevelType) { ... }
+
+    UGameplayStatics::SaveGameToSlot(Save, SaveSlotName, UserIndex);
+    OnLevelPrefChanged.Broadcast();   <cm>// Notify all portals</cm>
+}
+
+<kw>bool</kw> ULevelPref::<fn>IsLevelCleared</fn>(EBossLevelType LevelType)
+{
+    ULevelPref* Save = <fn>LoadOrCreate</fn>();
+                                    <kw>switch</kw> (LevelType) { ... }
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p><strong>ULevelPref</strong> is a simple but robust save system using Unreal’s built-in save game objects. It stores which boss levels (Grass, Fire, Water) have been cleared. The delegate <code>OnLevelPrefChanged</code> ensures all portals instantly refresh their state whenever progress is saved.</p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">How Everything Connects</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            1. Player defeats a boss → boss level calls <code>ULevelPref::SetLevelCleared()</code><br>
+                                            2. Save is written and <code>OnLevelPrefChanged</code> is broadcast<br>
+                                            3. All <strong>ATransitionLevel</strong> actors listen to this delegate and call <code>RefreshClearedState()</code><br>
+                                            4. Portals update materials, enable/disable interaction, and show correct visual state (locked / unlocked / completed)<br>
+                                            5. Player can now access the next level by pressing F on the glowing portal
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label" style="color:var(--teal-text);">Nice Details</p>
+                                    <div class="explain-text">
+                                        <p>
+                                            • Proximity-based Fresnel materials for beautiful glowing effects<br>
+                                            • Separate InteractionBox and ProximityBox for precise control<br>
+                                            • Auto-binding/unbinding of F key to prevent input conflicts<br>
+                                            • Material preloading to avoid hitches during transitions<br>
+                                            • Clean separation between save data (ULevelPref) and visual logic (TransitionLevel)
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- m11: Cutscenes -->
                 <div class="mechanic-item" id="m11">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m11')">
@@ -1251,7 +2278,7 @@
                                     <fn>GetWorld</fn>(), Sequence, Settings, SequenceActor
     );
     SequencePlayer-&gt;OnFinished.<fn>AddDynamic</fn>(
-                                    <kw>this</kw>, &<fn>ACutsceneManager</fn>::<fn>OnCutsceneFinished</fn>
+                                    <kw>this</kw>, &amp;<fn>ACutsceneManager</fn>::<fn>OnCutsceneFinished</fn>
     );
     SequencePlayer-&gt;<fn>Play</fn>();
 }</code></pre>
@@ -1290,8 +2317,8 @@
     </div>
 
     <script>
-        /* ── Lightbox ── */
-        const lbImages = [
+        /* Lightbox */
+        let lbImages = [
         'Images/EQ1.png','Images/EQ2.png','Images/EQ3.png','Images/EQ4.png',
         'Images/EQ5.png','Images/EQ6.png','Images/EQ7.png','Images/EQ8.png'
         ]
@@ -1320,6 +2347,30 @@
         document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length
         }
 
+        // Allow clicking carousel images to open in lightbox
+function openLightboxFromCarousel(src, carouselId) {
+    // Find current index of clicked image
+    const container = document.getElementById(carouselId);
+    const slides = container.getElementsByTagName('img');
+    let index = 0;
+    
+    for (let i = 0; i < slides.length; i++) {
+        if (slides[i].src === src) {
+            index = i;
+            break;
+        }
+    }
+    
+    // Reuse your existing lightbox but with all carousel images
+    lbImages = Array.from(slides).map(img => img.src);  // temporarily override with carousel images
+    lbIndex = index;
+    
+    document.getElementById('lightbox-img').src = lbImages[lbIndex];
+    document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
         document.addEventListener('keydown', e => {
         if (!document.getElementById('lightbox').classList.contains('active')) return
         if (e.key === 'ArrowRight') changeImage(1)
@@ -1327,7 +2378,7 @@
         if (e.key === 'Escape') closeLightbox()
         })
 
-        /* ── Accordion ── */
+        /* Accordion */
         function toggleMechanic(id) {
         const item = document.getElementById(id)
         const isOpen = item.classList.contains('open')
@@ -1338,7 +2389,7 @@
         }
         }
 
-        /* ── Scroll reveal ── */
+        /* Scroll reveal */
         const obs = new IntersectionObserver(entries => {
         entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
         }, { threshold: 0.08 })
@@ -1347,7 +2398,7 @@
         if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
         })
 
-        /* ── Cursor sparkle ── */
+        /* Cursor sparkle */
         const sc = document.getElementById('sparkle-canvas')
         const sx = sc.getContext('2d')
         let sparks = []

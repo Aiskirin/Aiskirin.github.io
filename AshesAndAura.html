@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AshesAndAura — Derrick Yu</title>
+    <link rel="icon" type="image/jpg" href="Images/portfolioLogo.jpg">
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #fafaf8;
+            --bg2: #f2f2ee;
+            --bg3: #eeecea;
+            --text: #1c1c1a;
+            --text2: #6b6b68;
+            --text3: #ababab;
+            --border: rgba(0,0,0,.08);
+            --border2: rgba(0,0,0,.15);
+            --purple: #7F77DD;
+            --purple-bg: #EEEDFE;
+            --purple-text: #3C3489;
+            --teal: #1D9E75;
+            --teal-bg: #E1F5EE;
+            --teal-text: #085041;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+            --r: 12px;
+            --r-sm: 8px;
+            --r-pill: 99px;
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root {
+                --bg: #121210;
+                --bg2: #1a1a18;
+                --bg3: #222220;
+                --text: #f0f0ec;
+                --text2: #8a8a85;
+                --text3: #444440;
+                --border: rgba(255,255,255,.07);
+                --border2: rgba(255,255,255,.14);
+                --purple: #9D97E8;
+                --purple-bg: #26215C;
+                --purple-text: #CECBF6;
+                --teal: #5DCAA5;
+                --teal-bg: #04342C;
+                --teal-text: #9FE1CB;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden
+        }
+
+        #sparkle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)
+        }
+
+            .reveal.visible {
+                opacity: 1;
+                transform: none
+            }
+
+        .d1 {
+            transition-delay: .07s
+        }
+
+        .d2 {
+            transition-delay: .14s
+        }
+
+        .d3 {
+            transition-delay: .21s
+        }
+
+        .wrap {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 0 1.5rem
+        }
+
+        nav {
+            padding: 1.4rem 0;
+            border-bottom: .5px solid var(--border)
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .nav-logo {
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text)
+        }
+
+        .back-btn {
+            font-size: 13px;
+            color: var(--text2);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: color .15s
+        }
+
+            .back-btn:hover {
+                color: var(--text)
+            }
+
+        .game-banner {
+            width: 100%;
+            height: 340px;
+            background: var(--purple-bg);
+            border-radius: var(--r);
+            overflow: hidden;
+            margin: 2.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+            .game-banner img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block
+            }
+
+        .game-header {
+            margin-bottom: 2rem
+        }
+
+        .game-header-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem
+        }
+
+        .game-title {
+            font-size: 32px;
+            font-weight: 500;
+            letter-spacing: -.02em;
+            line-height: 1.1
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .btn {
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 18px;
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            border: .5px solid var(--border2);
+            transition: transform .15s,opacity .15s;
+            text-decoration: none;
+            display: inline-block
+        }
+
+            .btn:active {
+                transform: scale(.97)
+            }
+
+        .btn-dark {
+            background: var(--text);
+            color: var(--bg);
+            border-color: transparent
+        }
+
+            .btn-dark:hover {
+                opacity: .8
+            }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text)
+        }
+
+            .btn-outline:hover {
+                background: var(--bg2)
+            }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px
+        }
+
+        .tag {
+            font-size: 12px;
+            color: var(--purple-text);
+            background: var(--purple-bg);
+            padding: 3px 10px;
+            border-radius: var(--r-pill);
+            border: .5px solid var(--border)
+        }
+
+        .tag-plain {
+            font-size: 12px;
+            color: var(--text3);
+            background: var(--bg2);
+            padding: 3px 10px;
+            border-radius: var(--r-pill);
+            border: .5px solid var(--border)
+        }
+
+        hr {
+            border: none;
+            border-top: .5px solid var(--border);
+            margin: 2.5rem 0
+        }
+
+        .label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 1.1rem
+        }
+
+        .about-text {
+            font-size: 15px;
+            color: var(--text2);
+            line-height: 1.8;
+            max-width: 660px
+        }
+
+            .about-text p {
+                margin-bottom: 1rem
+            }
+
+                .about-text p:last-child {
+                    margin-bottom: 0
+                }
+
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+            gap: 12px;
+            margin-top: 1.4rem
+        }
+
+        .shot {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg2);
+            border: .5px solid var(--border);
+            border-radius: var(--r);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text3);
+            cursor: pointer;
+            transition: border-color .2s, transform .2s
+        }
+
+            .shot:hover {
+                border-color: var(--purple);
+                transform: scale(1.02)
+            }
+
+            .shot img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block
+            }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(110px,1fr));
+            gap: 10px
+        }
+
+        .stat {
+            background: var(--bg2);
+            border-radius: var(--r-sm);
+            padding: 1rem;
+            text-align: center;
+            border: .5px solid var(--border)
+        }
+
+        .stat-num {
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 3px
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text3)
+        }
+
+        .did-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+            .did-list li {
+                display: flex;
+                gap: 12px;
+                align-items: flex-start
+            }
+
+        .did-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--purple);
+            margin-top: 9px;
+            flex-shrink: 0
+        }
+
+        .did-text {
+            font-size: 15px;
+            color: var(--text2);
+            line-height: 1.65
+        }
+
+        .mechanics-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .mechanic-item {
+            border: .5px solid var(--border);
+            border-radius: var(--r);
+            overflow: hidden;
+            transition: border-color .2s
+        }
+
+            .mechanic-item.open {
+                border-color: var(--purple)
+            }
+
+        .mechanic-trigger {
+            width: 100%;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            color: var(--text);
+            transition: background .15s
+        }
+
+            .mechanic-trigger:hover {
+                background: var(--bg2)
+            }
+
+        .mechanic-item.open .mechanic-trigger {
+            background: var(--purple-bg)
+        }
+
+        .mechanic-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--r-sm);
+            background: var(--purple-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .mechanic-item.open .mechanic-icon {
+            background: var(--bg)
+        }
+
+        .mechanic-icon svg {
+            width: 14px;
+            height: 14px
+        }
+
+        .mechanic-trigger-text {
+            flex: 1
+        }
+
+        .mechanic-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+            display: block
+        }
+
+        .mechanic-subtitle {
+            font-size: 12px;
+            color: var(--text3);
+            display: block;
+            margin-top: 2px
+        }
+
+        .mechanic-chevron {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            transition: transform .3s cubic-bezier(.22,1,.36,1)
+        }
+
+        .mechanic-item.open .mechanic-chevron {
+            transform: rotate(180deg)
+        }
+
+        .mechanic-body {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows .35s cubic-bezier(.22,1,.36,1)
+        }
+
+        .mechanic-item.open .mechanic-body {
+            grid-template-rows: 1fr
+        }
+
+        .mechanic-body-inner {
+            overflow: hidden
+        }
+
+        .mechanic-content {
+            padding: 0 1.25rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            border-top: .5px solid var(--border)
+        }
+
+        .mechanic-desc {
+            font-size: 14px;
+            color: var(--text2);
+            line-height: 1.7;
+            padding-top: 1rem
+        }
+
+        .mechanic-gif {
+            border-radius: var(--r-sm);
+            overflow: hidden;
+            border: .5px solid var(--border);
+            background: var(--bg2)
+        }
+
+            .mechanic-gif img {
+                width: 100%;
+                display: block
+            }
+
+        .gif-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: var(--bg2)
+        }
+
+            .gif-placeholder span {
+                font-size: 12px;
+                color: var(--text3)
+            }
+
+        .gif-caption {
+            font-size: 12px;
+            color: var(--text3);
+            padding: 8px 12px;
+            border-top: .5px solid var(--border)
+        }
+
+        .code-block-wrap {
+            border-radius: var(--r-sm);
+            overflow: hidden;
+            border: .5px solid var(--border)
+        }
+
+        .code-header {
+            background: var(--bg2);
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: .5px solid var(--border)
+        }
+
+        .code-filename {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text2);
+            font-family: monospace
+        }
+
+        .code-lang {
+            font-size: 11px;
+            color: var(--text3);
+            background: var(--bg3);
+            padding: 2px 8px;
+            border-radius: var(--r-pill);
+            border: .5px solid var(--border)
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 1.25rem 1.5rem;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.7;
+            font-family: 'SF Mono','Fira Code','Consolas',monospace
+        }
+
+        code {
+            color: var(--code-text)
+        }
+
+        .kw {
+            color: #cba6f7
+        }
+
+        .fn {
+            color: #89b4fa
+        }
+
+        .str {
+            color: #a6e3a1
+        }
+
+        .cm {
+            color: #6c7086;
+            font-style: italic
+        }
+
+        .num {
+            color: #fab387
+        }
+
+        .tp {
+            color: #f38ba8
+        }
+
+        .code-explain {
+            background: var(--teal-bg);
+            border: .5px solid var(--border);
+            border-radius: var(--r-sm);
+            padding: 1.1rem 1.25rem
+        }
+
+        .explain-label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--teal-text);
+            margin-bottom: 8px;
+            opacity: .7
+        }
+
+        .explain-text {
+            font-size: 14px;
+            color: var(--text2);
+            line-height: 1.7
+        }
+
+            .explain-text p {
+                margin-bottom: .6rem
+            }
+
+                .explain-text p:last-child {
+                    margin-bottom: 0
+                }
+
+        .inline-code {
+            font-family: 'SF Mono','Fira Code','Consolas',monospace;
+            font-size: 12px;
+            background: var(--bg2);
+            padding: 1px 5px;
+            border-radius: 4px;
+            border: .5px solid var(--border)
+        }
+
+        footer {
+            padding: 2rem 0;
+            border-top: .5px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 3rem
+        }
+
+            footer span {
+                font-size: 12px;
+                color: var(--text3)
+            }
+
+            footer a {
+                font-size: 12px;
+                color: var(--purple);
+                text-decoration: none
+            }
+
+                footer a:hover {
+                    text-decoration: underline
+                }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.88);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem
+        }
+
+            .lightbox.active {
+                display: flex
+            }
+
+        .lightbox-img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: var(--r);
+            object-fit: contain;
+            user-select: none;
+            box-shadow: 0 24px 80px rgba(0,0,0,.5)
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 1.2rem;
+            right: 1.4rem;
+            background: rgba(255,255,255,.1);
+            border: .5px solid rgba(255,255,255,.25);
+            color: #fff;
+            font-size: 18px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s
+        }
+
+            .lightbox-close:hover {
+                background: rgba(255,255,255,.22)
+            }
+
+        .lightbox-prev, .lightbox-next {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,.1);
+            border: .5px solid rgba(255,255,255,.2);
+            color: #fff;
+            font-size: 22px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s
+        }
+
+        .lightbox-prev {
+            left: 1.2rem
+        }
+
+        .lightbox-next {
+            right: 1.2rem
+        }
+
+            .lightbox-prev:hover, .lightbox-next:hover {
+                background: rgba(255,255,255,.25)
+            }
+
+        .lightbox-counter {
+            position: fixed;
+            bottom: 1.4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            color: rgba(255,255,255,.55);
+            background: rgba(0,0,0,.4);
+            padding: 4px 14px;
+            border-radius: var(--r-pill)
+        }
+
+        .gif-carousel {
+            position: relative;
+        }
+
+        .carousel-container {
+            display: flex;
+            width: 100%;
+        }
+
+        .carousel-slide {
+            width: 100%;
+            height: auto;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+            .carousel-slide:hover {
+                transform: scale(1.02);
+            }
+
+        @media(max-width:560px) {
+            .game-title {
+                font-size: 24px
+            }
+
+            .game-banner {
+                height: 200px
+            }
+
+            .game-header-top {
+                flex-direction: column
+            }
+
+            .lightbox-prev {
+                left: .5rem
+            }
+
+            .lightbox-next {
+                right: .5rem
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="sparkle-canvas"></canvas>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <button class="lightbox-prev" onclick="changeImage(-1)">‹</button>
+        <img class="lightbox-img" id="lightbox-img" src="" alt="">
+        <button class="lightbox-next" onclick="changeImage(1)">›</button>
+        <span class="lightbox-counter" id="lightbox-counter"></span>
+    </div>
+
+    <div class="wrap">
+        <nav>
+            <div class="nav-inner">
+                <a href="index.html" class="nav-logo">Derrick Yu</a>
+                <a href="index.html" class="back-btn">← Back to portfolio</a>
+            </div>
+        </nav>
+
+        <!-- Banner -->
+        <div class="game-banner reveal">
+            <img src="Images/ai/aiBanner.png"
+                 alt="Petronas Persuit Banner"
+                 style="width: 100%;
+       height: 100%;
+       object-fit: contain;
+       object-position: center;
+       background: #0f172a;">
+        </div>
+
+        <!-- Title & links -->
+        <div class="game-header reveal d1">
+            <div class="game-header-top">
+                <h1 class="game-title">Ashes and Aura</h1>
+                <div class="btn-row">
+
+                </div>
+            </div>
+            <div class="tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag-plain">PC</span>
+                <span class="tag-plain">SchoolWork</span>
+                <span class="tag-plain">2025</span>
+            </div>
+        </div>
+
+
+        <hr>
+
+        <!-- About -->
+        <section class="reveal">
+            <p class="label">About the game</p>
+            <div class="about-text">
+                <p>
+                    Ashes and Auras is a 2D game in which you guard a creature, for example spirit or pet from monsters.
+                    Resources are gathered, defenses such as fences or turrets are created, and the creature itself is
+                    cared for by feeding it and tending to its wounds.The gamewill end if the pet dies.
+                </p>
+
+                <p>
+                    It is a AI driven Game simulation
+                </p>
+            </div>
+
+            <!-- Screenshots -->
+            <div class="screenshots">
+                <div class="shot" onclick="openLightbox(0)"><img src="Images/ai/ai1.png" alt="Screenshot 1"></div>
+                <div class="shot" onclick="openLightbox(1)"><img src="Images/ai/ai2.png" alt="Screenshot 2"></div>
+                <div class="shot" onclick="openLightbox(2)"><img src="Images/ai/ai3.png" alt="Screenshot 3"></div>
+                <div class="shot" onclick="openLightbox(3)"><img src="Images/ai/ai4.png" alt="Screenshot 4"></div>
+            </div>
+
+            <!-- Gameplay GIFs Section -->
+            <p class="label" style="margin: 2.5rem 0 1.1rem 0;">Gameplay Demo</p>
+            <div class="screenshots" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+                <!-- Add your GIFs here -->
+                <div class="shot" onclick="openLightboxFromGif(0)">
+                    <img src="Images/ai/aigamedemo1.gif" alt="Gameplay GIF 1" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+
+                <div class="shot" onclick="openLightboxFromGif(1)">
+                    <img src="Images/ai/aigamedemo2.gif" alt="Gameplay GIF 2" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+
+                <div class="shot" onclick="openLightboxFromGif(1)">
+                    <img src="Images/ai/aigamedemo3.gif" alt="Gameplay GIF 3" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+
+                <div class="shot" onclick="openLightboxFromGif(1)">
+                    <img src="Images/ai/aigamedemo4.gif" alt="Gameplay GIF 4" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+
+                <!-- Add more GIFs as needed -->
+                <!-- Example:
+    <div class="shot" onclick="openLightboxFromGif(2)">
+        <img src="Images/ai/ai_gif3.gif" alt="AI Behavior Demo">
+    </div>
+    -->
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- Stats -->
+        <section class="reveal">
+            <p class="label">At a glance</p>
+            <div class="stats">
+                <div class="stat"><div class="stat-num">3</div><div class="stat-label">Days to Build</div></div>
+                <div class="stat"><div class="stat-num">1</div><div class="stat-label">Developers</div></div>
+                <div class="stat"><div class="stat-num">Unity</div><div class="stat-label">Engine</div></div>
+                <div class="stat"><div class="stat-num">PC</div><div class="stat-label">Platform</div></div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- Mechanics -->
+        <section class="reveal">
+            <p class="label">Mechanics</p>
+            <p style="font-size:13px;color:var(--text3);margin-bottom:1.2rem;">Click a mechanic to see the GIF and code behind it.</p>
+            <div class="mechanics-list">
+
+                <!-- m1: StateMachine -->
+                <div class="mechanic-item" id="m1">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m1')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Player State Machine</span>
+                            <span class="mechanic-subtitle">Clean Finite State Machine · C# · Extensible Architecture</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">
+                                    A clean and maintainable Finite State Machine (FSM) that manages the player's different behaviors (Running, Dashing, Hurt, Dead, etc.).
+                                    This architecture keeps the PlayerController clean and makes it very easy to add new states in the future.
+                                </p>
+
+                             
+
+                                <p class="label" style="margin-bottom:.5rem;">StateMachine.cs</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header">
+                                        <span class="code-filename">StateMachine.cs</span>
+                                        <span class="code-lang">C#</span>
+                                    </div>
+                                    <pre><code><kw>using</kw> UnityEngine;
+
+<kw>public class</kw> <tp>StateMachine</tp>
+{
+    <kw>private</kw> StateBase currentState = <kw>null</kw>;
+
+    <kw>public void</kw> SetState(StateBase newState)
+    {
+        <kw>if</kw> (newState == <kw>null</kw>)
+        {
+            Debug.LogWarning(<str>"SetState called with null newState"</str>);
+            <kw>return</kw>;
+        }
+
+            <kw>if</kw> (currentState != <kw>null</kw>)
+        {
+            currentState.Exit();
+        }
+
+        currentState = newState;
+        currentState.Enter();
+    }
+
+    <kw>public void</kw> Tick(<kw>float</kw> deltaTime)
+    {
+        <kw>if</kw> (currentState == <kw>null</kw>)
+        {
+            Debug.LogWarning(<str>"Tick called with null currentState. Call SetState first."</str>);
+            <kw>return</kw>;
+        }
+
+        currentState.Update(deltaTime);
+
+        <kw>if</kw> (currentState.TryFindNextState(<kw>out</kw> StateBase nextState))
+        {
+            SetState(nextState);
+        }
+    }
+
+    <kw>public</kw> StateBase GetCurrentState() => currentState;
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>This StateMachine is the brain of the player. It follows the classic <strong>Enter → Update → Exit</strong> pattern and supports automatic transitions:</p>
+                                        <ul>
+                                            <li><strong>Clean transitions</strong>: Automatically calls <code>Exit()</code> on the old state and <code>Enter()</code> on the new one.</li>
+                                            <li><strong>Automatic switching</strong>: Every frame, the current state can request to change to a new state via <code>TryFindNextState()</code>.</li>
+                                            <li><strong>Safe &amp; robust</strong>: Includes null checks and helpful debug warnings.</li>
+                                            <li><strong>Highly extensible</strong>: Adding a new state (e.g. Climbing, Sliding, Power-up) only requires creating a new <code>StateBase</code> subclass.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">How to use</p>
+                                    <div class="explain-text">
+                                        <p>In your <strong>PlayerController.cs</strong>:</p>
+                                        <pre style="background:#1e1e2e;color:#cdd6f4;padding:12px;border-radius:6px;font-size:13px;"><code><kw>private</kw> StateMachine stateMachine;
+
+<kw>void</kw> Start()
+{
+    stateMachine = <kw>new</kw> StateMachine();
+    stateMachine.SetState(<kw>new</kw> PlayerRunState(<kw>this</kw>));
+}
+
+<kw>void</kw> Update()
+{
+    stateMachine.Tick(Time.deltaTime);
+}</code></pre>
+                                        <p>Each state (e.g. <code>PlayerDashState</code>, <code>PlayerHurtState</code>) inherits from <code>StateBase</code> and implements <code>Enter()</code>, <code>Update()</code>, <code>Exit()</code>, and <code>TryFindNextState()</code>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- m2: TransitionPair -->
+                <div class="mechanic-item" id="m2">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m2')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">State Transitions (TransitionPair)</span>
+                            <span class="mechanic-subtitle">Clean Conditional State Switching · C# · Data-Driven Transitions</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">
+                                    A lightweight and elegant way to define when a state should automatically transition to another state.
+                                    Instead of writing messy if-else chains inside every state's <code>Update()</code>, each state holds a list of
+                                    <code>TransitionPair</code>s that are checked every frame.
+                                </p>
+
+                                
+                                <p class="label" style="margin-bottom:.5rem;">TransitionPair.cs</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header">
+                                        <span class="code-filename">TransitionPair.cs</span>
+                                        <span class="code-lang">C#</span>
+                                    </div>
+                                    <pre><code><kw>public class</kw> <tp>TransitionPair</tp>
+{
+                                    <kw>public</kw> <tp>Func&lt;float, bool&gt;</tp> predicate;
+                                    <kw>public</kw> StateBase nextState;
+
+                                    <kw>public</kw> TransitionPair(StateBase nextState, <tp>Func&lt;float, bool&gt;</tp> predicate)
+    {
+                                    <kw>this</kw>.nextState = nextState;
+                                    <kw>this</kw>.predicate = predicate;
+    }
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p>The <code>TransitionPair</code> is a simple but powerful data structure that pairs a <strong>condition</strong> with a <strong>target state</strong>.</p>
+                                        <ul>
+                                            <li><strong>predicate</strong>: A function that receives deltaTime and returns <code>true</code> when the transition should happen.</li>
+                                            <li><strong>nextState</strong>: The state to switch to when the predicate becomes true.</li>
+                                        </ul>
+                                        <p>This keeps transition logic clean, reusable, and easy to read — no more giant if-else chains in your states.</p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">Example Usage in a State</p>
+                                    <div class="explain-text">
+                                        <pre style="background:#1e1e2e;color:#cdd6f4;padding:12px;border-radius:6px;font-size:13px;"><code><kw>public class</kw> PlayerRunState : StateBase
+{
+    <kw>public override void</kw> Enter() { ... }
+
+    <kw>public override void</kw> Update(<kw>float</kw> deltaTime)
+    {
+      <cm>// Example transitions</cm>
+      <kw>if</kw> (Input.GetKeyDown(KeyCode.Space))
+      stateMachine.SetState(<kw>new</kw> PlayerDashState(player));
+
+      <cm>// Or using TransitionPair (recommended)</cm>
+    }
+
+    <kw>public override bool</kw> TryFindNextState(<kw>out</kw> StateBase next)
+    {
+        next = <kw>null</kw>;
+
+        <kw>foreach</kw> (<kw>var</kw> transition <kw>in</kw> transitions)
+        {
+             <kw>if</kw> (transition.predicate(deltaTime))
+            {
+                next = transition.nextState;
+                 <kw>return true</kw>;
+            }
+        }
+        <kw>return false</kw>;
+    }
+}</code></pre>
+                                        <p style="margin-top:12px;">You can even pre-populate the <code>transitions</code> list in the state's constructor for a fully data-driven approach.</p>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">Why it's great</p>
+                                    <div class="explain-text">
+                                        <ul>
+                                            <li>Keeps each state focused only on its own behavior</li>
+                                            <li>Makes transitions declarative and easy to debug</li>
+                                            <li>Very easy to add new transitions without touching core state logic</li>
+                                            <li>Works beautifully with the <code>StateMachine.Tick()</code> system you already have</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- m3: StateBase -->
+                <div class="mechanic-item" id="m3">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m3')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">StateBase (Base State Class)</span>
+                            <span class="mechanic-subtitle">Abstract Base Class · Built-in Transitions · Time Tracking</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <p class="mechanic-desc">
+                                    The foundation of the entire state machine system. <code>StateBase</code> provides a clean, reusable structure
+                                    for all player states while automatically handling transitions via <code>TransitionPair</code> and tracking how long the player has been in the current state.
+                                </p>
+
+                                
+
+                                <p class="label" style="margin-bottom:.5rem;">StateBase.cs</p>
+                                <div class="code-block-wrap">
+                                    <div class="code-header">
+                                        <span class="code-filename">StateBase.cs</span>
+                                        <span class="code-lang">C#</span>
+                                    </div>
+                                    <pre><code><kw>public abstract class</kw> <tp>StateBase</tp>
+{
+    <kw>protected readonly</kw> List&lt;TransitionPair&gt; Transitions = <kw>new</kw>();
+
+    <kw>private</kw> float timeInState = 0f;
+    <kw>public float</kw> TimeInState => timeInState;
+
+    <kw>public void</kw> AddTransition(StateBase to, Func&lt;float, bool&gt; predicate)
+    {
+        Transitions.Add(<kw>new</kw> TransitionPair(to, predicate));
+    }
+
+    <kw>public bool</kw> TryFindNextState(<kw>out</kw> StateBase nextState)
+    {
+        <kw>foreach</kw> (<kw>var</kw> t <kw>in</kw> Transitions)
+        {
+            <kw>if</kw> (t.predicate(timeInState))
+            {
+                nextState = t.nextState;
+                <kw>return true</kw>;
+            }
+        }
+        nextState = <kw>null</kw>;
+        <kw>return false</kw>;
+    }
+
+    <kw>protected virtual void</kw> OnEnter() { }
+    <kw>protected virtual void</kw> OnExit() { }
+    <kw>protected virtual void</kw> OnUpdate(<kw>float</kw> deltaTime) { }
+}</code></pre>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">What this does</p>
+                                    <div class="explain-text">
+                                        <p><code>StateBase</code> is the heart of your clean FSM architecture. It gives every state:</p>
+                                        <ul>
+                                            <li><strong>Built-in transition system</strong> using <code>TransitionPair</code></li>
+                                            <li><strong>Time tracking</strong> — <code>TimeInState</code> tells you how long you've been in this state (very useful for timed behaviors like invincibility frames, attack cooldowns, etc.)</li>
+                                            <li><strong>Clean lifecycle methods</strong>: <code>OnEnter()</code>, <code>OnExit()</code>, and <code>OnUpdate()</code></li>
+                                            <li><strong>Easy transition registration</strong> via <code>AddTransition()</code></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain" style="border-color: var(--border2);">
+                                    <p class="explain-label" style="color: var(--purple-text);">How states inherit from it</p>
+                                    <div class="explain-text">
+                                        <pre style="background:#1e1e2e;color:#cdd6f4;padding:12px;border-radius:6px;font-size:13px;"><code><kw>public class</kw> PlayerRunState : StateBase
+{
+    <kw>private readonly</kw> PlayerController player;
+
+    <kw>public</kw> PlayerRunState(PlayerController player)
+    {
+        <kw>this</kw>.player = player;
+
+        <cm>// Register transitions</cm>
+        AddTransition(<kw>new</kw> PlayerDashState(player), dt =&gt; Input.GetKeyDown(KeyCode.Space));
+        AddTransition(<kw>new</kw> PlayerHurtState(player), dt =&gt; player.IsHit);
+    }
+
+    <kw>protected override void</kw> OnEnter()
+    {
+        player.Animator.SetBool("IsRunning", true);
+    }
+
+    <kw>protected override void</kw> OnUpdate(<kw>float</kw> deltaTime)
+    {
+        player.HandleMovement();
+    }
+
+    <kw>protected override void</kw> OnExit()
+    {
+        player.Animator.SetBool("IsRunning", false);
+    }
+}</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="code-explain">
+                                    <p class="explain-label">Why it's great</p>
+                                    <div class="explain-text">
+                                        <ul>
+                                            <li>Eliminates duplicate transition code across states</li>
+                                            <li><code>TimeInState</code> makes timed actions (dash cooldown, hurt recovery, etc.) trivial</li>
+                                            <li>Transitions are declarative and easy to read</li>
+                                            <li>Keeps every state focused, clean, and maintainable</li>
+                                            <li>Works perfectly with your existing <code>StateMachine</code> class</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- What I did -->
+        <section class="reveal">
+            <p class="label">What I did</p>
+            <ul class="did-list">
+                <li><span class="did-dot"></span><span class="did-text">The Whole AI Simulation</span></li>
+
+            </ul>
+        </section>
+
+        <footer>
+            <span>© 2026 Derrick Yu</span>
+            <a href="index.html">← Back to all games</a>
+        </footer>
+
+    </div>
+
+    <script>
+        /* Lightbox */
+        let lbImages = [
+        'Images/ai/ai1.png','Images/ai/ai2.png','Images/ai/ai3.png','Images/ai/ai4.png'
+        ]
+        let lbIndex = 0
+
+        function openLightbox(i) {
+        lbIndex = i
+        document.getElementById('lightbox-img').src = lbImages[lbIndex]
+        document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length
+        document.getElementById('lightbox').classList.add('active')
+        document.body.style.overflow = 'hidden'
+        }
+
+           /* === GIF Lightbox Support === */
+        let lbGifs = [
+        'Images/ai/aigamedemo1.gif',
+        'Images/ai/aigamedemo2.gif',
+        'Images/ai/aigamedemo3.gif',
+        'Images/ai/aigamedemo4.gif'
+        // Add more GIF paths here
+        ];
+
+         function openLightboxFromGif(i) {
+         lbIndex = i;
+          lbImages = lbGifs;                    // Switch to GIF array
+         document.getElementById('lightbox-img').src = lbGifs[lbIndex];
+         document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbGifs.length;
+         document.getElementById('lightbox').classList.add('active');
+         document.body.style.overflow = 'hidden';
+}
+
+     
+
+        function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active')
+        document.body.style.overflow = ''
+        }
+
+        function closeLightboxOutside(e) {
+        if (e.target === document.getElementById('lightbox')) closeLightbox()
+        }
+
+        function changeImage(dir) {
+        lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length
+        document.getElementById('lightbox-img').src = lbImages[lbIndex]
+        document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length
+        }
+
+        function openLightboxFromCarousel(src, carouselId) {
+        const container = document.getElementById(carouselId);
+        const slides = container.getElementsByTagName('img');
+        let index = 0;
+        for (let i = 0; i < slides.length; i++) {
+        if (slides[i].src === src) { index = i; break; }
+        }
+        lbImages = Array.from(slides).map(img => img.src);
+        lbIndex = index;
+        document.getElementById('lightbox-img').src = lbImages[lbIndex];
+        document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length;
+        document.getElementById('lightbox').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        }
+
+        document.addEventListener('keydown', e => {
+        if (!document.getElementById('lightbox').classList.contains('active')) return
+        if (e.key === 'ArrowRight') changeImage(1)
+        if (e.key === 'ArrowLeft') changeImage(-1)
+        if (e.key === 'Escape') closeLightbox()
+        })
+
+        /* Accordion */
+        function toggleMechanic(id) {
+        const item = document.getElementById(id)
+        const isOpen = item.classList.contains('open')
+        document.querySelectorAll('.mechanic-item').forEach(el => el.classList.remove('open'))
+        if (!isOpen) {
+        item.classList.add('open')
+        setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50)
+        }
+        }
+
+        /* Scroll reveal */
+        const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
+        }, { threshold: 0.08 })
+        document.querySelectorAll('.reveal').forEach(el => {
+        obs.observe(el)
+        if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible')
+        })
+
+        /* Cursor sparkle */
+        const sc = document.getElementById('sparkle-canvas')
+        const sx = sc.getContext('2d')
+        let sparks = []
+        function rszSpark() { sc.width = window.innerWidth; sc.height = window.innerHeight }
+        rszSpark()
+        window.addEventListener('resize', rszSpark)
+        const COLS = ['#AFA9EC','#7F77DD','#9FE1CB','#5DCAA5','#F5C4B3','#D85A30','#F4C0D1','#ED93B1']
+        let lastMouse = 0
+        window.addEventListener('mousemove', e => {
+        const now = Date.now()
+        if (now - lastMouse < 20) return
+        lastMouse = now
+        for (let i = 0; i < 4; i++) {
+        const angle = Math.random() * Math.PI * 2
+        const speed = Math.random() * 1.8 + 0.4
+        sparks.push({
+        x: e.clientX, y: e.clientY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 1.2,
+        size: Math.random() * 4 + 2,
+        alpha: 1,
+        color: COLS[Math.floor(Math.random() * COLS.length)]
+        })
+        }
+        })
+        function animSparks() {
+        sx.clearRect(0, 0, sc.width, sc.height)
+        sparks = sparks.filter(s => s.alpha > 0.03)
+        sparks.forEach(s => {
+        sx.globalAlpha = s.alpha
+        sx.fillStyle = s.color
+        const h = s.size / 2
+        sx.fillRect(s.x - h, s.y - h, s.size, s.size)
+        s.x += s.vx; s.y += s.vy
+        s.vy += 0.07
+        s.alpha -= 0.032
+        s.size *= 0.97
+        })
+        sx.globalAlpha = 1
+        requestAnimationFrame(animSparks)
+        }
+        animSparks()
+    </script>
+</body>
+</html>
