@@ -1261,15 +1261,15 @@ bHasTriggered = <kw>true</kw>;
 {
 <kw>case</kw> EUniversalTriggerType::EnemySpawn:
     EnemySpawnSystem-&gt;<fn>Execute</fn>();
-                                    <kw>break</kw>;
+    <kw>break</kw>;
     
 <kw>case</kw> EUniversalTriggerType::CombatPuzzle:
     CombatPuzzleSystem-&gt;<fn>Execute</fn>();
-                                    <kw>break</kw>;
+    <kw>break</kw>;
 
 <kw>case</kw> EUniversalTriggerType::Instruction:
-                                    <fn>ShowInstructionToPlayer</fn>();
-                                    <kw>break</kw>;
+    <fn>ShowInstructionToPlayer</fn>();
+    <kw>break</kw>;
 }</code></pre>
                                 </div>
 
@@ -1286,11 +1286,11 @@ bHasTriggered = <kw>true</kw>;
                                     <div class="code-header"><span class="code-filename">UniversalTrigger.cpp</span><span class="code-lang">C++</span></div>
                                     <pre><code><kw>void</kw> AUniversalTrigger::<fn>OnObjectiveComplete</fn>()
 {
-                                    <cm>// Handle reward actors when puzzle/combat is finished</cm>
-                                    <kw>if</kw> (bMakeActorsAppearOnComplete)
-                                    <fn>UpdateAppearingActors</fn>(AppearingActorsOnComplete, <kw>true</kw>);
+    <cm>// Handle reward actors when puzzle/combat is finished</cm>
+    <kw>if</kw> (bMakeActorsAppearOnComplete)
+        <fn>UpdateAppearingActors</fn>(AppearingActorsOnComplete, <kw>true</kw>);
 
-                                    <fn>HideCurrentInstruction</fn>();
+        <fn>HideCurrentInstruction</fn>();
 }</code></pre>
                                 </div>
 
@@ -1353,17 +1353,17 @@ bHasTriggered = <kw>true</kw>;
                                     <pre><code><cm>// Called by UniversalTrigger when player enters arena</cm>
 <kw>void</kw> UCombatPuzzleSystem::<fn>Execute</fn>()
 {
-                                    <kw>if</kw> (bCombatActive || bPuzzleCompleted) <kw>return</kw>;
+    <kw>if</kw> (bCombatActive || bPuzzleCompleted) <kw>return</kw>;
 
     bCombatActive = <kw>true</kw>;
     CurrentWaveIndex = 0;
 
-                                    <cm>// Raise arena walls</cm>
-                                    <kw>for</kw> (AActor* Wall : WallsToActivate)
-                                    <fn>SetWallActive</fn>(Wall, <kw>true</kw>);
+    <cm>// Raise arena walls</cm>
+    <kw>for</kw> (AActor* Wall : WallsToActivate)
+        <fn>SetWallActive</fn>(Wall, <kw>true</kw>);
 
-                                    <kw>if</kw> (Waves.Num() > 0)
-                                    <fn>StartWave</fn>(0);
+    <kw>if</kw> (Waves.Num() > 0)
+        <fn>StartWave</fn>(0);
 }</code></pre>
                                 </div>
 
@@ -1379,17 +1379,17 @@ bHasTriggered = <kw>true</kw>;
                                     <div class="code-header"><span class="code-filename">CombatPuzzleSystem.cpp</span><span class="code-lang">C++</span></div>
                                     <pre><code><cm>// Calculate expected enemies (excluding babies)</cm>
 <kw>for</kw> (const FCombatEnemySpawnPoint&amp; Point : Wave.SpawnPoints)
-                                    <kw>for</kw> (const FIndividualEnemySpawn&amp; Spawn : Point.EnemiesToSpawn)
+    <kw>for</kw> (const FIndividualEnemySpawn&amp; Spawn : Point.EnemiesToSpawn)
         EnemiesExpectedThisWave++;
 
 <cm>// Spawn with individual delays</cm>
 <kw>for</kw> (const FCombatEnemySpawnPoint&amp; Point : Wave.SpawnPoints)
 {
-                                    <kw>for</kw> (const FIndividualEnemySpawn&amp; Spawn : Point.EnemiesToSpawn)
+    <kw>for</kw> (const FIndividualEnemySpawn&amp; Spawn : Point.EnemiesToSpawn)
     {
         GetWorld()-&gt;GetTimerManager().<fn>SetTimer</fn>(..., 
             [this, Spawn, Point]() { 
-                                    <fn>SpawnEnemyAtLocation</fn>(Spawn.EnemyType, ...);
+            <fn>SpawnEnemyAtLocation</fn>(Spawn.EnemyType, ...);
             }, Spawn.SpawnDelay, <kw>false</kw>);
     }
 }</code></pre>
@@ -1410,18 +1410,18 @@ bHasTriggered = <kw>true</kw>;
 {
     EnemiesDied++;
     GetWorld()-&gt;GetTimerManager().<fn>SetTimerForNextTick</fn>([this]() {
-                                    <fn>CheckWaveComplete</fn>();
+    <fn>CheckWaveComplete</fn>();
     });
 }
 
 <kw>void</kw> UCombatPuzzleSystem::<fn>CheckWaveComplete</fn>()
 {
-                                    <kw>if</kw> (!bAllEnemiesQueued || bWaveCompletionPending) <kw>return</kw>;
-                                    <kw>if</kw> (PendingChildrenToRegister &gt; 0) <kw>return</kw>;   <cm>// Wait for spider babies</cm>
-                                    <kw>if</kw> (EnemiesDied &lt; EnemiesExpectedThisWave) <kw>return</kw>;
+    <kw>if</kw> (!bAllEnemiesQueued || bWaveCompletionPending) <kw>return</kw>;
+    <kw>if</kw> (PendingChildrenToRegister &gt; 0) <kw>return</kw>;   <cm>// Wait for spider babies</cm>
+    <kw>if</kw> (EnemiesDied &lt; EnemiesExpectedThisWave) <kw>return</kw>;
 
     bWaveCompletionPending = <kw>true</kw>;
-                                    <fn>AdvanceOrCompleteWave</fn>();
+    <fn>AdvanceOrCompleteWave</fn>();
 }</code></pre>
                                 </div>
 
@@ -1495,16 +1495,16 @@ bHasTriggered = <kw>true</kw>;
                                     <pre><code><cm>// When player overlaps a checkpoint trigger</cm>
 <kw>if</kw> (bIsCheckpoint)
 {
-                                    <fn>ActivateCheckpoint</fn>(EQChar);
+    <fn>ActivateCheckpoint</fn>(EQChar);
 }
 
 <kw>void</kw> AUniversalTrigger::<fn>ActivateCheckpoint</fn>(AEQCharacter* Character)
 {
-                                    <kw>if</kw> (!CheckpointSpawnPoint) <kw>return</kw>;
+    <kw>if</kw> (!CheckpointSpawnPoint) <kw>return</kw>;
 
-                                    <kw>if</kw> (APlayerController* PC = Cast&lt;APlayerController&gt;(Character-&gt;GetController()))
+    <kw>if</kw> (APlayerController* PC = Cast&lt;APlayerController&gt;(Character-&gt;GetController()))
     {
-                                    <kw>if</kw> (AEQPlayerState* PS = PC-&gt;GetPlayerState&lt;AEQPlayerState&gt;())
+        <kw>if</kw> (AEQPlayerState* PS = PC-&gt;GetPlayerState&lt;AEQPlayerState&gt;())
         {
             FVector SpawnLoc = CheckpointSpawnPoint-&gt;GetActorLocation();
             FRotator SpawnRot = FRotator(0.f, 45.f, 0.f); <cm>// Force consistent yaw</cm>
@@ -1531,21 +1531,21 @@ bHasTriggered = <kw>true</kw>;
                                     <pre><code><cm>// Override to support checkpoint respawn</cm>
 AActor* AEQGameModeBase::<fn>FindPlayerStart_Implementation</fn>(AController* Player, const FString&amp; IncomingName)
 {
-                                    <kw>if</kw> (AEQPlayerState* PS = Player-&gt;GetPlayerState&lt;AEQPlayerState&gt;())
+    <kw>if</kw> (AEQPlayerState* PS = Player-&gt;GetPlayerState&lt;AEQPlayerState&gt;())
     {
-                                    <kw>if</kw> (PS-&gt;HasCheckpoint())
+        <kw>if</kw> (PS-&gt;HasCheckpoint())
         {
             FVector Loc = PS-&gt;GetCheckpointLocation();
             FRotator Rot = PS-&gt;GetCheckpointRotation();
 
-                                    <cm>// Spawn a temporary PlayerStart at the checkpoint</cm>
+            <cm>// Spawn a temporary PlayerStart at the checkpoint</cm>
             APlayerStart* TempStart = GetWorld()-&gt;SpawnActor&lt;APlayerStart&gt;(
             APlayerStart::StaticClass(), Loc, Rot);
 
-                                    <kw>if</kw> (TempStart) <kw>return</kw> TempStart;
+            <kw>if</kw> (TempStart) <kw>return</kw> TempStart;
         }
     }
-                                    <kw>return</kw> Super::FindPlayerStart_Implementation(Player, IncomingName);
+    <kw>return</kw> Super::FindPlayerStart_Implementation(Player, IncomingName);
 }</code></pre>
                                 </div>
 
@@ -1565,10 +1565,10 @@ AActor* AEQGameModeBase::<fn>FindPlayerStart_Implementation</fn>(AController* Pl
                                     <div class="code-header"><span class="code-filename">EQGameModeBase.cpp</span><span class="code-lang">C++</span></div>
                                     <pre><code><kw>void</kw> AEQGameModeBase::<fn>RestartPlayer</fn>(AController* NewPlayer)
 {
-                                    <fn>ResetAllCombatPuzzles</fn>();   <cm>// Reset all combat arenas on death</cm>
+    <fn>ResetAllCombatPuzzles</fn>();   <cm>// Reset all combat arenas on death</cm>
 
-                                    <cm>// Clean up old pawn and respawn</cm>
-                                    <kw>if</kw> (APawn* OldPawn = PC-&gt;GetPawn())
+    <cm>// Clean up old pawn and respawn</cm>
+    <kw>if</kw> (APawn* OldPawn = PC-&gt;GetPawn())
     {
         PC-&gt;UnPossess();
         OldPawn-&gt;Destroy();
@@ -1635,11 +1635,11 @@ AActor* AEQGameModeBase::<fn>FindPlayerStart_Implementation</fn>(AController* Pl
                                     <div class="code-header"><span class="code-filename">BushPuzzle.cpp</span><span class="code-lang">C++</span></div>
                                     <pre><code><kw>void</kw> ABushPuzzle::<fn>IgniteBush</fn>()
 {
-                                    <kw>if</kw> (bIsIgnited) <kw>return</kw>;
+    <kw>if</kw> (bIsIgnited) <kw>return</kw>;
     bIsIgnited = <kw>true</kw>;
 
-                                    <cm>// Swap to dynamic dissolve material with fire emissive</cm>
-                                    <kw>for</kw> (int32 i = 0; i &lt; BushMesh-&gt;GetNumMaterials(); i++)
+    <cm>// Swap to dynamic dissolve material with fire emissive</cm>
+    <kw>for</kw> (int32 i = 0; i &lt; BushMesh-&gt;GetNumMaterials(); i++)
     {
         UMaterialInstanceDynamic* DynMat = UMaterialInstanceDynamic::Create(DissolveMaterial, this);
         BushMesh-&gt;SetMaterial(i, DynMat);
@@ -1647,14 +1647,14 @@ AActor* AEQGameModeBase::<fn>FindPlayerStart_Implementation</fn>(AController* Pl
         DynMat-&gt;SetScalarParameterValue("Disolve", -0.4f);
     }
 
-                                    <fn>PlaySound</fn>(IgniteSound);
-                                    <fn>SpawnNiagaraEffect</fn>(BurningEffect);
+    <fn>PlaySound</fn>(IgniteSound);
+    <fn>SpawnNiagaraEffect</fn>(BurningEffect);
 
-                                    <cm>// Start dissolve animation + destruction timer</cm>
+    <cm>// Start dissolve animation + destruction timer</cm>
     GetWorldTimerManager().SetTimer(DissolveTimerHandle, this, &ABushPuzzle::UpdateDissolve, 0.05f, true);
     GetWorldTimerManager().SetTimer(DestructionTimerHandle, this, &ABushPuzzle::DestroyBush, DestructionDelay, false);
 
-                                    <kw>if</kw> (bCanSpreadFire)
+    <kw>if</kw> (bCanSpreadFire)
         GetWorldTimerManager().SetTimer(FireSpreadTimerHandle, this, &ABushPuzzle::SpreadFireToNearbyBushes, FireSpreadDelay, false);
 }</code></pre>
                                 </div>
@@ -1680,11 +1680,11 @@ AActor* AEQGameModeBase::<fn>FindPlayerStart_Implementation</fn>(AController* Pl
         FCollisionShape::MakeSphere(FireSpreadRadius)
     );
 
-                                    <kw>for</kw> (const FOverlapResult&amp; Result : OverlapResults)
+    <kw>for</kw> (const FOverlapResult&amp; Result : OverlapResults)
     {
-                                    <kw>if</kw> (ABushPuzzle* Nearby = Cast&lt;ABushPuzzle&gt;(Result.GetActor()))
+        <kw>if</kw> (ABushPuzzle* Nearby = Cast&lt;ABushPuzzle&gt;(Result.GetActor()))
         {
-                                    <kw>if</kw> (!Nearby-&gt;bIsIgnited)
+            <kw>if</kw> (!Nearby-&gt;bIsIgnited)
                 Nearby-&gt;TriggerIgnite();
         }
     }
@@ -1760,17 +1760,17 @@ AActor* AEQGameModeBase::<fn>FindPlayerStart_Implementation</fn>(AController* Pl
 <kw>void</kw> APuzzleKey::<fn>OnBoxBeginOverlap</fn>(...)
 {
     OverlappingPlayer = Character;
-                                    <fn>BindInteractInput</fn>();        <cm>// Bind F key</cm>
-                                    <fn>ShowInteractPrompt</fn>(true);
+    <fn>BindInteractInput</fn>();        <cm>// Bind F key</cm>
+    <fn>ShowInteractPrompt</fn>(true);
 }
 
 <kw>void</kw> APuzzleKey::<fn>OnInteractPressed</fn>()
 {
     bAlreadyCollected = <kw>true</kw>;
-                                    <fn>UnbindInteractInput</fn>();
-                                    <fn>ShowInteractPrompt</fn>(false);
+    <fn>UnbindInteractInput</fn>();
+    <fn>ShowInteractPrompt</fn>(false);
     
-                                    <fn>FlyToGate</fn>(AssignedGate);
+    <fn>FlyToGate</fn>(AssignedGate);
 }</code></pre>
                                 </div>
 
@@ -1788,7 +1788,7 @@ AActor* AEQGameModeBase::<fn>FindPlayerStart_Implementation</fn>(AController* Pl
 {
     Loc.Z = FMath::FInterpConstantTo(Loc.Z, LiftTargetZ, DeltaTime, LiftSpeed);
     ...
-                                    <kw>if</kw> (reached height) FlightPhase = FlyingToGate;
+    <kw>if</kw> (reached height) FlightPhase = FlyingToGate;
 }
 
 <kw>if</kw> (FlightPhase == EKeyFlightPhase::FlyingToGate)
@@ -1822,11 +1822,11 @@ AActor* AEQGameModeBase::<fn>FindPlayerStart_Implementation</fn>(AController* Pl
 {
     CollectedKeys++;
 
-                                    <fn>ActivateKeyMesh</fn>(CollectedKeys);   <cm>// Show key visually inserted</cm>
+    <fn>ActivateKeyMesh</fn>(CollectedKeys);   <cm>// Show key visually inserted</cm>
 
-                                    <kw>if</kw> (CollectedKeys >= RequiredKeys)
+    <kw>if</kw> (CollectedKeys >= RequiredKeys)
     {
-                                    <fn>CompletePuzzle</fn>();
+        <fn>CompletePuzzle</fn>();
     }
 }
 
@@ -1836,7 +1836,7 @@ AActor* AEQGameModeBase::<fn>FindPlayerStart_Implementation</fn>(AController* Pl
     DoorMesh-&gt;SetVisibility(false);
     DoorMesh-&gt;SetCollisionEnabled(ECollisionEnabled::NoCollision);
     
-                                    <fn>PlaySound</fn>(DoorUnlockSound);
+    <fn>PlaySound</fn>(DoorUnlockSound);
 }</code></pre>
                                 </div>
 
@@ -1914,9 +1914,9 @@ AbilitySystemComponent-&gt;RegisterGameplayTagEvent(
 
 <kw>void</kw> ATimePuzzle::<fn>OnWaterTagChanged</fn>(const FGameplayTag CallbackTag, int32 NewCount)
 {
-                                    <kw>if</kw> (NewCount &gt; 0 &amp;&amp; !bActivated)
+    <kw>if</kw> (NewCount &gt; 0 &amp;&amp; !bActivated)
     {
-                                    <fn>ActivateObject</fn>();
+        <fn>ActivateObject</fn>();
     }
 }</code></pre>
                                 </div>
@@ -1933,18 +1933,18 @@ AbilitySystemComponent-&gt;RegisterGameplayTagEvent(
                                     <div class="code-header"><span class="code-filename">TimePuzzle.cpp</span><span class="code-lang">C++</span></div>
                                     <pre><code><kw>void</kw> ATimePuzzle::<fn>ActivateObject</fn>()
 {
-                                    <kw>if</kw> (bActivated) <kw>return</kw>;
+    <kw>if</kw> (bActivated) <kw>return</kw>;
     bActivated = <kw>true</kw>;
 
-                                    <fn>PlaySound</fn>(BellSound);
-                                    <fn>RefreshMaterials</fn>();                 <cm>// Switch to glowing material</cm>
+    <fn>PlaySound</fn>(BellSound);
+    <fn>RefreshMaterials</fn>();                 <cm>// Switch to glowing material</cm>
 
-                                    <cm>// Start or reset the countdown timer</cm>
+    <cm>// Start or reset the countdown timer</cm>
     GetWorldTimerManager().SetTimer(
-        CountdownTimer, this, &ATimePuzzle::OnTimerExpired, TimeLimit, false
+    CountdownTimer, this, &ATimePuzzle::OnTimerExpired, TimeLimit, false
     );
 
-                                    <kw>if</kw> (PuzzleManager)
+    <kw>if</kw> (PuzzleManager)
         PuzzleManager-&gt;OnTimePuzzleObjectHit(this);
 }</code></pre>
                                 </div>
@@ -1962,9 +1962,9 @@ AbilitySystemComponent-&gt;RegisterGameplayTagEvent(
                                     <pre><code><kw>void</kw> ATimePuzzle::<fn>OnTimerExpired</fn>()
 {
     bActivated = <kw>false</kw>;
-                                    <fn>RefreshMaterials</fn>();                 <cm>// Return to idle look</cm>
+    <fn>RefreshMaterials</fn>();                 <cm>// Return to idle look</cm>
 
-                                    <kw>if</kw> (PuzzleManager)
+    <kw>if</kw> (PuzzleManager)
         PuzzleManager-&gt;OnTimePuzzleObjectExpired(this);
 }</code></pre>
                                 </div>
@@ -2046,9 +2046,9 @@ AbilitySystemComponent-&gt;RegisterGameplayTagEvent(
 
 <kw>void</kw> ASequencePuzzle::<fn>OnFireTagChanged</fn>(const FGameplayTag CallbackTag, int32 NewCount)
 {
-                                    <kw>if</kw> (NewCount &gt; 0 &amp;&amp; !bActivated)
+    <kw>if</kw> (NewCount &gt; 0 &amp;&amp; !bActivated)
     {
-                                    <fn>ActivateObject</fn>();
+        <fn>ActivateObject</fn>();
     }
 }</code></pre>
                                 </div>
@@ -2065,12 +2065,12 @@ AbilitySystemComponent-&gt;RegisterGameplayTagEvent(
                                     <div class="code-header"><span class="code-filename">SequencePuzzle.cpp</span><span class="code-lang">C++</span></div>
                                     <pre><code><kw>void</kw> ASequencePuzzle::<fn>ActivateObject</fn>()
 {
-                                    <kw>if</kw> (bActivated) <kw>return</kw>;
+    <kw>if</kw> (bActivated) <kw>return</kw>;
     bActivated = <kw>true</kw>;
 
-                                    <fn>SetFireVisible</fn>(true);   <cm>// Show Niagara fire effect</cm>
+    <fn>SetFireVisible</fn>(true);   <cm>// Show Niagara fire effect</cm>
 
-                                    <kw>if</kw> (PuzzleManager)
+    <kw>if</kw> (PuzzleManager)
         PuzzleManager-&gt;OnSequencePuzzleHit(this);   <cm>// Tell manager to check order</cm>
 }</code></pre>
                                 </div>
@@ -2149,9 +2149,9 @@ AbilitySystemComponent-&gt;RegisterGameplayTagEvent(
                                     <pre><code><cm>// Dynamic material based on state</cm>
 UMaterialInterface* ATransitionLevel::<fn>GetProximityMaterial</fn>() const
 {
-                                    <kw>if</kw> (!bGateUnlocked) return FresnelLockedMaterial;
-                                    <kw>if</kw> (bLevelCleared)  return FresnelLevelDoneMaterial;
-                                    <kw>return</kw> FresnelMaterial;
+    <kw>if</kw> (!bGateUnlocked) return FresnelLockedMaterial;
+    <kw>if</kw> (bLevelCleared)  return FresnelLevelDoneMaterial;
+    <kw>return</kw> FresnelMaterial;
 }
 
 <kw>void</kw> ATransitionLevel::<fn>RefreshClearedState</fn>()
@@ -2160,7 +2160,7 @@ UMaterialInterface* ATransitionLevel::<fn>GetProximityMaterial</fn>() const
     bGateUnlocked = (RequiredPreviousLevel == EBossLevelType::None) 
         || ULevelPref::IsLevelCleared(RequiredPreviousLevel);
 
-                                    <kw>if</kw> (bPlayerInRange)
+    <kw>if</kw> (bPlayerInRange)
         PortalMesh-&gt;SetMaterial(0, <fn>GetProximityMaterial</fn>());
 }</code></pre>
                                 </div>
@@ -2182,9 +2182,9 @@ UMaterialInterface* ATransitionLevel::<fn>GetProximityMaterial</fn>() const
                                     <div class="code-header"><span class="code-filename">TransitionLevel.cpp</span><span class="code-lang">C++</span></div>
                                     <pre><code><kw>void</kw> ATransitionLevel::<fn>OnInteractPressed</fn>()
 {
-                                    <kw>if</kw> (!bGateUnlocked || TargetLevelName.IsNone()) <kw>return</kw>;
+    <kw>if</kw> (!bGateUnlocked || TargetLevelName.IsNone()) <kw>return</kw>;
 
-                                    <fn>PlaySound</fn>(TransitionSound);
+    <fn>PlaySound</fn>(TransitionSound);
     UGameplayStatics::OpenLevel(this, TargetLevelName);
 }</code></pre>
                                 </div>
@@ -2202,8 +2202,8 @@ UMaterialInterface* ATransitionLevel::<fn>GetProximityMaterial</fn>() const
                                     <pre><code><kw>void</kw> ULevelPref::<fn>SetLevelCleared</fn>(EBossLevelType LevelType)
 {
     ULevelPref* Save = <fn>LoadOrCreate</fn>();
-                                    <cm>// Set flag for Grass / Fire / Water boss</cm>
-                                    <kw>switch</kw> (LevelType) { ... }
+    <cm>// Set flag for Grass / Fire / Water boss</cm>
+    <kw>switch</kw> (LevelType) { ... }
 
     UGameplayStatics::SaveGameToSlot(Save, SaveSlotName, UserIndex);
     OnLevelPrefChanged.Broadcast();   <cm>// Notify all portals</cm>
@@ -2212,7 +2212,7 @@ UMaterialInterface* ATransitionLevel::<fn>GetProximityMaterial</fn>() const
 <kw>bool</kw> ULevelPref::<fn>IsLevelCleared</fn>(EBossLevelType LevelType)
 {
     ULevelPref* Save = <fn>LoadOrCreate</fn>();
-                                    <kw>switch</kw> (LevelType) { ... }
+    <kw>switch</kw> (LevelType) { ... }
 }</code></pre>
                                 </div>
 
@@ -2259,7 +2259,7 @@ UMaterialInterface* ATransitionLevel::<fn>GetProximityMaterial</fn>() const
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Cutscenes</span>
+                            <span class="mechanic-title">Cutscenes(WIP)</span>
                             <span class="mechanic-subtitle">C++ · Cutscenes · Cinematic</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
