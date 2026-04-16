@@ -305,6 +305,27 @@
                 object-fit: cover;
                 display: block
             }
+        /* Improve Gameplay Demo section for portrait */
+        .gameplay-demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* slightly wider min for portrait */
+            gap: 16px;
+            margin-top: 1.4rem;
+        }
+        /* New class for portrait game shots & GIFs */
+        .portrait-shot {
+            aspect-ratio: 9/16; /* tall portrait ratio */
+            max-width: 100%;
+            height: auto;
+        }
+
+            .portrait-shot img,
+            .mechanic-gif img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* or 'contain' if you prefer no cropping */
+                display: block;
+            }
 
         .stats {
             display: grid;
@@ -849,12 +870,35 @@
             </div>
 
             <!-- Screenshots -->
+            <!-- Screenshots Section -->
             <div class="screenshots">
-                <div class="shot" onclick="openLightbox(0)"><img src="Images/DD/dd1.png" alt="Screenshot 1"></div>
-                <div class="shot" onclick="openLightbox(1)"><img src="Images/DD/dd2.png" alt="Screenshot 2"></div>
-                <div class="shot" onclick="openLightbox(2)"><img src="Images/DD/dd3.png" alt="Screenshot 3"></div>
-                <div class="shot" onclick="openLightbox(3)"><img src="Images/DD/dd5.png" alt="Screenshot 4"></div>
- 
+                <div class="shot portrait-shot" onclick="openLightbox(0)">
+                    <img src="Images/DD/dd1.png" alt="Screenshot 1">
+                </div>
+                <div class="shot portrait-shot" onclick="openLightbox(1)">
+                    <img src="Images/DD/dd2.png" alt="Screenshot 2">
+                </div>
+                <div class="shot portrait-shot" onclick="openLightbox(2)">
+                    <img src="Images/DD/dd3.png" alt="Screenshot 3">
+                </div>
+                <div class="shot portrait-shot" onclick="openLightbox(3)">
+                    <img src="Images/DD/dd5.png" alt="Screenshot 4">
+                </div>
+            </div>
+
+            <p class="label" style="margin: 2.5rem 0 1.1rem 0;">Gameplay Demo (Portrait)</p>
+            <div class="gameplay-demo-grid">
+                <!-- use the new class or update .screenshots -->
+                <div class="shot portrait-shot" onclick="openLightboxFromGif(0)">
+                    <img src="Images/DD/ddgamedemo.gif" alt="Gameplay Demo 1">
+                </div>
+
+                <!-- Add more portrait GIFs here -->
+                <!-- Example:
+        <div class="shot portrait-shot" onclick="openLightboxFromGif(1)">
+            <img src="Images/DD/dd_gif2_portrait.gif" alt="Gameplay Demo 2">
+        </div>
+        -->
             </div>
         </section>
 
@@ -1201,7 +1245,20 @@
         document.getElementById('lightbox').classList.add('active')
         document.body.style.overflow = 'hidden'
         }
+                /* === GIF Lightbox Support === */
+let lbGifs = [
+'Images/DD/ddgamedemo.gif'
+// Add more GIF paths here
+];
 
+ function openLightboxFromGif(i) {
+ lbIndex = i;
+  lbImages = lbGifs;                    // Switch to GIF array
+ document.getElementById('lightbox-img').src = lbGifs[lbIndex];
+ document.getElementById('lightbox-counter').textContent = (lbIndex + 1) + ' / ' + lbGifs.length;
+ document.getElementById('lightbox').classList.add('active');
+ document.body.style.overflow = 'hidden';
+ }
         function closeLightbox() {
         document.getElementById('lightbox').classList.remove('active')
         document.body.style.overflow = ''
