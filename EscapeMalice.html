@@ -28,8 +28,6 @@
             --teal: #1D9E75;
             --teal-bg: #E1F5EE;
             --teal-text: #085041;
-            --code-bg: #1e1e2e;
-            --code-text: #cdd6f4;
             --r: 12px;
             --r-sm: 8px;
             --r-pill: 99px;
@@ -353,34 +351,7 @@
             color: var(--text3)
         }
 
-        .did-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px
-        }
-
-            .did-list li {
-                display: flex;
-                gap: 12px;
-                align-items: flex-start
-            }
-
-        .did-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--purple);
-            margin-top: 9px;
-            flex-shrink: 0
-        }
-
-        .did-text {
-            font-size: 15px;
-            color: var(--text2);
-            line-height: 1.65
-        }
-
+        /* Mechanics accordion */
         .mechanics-list {
             display: flex;
             flex-direction: column;
@@ -484,163 +455,40 @@
         }
 
         .mechanic-content {
-            padding: 0 1.25rem 1.25rem;
+            padding: 1.25rem;
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
             border-top: .5px solid var(--border)
         }
 
-        .mechanic-desc {
-            font-size: 14px;
-            color: var(--text2);
-            line-height: 1.7;
-            padding-top: 1rem
-        }
-
-        .mechanic-gif {
+        /* Looping mechanic video */
+        .mechanic-video {
             border-radius: var(--r-sm);
             overflow: hidden;
             border: .5px solid var(--border);
             background: var(--bg2)
         }
 
-            .mechanic-gif img,
-            .mechanic-gif video {
+            .mechanic-video video {
                 width: 100%;
+                aspect-ratio: 16/9;
+                object-fit: cover;
                 display: block
             }
 
-        .gif-placeholder {
-            width: 100%;
-            aspect-ratio: 16/9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            background: var(--bg2)
+        /* Cutscene videos: follow the video's own size */
+        .mechanic-video.native video {
+            aspect-ratio: auto;
+            height: auto;
+            max-height: 70vh;
+            object-fit: contain;
         }
 
-            .gif-placeholder span {
-                font-size: 12px;
-                color: var(--text3)
-            }
-
-        .gif-caption {
-            font-size: 12px;
-            color: var(--text3);
-            padding: 8px 12px;
-            border-top: .5px solid var(--border)
-        }
-
-        .code-block-wrap {
-            border-radius: var(--r-sm);
-            overflow: hidden;
-            border: .5px solid var(--border)
-        }
-
-        .code-header {
-            background: var(--bg2);
-            padding: 10px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: .5px solid var(--border)
-        }
-
-        .code-filename {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text2);
-            font-family: monospace
-        }
-
-        .code-lang {
-            font-size: 11px;
-            color: var(--text3);
-            background: var(--bg3);
-            padding: 2px 8px;
-            border-radius: var(--r-pill);
-            border: .5px solid var(--border)
-        }
-
-        pre {
-            background: var(--code-bg);
-            padding: 1.25rem 1.5rem;
-            overflow-x: auto;
-            font-size: 13px;
-            line-height: 1.7;
-            font-family: 'SF Mono','Fira Code','Consolas',monospace
-        }
-
-        code {
-            color: var(--code-text)
-        }
-
-        .kw {
-            color: #cba6f7
-        }
-
-        .fn {
-            color: #89b4fa
-        }
-
-        .str {
-            color: #a6e3a1
-        }
-
-        .cm {
-            color: #6c7086;
-            font-style: italic
-        }
-
-        .num {
-            color: #fab387
-        }
-
-        .tp {
-            color: #f38ba8
-        }
-
-        .code-explain {
-            background: var(--teal-bg);
-            border: .5px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 1.1rem 1.25rem
-        }
-
-        .explain-label {
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            color: var(--teal-text);
-            margin-bottom: 8px;
-            opacity: .7
-        }
-
-        .explain-text {
+        .mechanic-desc {
             font-size: 14px;
             color: var(--text2);
             line-height: 1.7
-        }
-
-            .explain-text p {
-                margin-bottom: .6rem
-            }
-
-                .explain-text p:last-child {
-                    margin-bottom: 0
-                }
-
-        .inline-code {
-            font-family: 'SF Mono','Fira Code','Consolas',monospace;
-            font-size: 12px;
-            background: var(--bg2);
-            padding: 1px 5px;
-            border-radius: 4px;
-            border: .5px solid var(--border)
         }
 
         footer {
@@ -757,27 +605,6 @@
             border-radius: var(--r-pill)
         }
 
-        .gif-carousel {
-            position: relative;
-        }
-
-        .carousel-container {
-            display: flex;
-            width: 100%;
-        }
-
-        .carousel-slide {
-            width: 100%;
-            height: auto;
-            flex-shrink: 0;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-            .carousel-slide:hover {
-                transform: scale(1.02);
-            }
-
         @media(max-width:560px) {
             .game-title {
                 font-size: 24px
@@ -866,10 +693,13 @@
 
             <!-- Screenshots -->
             <div class="screenshots">
-                <div class="shot" onclick="openLightbox(0)"><img src="Images/ai/ai1.png" alt="Screenshot 1"></div>
-                <div class="shot" onclick="openLightbox(1)"><img src="Images/ai/ai2.png" alt="Screenshot 2"></div>
-                <div class="shot" onclick="openLightbox(2)"><img src="Images/ai/ai3.png" alt="Screenshot 3"></div>
-                <div class="shot" onclick="openLightbox(3)"><img src="Images/ai/ai4.png" alt="Screenshot 4"></div>
+                <div class="shot" onclick="openLightbox(0)"><img src="Images/EM/EMSS1.png" alt="Screenshot 1"></div>
+                <div class="shot" onclick="openLightbox(1)"><img src="Images/EM/EMSS2.png" alt="Screenshot 2"></div>
+                <div class="shot" onclick="openLightbox(2)"><img src="Images/EM/EMSS3.png" alt="Screenshot 3"></div>
+                <div class="shot" onclick="openLightbox(3)"><img src="Images/EM/EMSS4.png" alt="Screenshot 4"></div>
+                <div class="shot" onclick="openLightbox(4)"><img src="Images/EM/EMSS5.png" alt="Screenshot 5"></div>
+
+
             </div>
 
             <!-- Game Trailer (YouTube embed) -->
@@ -899,232 +729,75 @@
 
         <hr>
 
-        <!-- Mechanics -->
+        <!-- Mechanics: looping video + description only -->
         <section class="reveal">
             <p class="label">Mechanics</p>
-            <p style="font-size:13px;color:var(--text3);margin-bottom:1.2rem;">Click a mechanic to see the GIF and code behind it.</p>
+            <p style="font-size:13px;color:var(--text3);margin-bottom:1.2rem;">Click a mechanic to see it in action.</p>
             <div class="mechanics-list">
 
-                <!-- m1: StateMachine -->
+                <!-- m1 -->
                 <div class="mechanic-item" id="m1">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m1')">
                         <div class="mechanic-icon">
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Player State Machine</span>
-                            <span class="mechanic-subtitle">Clean Finite State Machine · C# · Extensible Architecture</span>
+                            <span class="mechanic-title">Dynamic Footstep</span>
+                            <span class="mechanic-subtitle">Raycast · Physcs Material </span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
+                                <div class="mechanic-video">
+                                    <video src="Images/EM/EmFootstep.mp4" loop muted playsinline preload="none"></video>
+                                </div>
                                 <p class="mechanic-desc">
                                     A clean and maintainable Finite State Machine (FSM) that manages the player's different behaviors (Running, Dashing, Hurt, Dead, etc.).
-                                    This architecture keeps the PlayerController clean and makes it very easy to add new states in the future.
+                                    This architecture keeps the player controller clean and makes it very easy to add new states in the future.
                                 </p>
-
-
-
-                                <p class="label" style="margin-bottom:.5rem;">StateMachine.cs</p>
-                                <div class="code-block-wrap">
-                                    <div class="code-header">
-                                        <span class="code-filename">StateMachine.cs</span>
-                                        <span class="code-lang">C#</span>
-                                    </div>
-                                    <pre><code><kw>using</kw> UnityEngine;
-
-<kw>public class</kw> <tp>StateMachine</tp>
-{
-    <kw>private</kw> StateBase currentState = <kw>null</kw>;
-
-    <kw>public void</kw> SetState(StateBase newState)
-    {
-        <kw>if</kw> (newState == <kw>null</kw>)
-        {
-            Debug.LogWarning(<str>"SetState called with null newState"</str>);
-            <kw>return</kw>;
-        }
-
-            <kw>if</kw> (currentState != <kw>null</kw>)
-        {
-            currentState.Exit();
-        }
-
-        currentState = newState;
-        currentState.Enter();
-    }
-
-    <kw>public void</kw> Tick(<kw>float</kw> deltaTime)
-    {
-        <kw>if</kw> (currentState == <kw>null</kw>)
-        {
-            Debug.LogWarning(<str>"Tick called with null currentState. Call SetState first."</str>);
-            <kw>return</kw>;
-        }
-
-        currentState.Update(deltaTime);
-
-        <kw>if</kw> (currentState.TryFindNextState(<kw>out</kw> StateBase nextState))
-        {
-            SetState(nextState);
-        }
-    }
-
-    <kw>public</kw> StateBase GetCurrentState() => currentState;
-}</code></pre>
-                                </div>
-
-                                <div class="code-explain">
-                                    <p class="explain-label">What this does</p>
-                                    <div class="explain-text">
-                                        <p>This StateMachine is the brain of the player. It follows the classic <strong>Enter → Update → Exit</strong> pattern and supports automatic transitions:</p>
-                                        <ul>
-                                            <li><strong>Clean transitions</strong>: Automatically calls <code>Exit()</code> on the old state and <code>Enter()</code> on the new one.</li>
-                                            <li><strong>Automatic switching</strong>: Every frame, the current state can request to change to a new state via <code>TryFindNextState()</code>.</li>
-                                            <li><strong>Safe &amp; robust</strong>: Includes null checks and helpful debug warnings.</li>
-                                            <li><strong>Highly extensible</strong>: Adding a new state (e.g. Climbing, Sliding, Power-up) only requires creating a new <code>StateBase</code> subclass.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="code-explain" style="border-color: var(--border2);">
-                                    <p class="explain-label" style="color: var(--purple-text);">How to use</p>
-                                    <div class="explain-text">
-                                        <p>In your <strong>PlayerController.cs</strong>:</p>
-                                        <pre style="background:#1e1e2e;color:#cdd6f4;padding:12px;border-radius:6px;font-size:13px;"><code><kw>private</kw> StateMachine stateMachine;
-
-<kw>void</kw> Start()
-{
-    stateMachine = <kw>new</kw> StateMachine();
-    stateMachine.SetState(<kw>new</kw> PlayerRunState(<kw>this</kw>));
-}
-
-<kw>void</kw> Update()
-{
-    stateMachine.Tick(Time.deltaTime);
-}</code></pre>
-                                        <p>Each state (e.g. <code>PlayerDashState</code>, <code>PlayerHurtState</code>) inherits from <code>StateBase</code> and implements <code>Enter()</code>, <code>Update()</code>, <code>Exit()</code>, and <code>TryFindNextState()</code>.</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- m2: TransitionPair -->
+                <!-- m2 -->
                 <div class="mechanic-item" id="m2">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m2')">
                         <div class="mechanic-icon">
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">State Transitions (TransitionPair)</span>
-                            <span class="mechanic-subtitle">Clean Conditional State Switching · C# · Data-Driven Transitions</span>
+                            <span class="mechanic-title">Random Menu Character Posisiton</span>
+                            <span class="mechanic-subtitle">Clean Conditional State Switching · Data-Driven Transitions</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
+                                <div class="mechanic-video">
+                                    <video src="Images/EM/EmRandom.mp4" loop muted playsinline preload="none"></video>
+                                </div>
                                 <p class="mechanic-desc">
                                     A lightweight and elegant way to define when a state should automatically transition to another state.
-                                    Instead of writing messy if-else chains inside every state's <code>Update()</code>, each state holds a list of
-                                    <code>TransitionPair</code>s that are checked every frame.
+                                    Instead of writing messy if-else chains inside every state, each state holds a list of
+                                    transitions that pair a condition with a target state and are checked every frame.
                                 </p>
-
-
-                                <p class="label" style="margin-bottom:.5rem;">TransitionPair.cs</p>
-                                <div class="code-block-wrap">
-                                    <div class="code-header">
-                                        <span class="code-filename">TransitionPair.cs</span>
-                                        <span class="code-lang">C#</span>
-                                    </div>
-                                    <pre><code><kw>public class</kw> <tp>TransitionPair</tp>
-{
-                                    <kw>public</kw> <tp>Func&lt;float, bool&gt;</tp> predicate;
-                                    <kw>public</kw> StateBase nextState;
-
-                                    <kw>public</kw> TransitionPair(StateBase nextState, <tp>Func&lt;float, bool&gt;</tp> predicate)
-    {
-                                    <kw>this</kw>.nextState = nextState;
-                                    <kw>this</kw>.predicate = predicate;
-    }
-}</code></pre>
-                                </div>
-
-                                <div class="code-explain">
-                                    <p class="explain-label">What this does</p>
-                                    <div class="explain-text">
-                                        <p>The <code>TransitionPair</code> is a simple but powerful data structure that pairs a <strong>condition</strong> with a <strong>target state</strong>.</p>
-                                        <ul>
-                                            <li><strong>predicate</strong>: A function that receives deltaTime and returns <code>true</code> when the transition should happen.</li>
-                                            <li><strong>nextState</strong>: The state to switch to when the predicate becomes true.</li>
-                                        </ul>
-                                        <p>This keeps transition logic clean, reusable, and easy to read — no more giant if-else chains in your states.</p>
-                                    </div>
-                                </div>
-
-                                <div class="code-explain" style="border-color: var(--border2);">
-                                    <p class="explain-label" style="color: var(--purple-text);">Example Usage in a State</p>
-                                    <div class="explain-text">
-                                        <pre style="background:#1e1e2e;color:#cdd6f4;padding:12px;border-radius:6px;font-size:13px;"><code><kw>public class</kw> PlayerRunState : StateBase
-{
-    <kw>public override void</kw> Enter() { ... }
-
-    <kw>public override void</kw> Update(<kw>float</kw> deltaTime)
-    {
-      <cm>// Example transitions</cm>
-      <kw>if</kw> (Input.GetKeyDown(KeyCode.Space))
-      stateMachine.SetState(<kw>new</kw> PlayerDashState(player));
-
-      <cm>// Or using TransitionPair (recommended)</cm>
-    }
-
-    <kw>public override bool</kw> TryFindNextState(<kw>out</kw> StateBase next)
-    {
-        next = <kw>null</kw>;
-
-        <kw>foreach</kw> (<kw>var</kw> transition <kw>in</kw> transitions)
-        {
-             <kw>if</kw> (transition.predicate(deltaTime))
-            {
-                next = transition.nextState;
-                 <kw>return true</kw>;
-            }
-        }
-        <kw>return false</kw>;
-    }
-}</code></pre>
-                                        <p style="margin-top:12px;">You can even pre-populate the <code>transitions</code> list in the state's constructor for a fully data-driven approach.</p>
-                                    </div>
-                                </div>
-
-                                <div class="code-explain">
-                                    <p class="explain-label">Why it's great</p>
-                                    <div class="explain-text">
-                                        <ul>
-                                            <li>Keeps each state focused only on its own behavior</li>
-                                            <li>Makes transitions declarative and easy to debug</li>
-                                            <li>Very easy to add new transitions without touching core state logic</li>
-                                            <li>Works beautifully with the <code>StateMachine.Tick()</code> system you already have</li>
-                                        </ul>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- m3: StateBase -->
+                <!-- m3 -->
                 <div class="mechanic-item" id="m3">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m3')">
                         <div class="mechanic-icon">
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">StateBase (Base State Class)</span>
+                            <span class="mechanic-title">Graphic Settings</span>
                             <span class="mechanic-subtitle">Abstract Base Class · Built-in Transitions · Time Tracking</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -1132,128 +805,107 @@
                     <div class="mechanic-body">
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
+                                <div class="mechanic-video">
+                                    <video src="Images/EM/EmSettings.mp4" loop muted playsinline preload="none"></video>
+                                </div>
                                 <p class="mechanic-desc">
-                                    The foundation of the entire state machine system. <code>StateBase</code> provides a clean, reusable structure
-                                    for all player states while automatically handling transitions via <code>TransitionPair</code> and tracking how long the player has been in the current state.
+                                    The foundation of the entire state machine system. The base state provides a clean, reusable structure
+                                    for all player states while automatically handling transitions and tracking how long the player has been in the current state,
+                                    which makes timed behaviors like dash cooldowns and hurt recovery easy to build.
                                 </p>
-
-
-
-                                <p class="label" style="margin-bottom:.5rem;">StateBase.cs</p>
-                                <div class="code-block-wrap">
-                                    <div class="code-header">
-                                        <span class="code-filename">StateBase.cs</span>
-                                        <span class="code-lang">C#</span>
-                                    </div>
-                                    <pre><code><kw>public abstract class</kw> <tp>StateBase</tp>
-{
-    <kw>protected readonly</kw> List&lt;TransitionPair&gt; Transitions = <kw>new</kw>();
-
-    <kw>private</kw> float timeInState = 0f;
-    <kw>public float</kw> TimeInState => timeInState;
-
-    <kw>public void</kw> AddTransition(StateBase to, Func&lt;float, bool&gt; predicate)
-    {
-        Transitions.Add(<kw>new</kw> TransitionPair(to, predicate));
-    }
-
-    <kw>public bool</kw> TryFindNextState(<kw>out</kw> StateBase nextState)
-    {
-        <kw>foreach</kw> (<kw>var</kw> t <kw>in</kw> Transitions)
-        {
-            <kw>if</kw> (t.predicate(timeInState))
-            {
-                nextState = t.nextState;
-                <kw>return true</kw>;
-            }
-        }
-        nextState = <kw>null</kw>;
-        <kw>return false</kw>;
-    }
-
-    <kw>protected virtual void</kw> OnEnter() { }
-    <kw>protected virtual void</kw> OnExit() { }
-    <kw>protected virtual void</kw> OnUpdate(<kw>float</kw> deltaTime) { }
-}</code></pre>
-                                </div>
-
-                                <div class="code-explain">
-                                    <p class="explain-label">What this does</p>
-                                    <div class="explain-text">
-                                        <p><code>StateBase</code> is the heart of your clean FSM architecture. It gives every state:</p>
-                                        <ul>
-                                            <li><strong>Built-in transition system</strong> using <code>TransitionPair</code></li>
-                                            <li><strong>Time tracking</strong> — <code>TimeInState</code> tells you how long you've been in this state (very useful for timed behaviors like invincibility frames, attack cooldowns, etc.)</li>
-                                            <li><strong>Clean lifecycle methods</strong>: <code>OnEnter()</code>, <code>OnExit()</code>, and <code>OnUpdate()</code></li>
-                                            <li><strong>Easy transition registration</strong> via <code>AddTransition()</code></li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="code-explain" style="border-color: var(--border2);">
-                                    <p class="explain-label" style="color: var(--purple-text);">How states inherit from it</p>
-                                    <div class="explain-text">
-                                        <pre style="background:#1e1e2e;color:#cdd6f4;padding:12px;border-radius:6px;font-size:13px;"><code><kw>public class</kw> PlayerRunState : StateBase
-{
-    <kw>private readonly</kw> PlayerController player;
-
-    <kw>public</kw> PlayerRunState(PlayerController player)
-    {
-        <kw>this</kw>.player = player;
-
-        <cm>// Register transitions</cm>
-        AddTransition(<kw>new</kw> PlayerDashState(player), dt =&gt; Input.GetKeyDown(KeyCode.Space));
-        AddTransition(<kw>new</kw> PlayerHurtState(player), dt =&gt; player.IsHit);
-    }
-
-    <kw>protected override void</kw> OnEnter()
-    {
-        player.Animator.SetBool("IsRunning", true);
-    }
-
-    <kw>protected override void</kw> OnUpdate(<kw>float</kw> deltaTime)
-    {
-        player.HandleMovement();
-    }
-
-    <kw>protected override void</kw> OnExit()
-    {
-        player.Animator.SetBool("IsRunning", false);
-    }
-}</code></pre>
-                                    </div>
-                                </div>
-
-                                <div class="code-explain">
-                                    <p class="explain-label">Why it's great</p>
-                                    <div class="explain-text">
-                                        <ul>
-                                            <li>Eliminates duplicate transition code across states</li>
-                                            <li><code>TimeInState</code> makes timed actions (dash cooldown, hurt recovery, etc.) trivial</li>
-                                            <li>Transitions are declarative and easy to read</li>
-                                            <li>Keeps every state focused, clean, and maintainable</li>
-                                            <li>Works perfectly with your existing <code>StateMachine</code> class</li>
-                                        </ul>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
 
+                <!-- m4 -->
+                <div class="mechanic-item" id="m4">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m4')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Cutscene System</span>
+                            <span class="mechanic-subtitle">BFL · Multicast · Time Tracking</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <div class="mechanic-video native">
+                                    <video src="Images/EM/EmCutscene.mp4" loop muted playsinline preload="metadata"></video>
+                                </div>
+                                <p class="mechanic-desc">
+                                    The foundation of the entire state machine system. The base state provides a clean, reusable structure
+                                    for all player states while automatically handling transitions and tracking how long the player has been in the current state,
+                                    which makes timed behaviors like dash cooldowns and hurt recovery easy to build.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- m5 -->
+                <div class="mechanic-item" id="m5">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m5')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Cutscene Skip Icon</span>
+                            <span class="mechanic-subtitle">BFL · Multicast · Time Tracking</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <div class="mechanic-video native">
+                                    <video src="Images/EM/EmCutsceneIcon.mp4" loop muted playsinline preload="metadata"></video>
+                                </div>
+                                <p class="mechanic-desc">
+                                    The foundation of the entire state machine system. The base state provides a clean, reusable structure
+                                    for all player states while automatically handling transitions and tracking how long the player has been in the current state,
+                                    which makes timed behaviors like dash cooldowns and hurt recovery easy to build.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- m6 -->
+                <div class="mechanic-item" id="m6">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m6')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">SplashScreen</span>
+                            <span class="mechanic-subtitle">BFL · Multicast · Time Tracking</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <div class="mechanic-video">
+                                    <video src="Images/EM/EmSplashscreen.mp4" loop muted playsinline preload="none"></video>
+                                </div>
+                                <p class="mechanic-desc">
+                                    The foundation of the entire state machine system. The base state provides a clean, reusable structure
+                                    for all player states while automatically handling transitions and tracking how long the player has been in the current state,
+                                    which makes timed behaviors like dash cooldowns and hurt recovery easy to build.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </section>
-
-        <hr>
-
-        <!-- What I did -->
-        <section class="reveal">
-            <p class="label">What I did</p>
-            <ul class="did-list">
-                <li><span class="did-dot"></span><span class="did-text">The Whole AI Simulation</span></li>
-
-            </ul>
         </section>
 
         <footer>
@@ -1266,10 +918,12 @@
     <script>
         /* Lightbox: handles both images and looping videos */
         const screenshotList = [
-            'Images/ai/ai1.png',
-            'Images/ai/ai2.png',
-            'Images/ai/ai3.png',
-            'Images/ai/ai4.png'
+            'Images/EM/EMSS1.png',
+            'Images/EM/EMSS2.png',
+            'Images/EM/EMSS3.png',
+            'Images/EM/EMSS4.png',
+            'Images/EM/EMSS5.png'
+
         ]
 
         let lbItems = screenshotList
@@ -1334,18 +988,6 @@
             renderLightbox()
         }
 
-        function openLightboxFromCarousel(src, carouselId) {
-            const container = document.getElementById(carouselId)
-            const slides = container.getElementsByTagName('img')
-            let index = 0
-            for (let i = 0; i < slides.length; i++) {
-                if (slides[i].src === src) { index = i; break }
-            }
-            lbItems = Array.from(slides).map(img => img.src)
-            lbIndex = index
-            showLightbox()
-        }
-
         document.addEventListener('keydown', e => {
             if (!lbEl.classList.contains('active')) return
             if (e.key === 'ArrowRight') changeImage(1)
@@ -1353,13 +995,19 @@
             if (e.key === 'Escape') closeLightbox()
         })
 
-        /* Accordion */
+        /* Accordion: opening a mechanic plays its looping video, closing pauses it */
         function toggleMechanic(id) {
             const item = document.getElementById(id)
             const isOpen = item.classList.contains('open')
-            document.querySelectorAll('.mechanic-item').forEach(el => el.classList.remove('open'))
+            document.querySelectorAll('.mechanic-item').forEach(el => {
+                el.classList.remove('open')
+                const v = el.querySelector('video')
+                if (v) v.pause()
+            })
             if (!isOpen) {
                 item.classList.add('open')
+                const v = item.querySelector('video')
+                if (v) v.play().catch(() => { })
                 setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50)
             }
         }
