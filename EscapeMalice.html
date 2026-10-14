@@ -681,13 +681,15 @@
             <p class="label">About the game</p>
             <div class="about-text">
                 <p>
-                    Ashes and Auras is a 2D game in which you guard a creature, for example spirit or pet from monsters.
-                    Resources are gathered, defenses such as fences or turrets are created, and the creature itself is
-                    cared for by feeding it and tending to its wounds.The gamewill end if the pet dies.
+                    Escape:Malice is a two-player co-op horror puzzle game set in Edo-era Japan.
+                    While visiting the Miryoku-Ji Temple in Kamakura, the two protagonists fall into a strange hidden space
+                    beneath an old mansion, where resentful spirits are slowly waking in the dark.
                 </p>
 
                 <p>
-                    It is a AI driven Game simulation
+                    The only way out is to explore, observe and solve puzzles together. The game was designed with real escape room designers,
+                    so the puzzles feel like a real escape room without the limits of a physical room.
+                    It cannot be played solo: every puzzle is built around communication and teamwork between the two players.
                 </p>
             </div>
 
@@ -743,7 +745,7 @@
                         </div>
                         <div class="mechanic-trigger-text">
                             <span class="mechanic-title">Dynamic Footstep</span>
-                            <span class="mechanic-subtitle">Raycast · Physcs Material </span>
+                            <span class="mechanic-subtitle">Line Trace · Physical Material · Multicast RPC</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
@@ -754,8 +756,12 @@
                                     <video src="Images/EM/EmFootstep.mp4" loop muted playsinline preload="none"></video>
                                 </div>
                                 <p class="mechanic-desc">
-                                    A clean and maintainable Finite State Machine (FSM) that manages the player's different behaviors (Running, Dashing, Hurt, Dead, etc.).
-                                    This architecture keeps the player controller clean and makes it very easy to add new states in the future.
+                                    Footsteps change their sound depending on the surface the player is walking on.
+                                    On every step, a line trace shoots straight down from the character and reads the
+                                    Physical Material of the floor it hits. That surface is matched to a sound,
+                                    and the player's machine asks the server to play it. The server then uses a Multicast RPC
+                                    so every connected player hears the step at that character's location.
+                                    Each step also reports a noise, so enemy AI can hear the player.
                                 </p>
                             </div>
                         </div>
@@ -769,8 +775,8 @@
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Random Menu Character Posisiton</span>
-                            <span class="mechanic-subtitle">Clean Conditional State Switching · Data-Driven Transitions</span>
+                            <span class="mechanic-title">Random Menu Character Position</span>
+                            <span class="mechanic-subtitle">Soft Object References · Random Array Index · Teleport</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
@@ -781,24 +787,28 @@
                                     <video src="Images/EM/EmRandom.mp4" loop muted playsinline preload="none"></video>
                                 </div>
                                 <p class="mechanic-desc">
-                                    A lightweight and elegant way to define when a state should automatically transition to another state.
-                                    Instead of writing messy if-else chains inside every state, each state holds a list of
-                                    transitions that pair a condition with a target state and are checked every frame.
+                                    Every time the menu loads, the character picks a new spot in the scene so it never looks exactly the same twice.
+                                    When the level starts, a toggle decides what happens. If it is on, the Blueprint picks a random point
+                                    from a list of target points (soft references) and teleports the character to that point's location and rotation.
+                                    If it is off, she teleports to one fixed point instead.
+                                    Both paths check that the target is valid first, so a missing target is skipped instead of causing an error.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- m3 -->
-                <div class="mechanic-item" id="m3">
-                    <button class="mechanic-trigger" onclick="toggleMechanic('m3')">
+          
+
+                <!-- m4 -->
+                <div class="mechanic-item" id="m4">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m4')">
                         <div class="mechanic-icon">
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Graphic Settings</span>
-                            <span class="mechanic-subtitle">Abstract Base Class · Built-in Transitions · Time Tracking</span>
+                            <span class="mechanic-title">Revert Settings</span>
+                            <span class="mechanic-subtitle">Looping Timer · Countdown · Gamepad Support</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
@@ -809,38 +819,12 @@
                                     <video src="Images/EM/EmSettings.mp4" loop muted playsinline preload="none"></video>
                                 </div>
                                 <p class="mechanic-desc">
-                                    The foundation of the entire state machine system. The base state provides a clean, reusable structure
-                                    for all player states while automatically handling transitions and tracking how long the player has been in the current state,
-                                    which makes timed behaviors like dash cooldowns and hurt recovery easy to build.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- m4 -->
-                <div class="mechanic-item" id="m4">
-                    <button class="mechanic-trigger" onclick="toggleMechanic('m4')">
-                        <div class="mechanic-icon">
-                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                        </div>
-                        <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Cutscene System</span>
-                            <span class="mechanic-subtitle">BFL · Multicast · Time Tracking</span>
-                        </div>
-                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                    </button>
-                    <div class="mechanic-body">
-                        <div class="mechanic-body-inner">
-                            <div class="mechanic-content">
-                                <div class="mechanic-video native">
-                                    <video src="Images/EM/EmCutscene.mp4" loop muted playsinline preload="metadata"></video>
-                                </div>
-                                <p class="mechanic-desc">
-                                    The foundation of the entire state machine system. The base state provides a clean, reusable structure
-                                    for all player states while automatically handling transitions and tracking how long the player has been in the current state,
-                                    which makes timed behaviors like dash cooldowns and hurt recovery easy to build.
+                                    A safety net for graphics changes, like the confirm prompt in Windows display settings. When the player saves new settings,
+                                    they are applied and a confirmation panel appears with a 10 second countdown. A looping timer ticks every second,
+                                    lowers the countdown and updates the "Reverting To Previous Settings In" text. If it reaches 0, the previous settings come back automatically.
+                                    Pressing Apply keeps the new settings, makes them the new fallback, stops the timer and hides the panel.
+                                    Pressing Revert restores the previous settings straight away. The panel also works with a gamepad,
+                                    where the stick switches the highlighted button and the interact input presses it.
                                 </p>
                             </div>
                         </div>
@@ -855,8 +839,8 @@
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
-                            <span class="mechanic-title">Cutscene Skip Icon</span>
-                            <span class="mechanic-subtitle">BFL · Multicast · Time Tracking</span>
+                            <span class="mechanic-title">Cutscene System</span>
+                            <span class="mechanic-subtitle">BFL · Multicast RPC · Vote Skip</span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
@@ -864,12 +848,13 @@
                         <div class="mechanic-body-inner">
                             <div class="mechanic-content">
                                 <div class="mechanic-video native">
-                                    <video src="Images/EM/EmCutsceneIcon.mp4" loop muted playsinline preload="metadata"></video>
+                                    <video src="Images/EM/EmCutscene.mp4" loop muted playsinline preload="metadata"></video>
                                 </div>
                                 <p class="mechanic-desc">
-                                    The foundation of the entire state machine system. The base state provides a clean, reusable structure
-                                    for all player states while automatically handling transitions and tracking how long the player has been in the current state,
-                                    which makes timed behaviors like dash cooldowns and hurt recovery easy to build.
+                                    A networked cutscene system that plays a full screen video for every connected player at the same time.
+                                    The server authoritative GameState starts the cutscene with a Multicast RPC, and a Blueprint Function Library
+                                    spawns the cutscene widget locally on each machine, with subtitles driven by a Data Asset.
+                                    Players can hold a button to skip, and once at least 2 players have voted, the cutscene ends for everyone.
                                 </p>
                             </div>
                         </div>
@@ -884,8 +869,36 @@
                             <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
+                            <span class="mechanic-title">Cutscene Skip Icon</span>
+                            <span class="mechanic-subtitle">Enhanced Input · Dynamic Material · Auto-Hide</span>
+                        </div>
+                        <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <div class="mechanic-body">
+                        <div class="mechanic-body-inner">
+                            <div class="mechanic-content">
+                                <div class="mechanic-video native">
+                                    <video src="Images/EM/EmSkipIcon.mp4" loop muted playsinline preload="metadata"></video>
+                                </div>
+                                <p class="mechanic-desc">
+                                    A hold-to-skip prompt that appears when the player moves the mouse and fades out after 5 seconds of inactivity.
+                                    A radial fill shows the hold progress, and a live vote counter updates as other players request a skip.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- m7 -->
+                <div class="mechanic-item" id="m7">
+                    <button class="mechanic-trigger" onclick="toggleMechanic('m7')">
+                        <div class="mechanic-icon">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        <div class="mechanic-trigger-text">
                             <span class="mechanic-title">SplashScreen</span>
-                            <span class="mechanic-subtitle">BFL · Multicast · Time Tracking</span>
+                            <span class="mechanic-subtitle"></span>
                         </div>
                         <svg class="mechanic-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
@@ -896,9 +909,7 @@
                                     <video src="Images/EM/EmSplashscreen.mp4" loop muted playsinline preload="none"></video>
                                 </div>
                                 <p class="mechanic-desc">
-                                    The foundation of the entire state machine system. The base state provides a clean, reusable structure
-                                    for all player states while automatically handling transitions and tracking how long the player has been in the current state,
-                                    which makes timed behaviors like dash cooldowns and hurt recovery easy to build.
+                                    A splash screen that shows when the game starts
                                 </p>
                             </div>
                         </div>
