@@ -22,9 +22,9 @@
             --text3: #ababab;
             --border: rgba(0,0,0,.08);
             --border2: rgba(0,0,0,.15);
-            --purple: #7F77DD;
-            --purple-bg: #EEEDFE;
-            --purple-text: #3C3489;
+            --purple: #1c1c1a;       
+            --purple-bg: #ebebe7;     
+            --purple-text: #1c1c1a;   
             --teal: #1D9E75;
             --teal-bg: #E1F5EE;
             --teal-text: #085041;
@@ -45,9 +45,9 @@
                 --text3: #444440;
                 --border: rgba(255,255,255,.07);
                 --border2: rgba(255,255,255,.14);
-                --purple: #9D97E8;
-                --purple-bg: #26215C;
-                --purple-text: #CECBF6;
+                --purple: #f0f0ec;        
+                --purple-bg: #262624;     
+                --purple-text: #f0f0ec;   
                 --teal: #5DCAA5;
                 --teal-bg: #04342C;
                 --teal-text: #9FE1CB;
@@ -907,7 +907,7 @@
                 <div class="mechanic-item" id="m1">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m1')">
                         <div class="mechanic-icon">
-                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
                             <span class="mechanic-title">Player State Machine</span>
@@ -1015,7 +1015,7 @@
                 <div class="mechanic-item" id="m2">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m2')">
                         <div class="mechanic-icon">
-                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
                             <span class="mechanic-title">State Transitions (TransitionPair)</span>
@@ -1119,7 +1119,7 @@
                 <div class="mechanic-item" id="m3">
                     <button class="mechanic-trigger" onclick="toggleMechanic('m3')">
                         <div class="mechanic-icon">
-                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </div>
                         <div class="mechanic-trigger-text">
                             <span class="mechanic-title">StateBase (Base State Class)</span>
@@ -1360,7 +1360,7 @@
         function rszSpark() { sc.width = window.innerWidth; sc.height = window.innerHeight }
         rszSpark()
         window.addEventListener('resize', rszSpark)
-        const COLS = ['#AFA9EC','#7F77DD','#9FE1CB','#5DCAA5','#F5C4B3','#D85A30','#F4C0D1','#ED93B1']
+        const COLS = ['#bbbbbb', '#999999', '#777777', '#555555', '#dddddd', '#333333']
         let lastMouse = 0
         window.addEventListener('mousemove', e => {
         const now = Date.now()

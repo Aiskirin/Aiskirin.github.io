@@ -165,8 +165,9 @@
             gap: 6px;
             font-size: 12px;
             font-weight: 500;
-            background: var(--purple-bg);
-            color: var(--purple-text);
+            background: #000000;
+            color: #ffffff;
+            border: .5px solid rgba(255,255,255,.45);
             padding: 4px 12px 4px 8px;
             border-radius: var(--r-pill);
             margin-bottom: 1.2rem
@@ -176,7 +177,7 @@
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background: var(--purple);
+            background: #ffffff;
             animation: pulse 2s ease-in-out infinite
         }
 
@@ -359,8 +360,9 @@
 
         .glink {
             font-size: 12px;
-            color: var(--purple);
-            border: .5px solid var(--border);
+            color: #ffffff;
+            background: #000000;
+            border: .5px solid rgba(255,255,255,.45);
             padding: 3px 10px;
             border-radius: var(--r-pill);
             text-decoration: none;
@@ -368,8 +370,12 @@
         }
 
             .glink:hover {
-                border-color: var(--purple);
-                background: var(--purple-bg)
+                border-color: #ffffff;
+                background: #222222
+            }
+
+            .glink:empty {
+                display: none
             }
 
         .gtags {
@@ -411,9 +417,9 @@
         }
 
             .skill:hover {
-                background: var(--purple-bg);
-                border-color: var(--purple);
-                color: var(--purple-text)
+                background: #ffffff;
+                border-color: #000000;
+                color: #000000
             }
 
         .about-grid {
@@ -469,7 +475,7 @@
 
             .contact-row a {
                 font-size: 14px;
-                color: var(--purple);
+                color: var(--text);
                 text-decoration: none;
                 transition: opacity .15s
             }
@@ -539,10 +545,10 @@
                 Available for work
             </div>
             <h1 class="reveal d1"><span id="tw"></span><span class="blink"></span></h1>
-            <p class="reveal d2">I am a Game Developer specializing in Game Technology. I code for PC and mobile using Unity and Unreal Engine—and put a lot of love into everything I build.</p>
+            <p class="reveal d2">I am a Game Developer specializing in Game Technology. I code for PC and mobile using Unity and Unreal Engine and put a lot of love into everything I build.</p>
             <div class="btn-row reveal d3">
                 <a href="#games" class="btn btn-dark">See my games</a>
-                <a href="Images/cv.pdf" target="_blank" class="btn btn-light">View Resume</a>
+                <a href="https://derrick-resume.my.canva.site" target="_blank" class="btn btn-light">View Resume</a>
             </div>
         </div>
     </div>
@@ -610,7 +616,7 @@
                         <h3>Ashes and Aura</h3>
                         <p>2D endless runner with hand-crafted pixel art and procedural levels.</p>
                         <div class="glinks">
-                            <a class="glink" href="#" target="_blank" >itch.io →</a>
+                            <a class="glink" href="#" target="_blank" ></a>
                         </div>
                         <div class="gtags"><span class="tag">Unity</span><span class="tag">2D</span><span class="tag">PC</span></div>
                     </div>
@@ -624,9 +630,9 @@
                     </div>
                     <div class="ginfo">
                         <h3>Escape:Malice</h3>
-                        <p>2D endless runner with hand-crafted pixel art and procedural levels.</p>
+                        <p>3D Multiplayer Horror Escape Game.</p>
                         <div class="glinks">
-                            <a class="glink" href="#" target="_blank" >itch.io →</a>
+                            <a class="glink" href="https://store.steampowered.com/app/1799220/Escape_Malice/" target="_blank" >Steam →</a>
                         </div>
                         <div class="gtags"><span class="tag">UnrealEngine</span><span class="tag">3D</span><span class="tag">PC</span></div>
                     </div>
@@ -730,7 +736,7 @@
         function initPts() {
         pts = []
         const n = Math.max(20, Math.floor(hc.width / 24))
-        const cols = ['#AFA9EC','#9FE1CB','#F0997B','#F4C0D1','#CECBF6','#5DCAA5']
+        const cols = ['#bbbbbb', '#999999', '#777777', '#555555', '#dddddd', '#333333']        
         for (let i = 0; i < n; i++) {
         pts.push({
         x: Math.random() * hc.width,
@@ -782,7 +788,7 @@
         function rszSpark() { sc.width = window.innerWidth; sc.height = window.innerHeight }
         rszSpark()
         window.addEventListener('resize', rszSpark)
-        const COLS = ['#AFA9EC','#7F77DD','#9FE1CB','#5DCAA5','#F5C4B3','#D85A30','#F4C0D1','#ED93B1']
+        const COLS = ['#bbbbbb', '#999999', '#777777', '#555555', '#dddddd', '#333333']
         let lastMouse = 0
         window.addEventListener('mousemove', e => {
         const now = Date.now()
